@@ -42,7 +42,6 @@ variable "drupal_projects_list" {
     bucket_enable_versioning        = optional(bool, true)
     bucket_enable_disaster_recovery = optional(bool, true)
   }))
-  default = []
 
   validation {
     # The project name must contain only lower caps letters and "-" and "_" and be between 6 and 23 characters long, since the database user name must be less than 32 chars and we append "_drupal_u" to the project name.
