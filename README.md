@@ -3,21 +3,22 @@
 This module creates the resources needed to deploy a **Cloud Native Drupal** instance 
 on **Google Cloud Platform**.
 
-Prerequisites are a GCP project in which a MySQL instance of CloudSQL exists,
-with administrator credentials needed to create the databases and users on the instance.
+Prerequisites are a GCP project in which a MySQL CloudSQL instance exists,
+with administrator credentials needed to create the databases and users on the 
+instance itself.
 
-The module uses two sub-modules that take care of database/user creation and bucket
-creation. The names and characteristics of the resources created are opinionated 
-and configured for a Drupal project.
-
+The module uses two sub-modules ([gcp-application-bucket-creation-helper
+](https://registry.terraform.io/modules/sparkfabrik/gcp-application-bucket-creation-helper/google/latest) 
+and [gcp-mysql-db-and-user-creation-helper](https://registry.terraform.io/modules/sparkfabrik/gcp-mysql-db-and-user-creation-helper/google/latest))
+that take care of database/user creation and bucket creation. The names and
+characteristics of the resources created are highly opinionated and configured for
+a Drupal project.
 In the event that it is necessary to create resources for a different non Drupal 
-application, it is recommended to use the individual modules.
+application, it is recommended to use and configure the individual modules.
 
-The module accept a list of objects in as input, each object represents a Drupal 
-project and resource configuration. The only required field is the project name,
+The module accept a list of objects as input, each object represents a Drupal 
+project and resource configuration. **The only required field is the `project_name`**,
 used to name all resources.
-The module will create a bucket, a database and a user for each project and as
-output will return the application credentials for each resource.
 
 ```terraform
   {
@@ -31,6 +32,14 @@ output will return the application credentials for each resource.
     bucket_enable_versioning        = optional(bool, true)
     bucket_enable_disaster_recovery = optional(bool, true)
   }
+```
+
+The module will create a bucket, a database and a user for each project and as
+output will return the application credentials for each resource.
+
+```sh
+terraform output drupal_apps_database_credentials
+terraform output drupal_apps_bucket_credentials
 ```
 
 If you need to import an existing bucket or database/user, you can specify the
