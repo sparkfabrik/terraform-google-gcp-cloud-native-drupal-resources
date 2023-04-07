@@ -17,8 +17,8 @@ resource "google_compute_global_address" "private_ip_address" {
 resource "google_service_networking_connection" "private_vpc_connection" {
   provider = google
 
-  network                 = google_compute_network.private_network.id
-  service                 = "servicenetworking.googleapis.com"
+  network = google_compute_network.private_network.id
+  service = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [
     google_compute_global_address.private_ip_address.name
   ]
@@ -36,7 +36,7 @@ resource "google_sql_database_instance" "instance" {
   region              = var.region
   database_version    = "MYSQL_8_0"
   deletion_protection = false
-  depends_on          = [
+  depends_on = [
     google_service_networking_connection.private_vpc_connection
   ]
 
