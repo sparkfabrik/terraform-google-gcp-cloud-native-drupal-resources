@@ -7,10 +7,13 @@ locals {
 
   drupal_database_and_user_list = [
     for p in var.drupal_projects_list : {
-      database  = p.database_name != null ? p.database_name : "${replace(p.project_name, "-", "_")}_drupal"
-      user      = p.database_user_name != null ? p.database_user_name : "${replace(p.project_name, "-", "_")}_drupal_u"
-      namespace = p.kubernetes_namespace == null ? "${p.project_name}-${var.gitlab_project_id}" : p.kubernetes_namespace
-      host      = p.database_host
+      database          = p.database_name != null ? p.database_name : "${replace(p.project_name, "-", "_")}_drupal"
+      user              = p.database_user_name != null ? p.database_user_name : "${replace(p.project_name, "-", "_")}_drupal_u"
+      namespace         = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}" : p.kubernetes_namespace
+      host              = p.database_host
+      project_id        = p.gitlab_project_id
+      helm_release_name = p.helm_release_name
+      port              = p.database_port
     }
   ]
 
@@ -22,10 +25,29 @@ locals {
       storage_class            = p.bucket_storage_class
       enable_versioning        = p.bucket_enable_versioning
       enable_disaster_recovery = p.bucket_enable_disaster_recovery
-      namespace                = p.kubernetes_namespace == null ? "${p.project_name}-${var.gitlab_project_id}" : p.kubernetes_namespace
+      namespace                = p.kubernetes_namespace == null ? "${p.project_name}-${data.gitlab_project.project[p.gitlab_project_id].path}" : p.kubernetes_namespace # If not specified, the namespace will be generated using the Gitlab project name and the Gitlab project id.
       host                     = p.bucket_host
+      project_id               = p.gitlab_project_id
+      helm_release_name        = p.helm_release_name
     }
   ]
+
+  namespaces = [
+    for p in var.drupal_projects_list : {
+      namespace = p.kubernetes_namespace == null ? "${data.gitlab_project.project[p.gitlab_project_id].path}-${p.gitlab_project_id}" : p.kubernetes_namespace
+    }
+  ]
+
+  gitlab_project_id = [
+    for p in var.drupal_projects_list : {
+      gitlab_project_id = p.gitlab_project_id
+    }
+  ]
+}
+
+data "gitlab_project" "project" {
+  for_each = { for p in tolist(toset(local.gitlab_project_id)) : p.gitlab_project_id => p }
+  id       = each.value.gitlab_project_id
 }
 
 # Add new databases and users to the CloudSQL master instance.
@@ -57,7 +79,7 @@ module "drupal_buckets" {
 }
 
 resource "kubernetes_namespace" "namespace" {
-  for_each = { for p in toset(local.drupal_buckets_list) : p.namespace => p }
+  for_each = { for p in tolist(toset(local.namespaces)) : p.namespace => p }
   metadata {
     name = each.value.namespace
   }
