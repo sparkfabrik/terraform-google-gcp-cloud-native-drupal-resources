@@ -36,10 +36,13 @@ variable "drupal_projects_list" {
   description = "The list of Drupal projects, add a project name and this will create all infrastructure resources needed to run your project (bucket, database, user with relative credentials). Database resources are created in the CloudSQL instance you specified. Please not that you can assign only a database to a single user, the same user cannot be assigned to multiple databases."
   type = list(object({
     project_name                    = string
+    gitlab_project_id               = number
     kubernetes_namespace            = optional(string, null)
+    helm_release_name               = optional(string, null)
     database_name                   = optional(string, null)
     database_user_name              = optional(string, null)
     database_host                   = optional(string, null)
+    database_port                   = optional(number, 3306)
     bucket_name                     = optional(string, null)
     bucket_host                     = optional(string, "storage.googleapis.com")
     bucket_append_random_suffix     = optional(bool, true)
@@ -95,10 +98,4 @@ variable "create_kubernetes_secrets_databases_and_users" {
 variable "release_branch_name" {
   type        = string
   description = "The name of the release branch to use for the projects."
-}
-
-variable "gitlab_project_id" {
-  type        = string
-  default     = "value"
-  description = "Gitlab project id (this is the project id of the project where you want to create the issue)"
 }
