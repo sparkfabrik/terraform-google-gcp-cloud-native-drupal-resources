@@ -51,7 +51,9 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 
 | Name | Version |
 |------|---------|
+| <a name="provider_google"></a> [google](#provider\_google) | >= 4.47.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.19 |
+| <a name="provider_template"></a> [template](#provider\_template) | >= 2.2.0 |
 ## Requirements
 
 | Name | Version |
@@ -59,6 +61,7 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.2 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.47.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.19 |
+| <a name="requirement_template"></a> [template](#requirement\_template) | >= 2.2.0 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -68,20 +71,18 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | <a name="input_cloudsql_privileged_user_password"></a> [cloudsql\_privileged\_user\_password](#input\_cloudsql\_privileged\_user\_password) | The password of the privileged user of the Cloud SQL instance | `string` | `""` | no |
 | <a name="input_create_buckets"></a> [create\_buckets](#input\_create\_buckets) | If true, the module will create a bucket for each project. | `bool` | `true` | no |
 | <a name="input_create_databases_and_users"></a> [create\_databases\_and\_users](#input\_create\_databases\_and\_users) | If true, the module will create a user and a database for each project. | `bool` | `true` | no |
-| <a name="input_create_kubernetes_secrets_buckets"></a> [create\_kubernetes\_secrets\_buckets](#input\_create\_kubernetes\_secrets\_buckets) | If true, the module will create a secret for each bucket with the credentials to access the bucket in the Kubernetes namespace of the project. | `bool` | `true` | no |
-| <a name="input_create_kubernetes_secrets_databases_and_users"></a> [create\_kubernetes\_secrets\_databases\_and\_users](#input\_create\_kubernetes\_secrets\_databases\_and\_users) | If true, the module will create a secret for each database with the credentials to access the database in the Kubernetes namespace of the project. | `bool` | `true` | no |
-| <a name="input_drupal_projects_list"></a> [drupal\_projects\_list](#input\_drupal\_projects\_list) | The list of Drupal projects, add a project name and this will create all infrastructure resources needed to run your project (bucket, database, user with relative credentials). Database resources are created in the CloudSQL instance you specified. Please not that you can assign only a database to a single user, the same user cannot be assigned to multiple databases. | <pre>list(object({<br>    project_name                    = string<br>    kubernetes_namespace            = optional(string, null)<br>    database_name                   = optional(string, null)<br>    database_user_name              = optional(string, null)<br>    database_host                   = optional(string, null)<br>    bucket_name                     = optional(string, null)<br>    bucket_host                     = optional(string, "storage.googleapis.com")<br>    bucket_append_random_suffix     = optional(bool, true)<br>    bucket_location                 = optional(string, null)<br>    bucket_storage_class            = optional(string, "STANDARD")<br>    bucket_enable_versioning        = optional(bool, true)<br>    bucket_enable_disaster_recovery = optional(bool, true)<br>  }))</pre> | n/a | yes |
-| <a name="input_gitlab_project_id"></a> [gitlab\_project\_id](#input\_gitlab\_project\_id) | Gitlab project id (this is the project id of the project where you want to create the issue) | `string` | `"value"` | no |
+| <a name="input_drupal_projects_list"></a> [drupal\_projects\_list](#input\_drupal\_projects\_list) | The list of Drupal projects, add a project name and this will create all infrastructure resources needed to run your project (bucket, database, user with relative credentials). Database resources are created in the CloudSQL instance you specified. Please not that you can assign only a database to a single user, the same user cannot be assigned to multiple databases. The default values are thought for a production environment, they will need to be adjusted accordingly for a stage environment. | <pre>list(object({<br>    project_name                    = string # The name of the project, it will be used to create the bucket name, the database name and the database user name, will usually match the project gitlab path, but in case of long nomenclature or multi-site project it might be different.<br>    gitlab_project_id               = number<br>    release_branch_name             = optional(string, "main") # It is the name of the release branch and is used for naming all resources (namespaces, buckets, databases, etc.)<br>    kubernetes_namespace            = optional(string, null)   # By default it is built as <project_name>-<gitlab_project_id>-<release_branch_name> and is always created.<br>    helm_release_name               = optional(string, null)   # By default it corresponds to the Drupal PKG release that corresponds to drupal-${CI_COMMIT_REF_SLUG}-${CI_PROJECT_ID} and is used for the name of secrets.<br>    database_name                   = optional(string, null)<br>    database_user_name              = optional(string, null)<br>    database_host                   = optional(string, null)<br>    database_port                   = optional(number, 3306)<br>    bucket_name                     = optional(string, null)<br>    bucket_host                     = optional(string, "storage.googleapis.com")<br>    bucket_append_random_suffix     = optional(bool, true)<br>    bucket_location                 = optional(string, null)<br>    bucket_storage_class            = optional(string, "STANDARD") # https://cloud.google.com/storage/docs/storage-classes<br>    bucket_enable_versioning        = optional(bool, true)<br>    bucket_enable_disaster_recovery = optional(bool, true)<br>    bucket_force_destroy            = optional(bool, false)<br>  }))</pre> | n/a | yes |
 | <a name="input_logging_bucket_name"></a> [logging\_bucket\_name](#input\_logging\_bucket\_name) | The name of the logging bucket. If empty, no logging bucket will be added and bucket logs will be disabled. | `string` | `""` | no |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The ID of the project in which the resource belongs. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The region in which the resources belongs. | `string` | n/a | yes |
-| <a name="input_release_branch_name"></a> [release\_branch\_name](#input\_release\_branch\_name) | The name of the release branch to use for the projects. | `string` | n/a | yes |
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_drupal_apps_bucket_credentials"></a> [drupal\_apps\_bucket\_credentials](#output\_drupal\_apps\_bucket\_credentials) | Drupal apps bucket credentials for each Drupal project. |
 | <a name="output_drupal_apps_database_credentials"></a> [drupal\_apps\_database\_credentials](#output\_drupal\_apps\_database\_credentials) | Drupal apps database credentials for each Drupal project. |
+| <a name="output_helm_values_for_buckets"></a> [helm\_values\_for\_buckets](#output\_helm\_values\_for\_buckets) | n/a |
+| <a name="output_helm_values_for_databases"></a> [helm\_values\_for\_databases](#output\_helm\_values\_for\_databases) | n/a |
 ## Resources
 
 | Name | Type |
@@ -89,11 +90,14 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_secret.drupal_bucket_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 | [kubernetes_secret.drupal_database_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
+| [google_sql_database_instance.cloudsql_instance](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/sql_database_instance) | data source |
+| [template_file.helm_values_for_buckets](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
+| [template_file.helm_values_for_databases](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_drupal_buckets"></a> [drupal\_buckets](#module\_drupal\_buckets) | sparkfabrik/gcp-application-bucket-creation-helper/google | >= 0.1.0 |
-| <a name="module_drupal_databases_and_users"></a> [drupal\_databases\_and\_users](#module\_drupal\_databases\_and\_users) | github.com/sparkfabrik/terraform-google-gcp-mysql-db-and-user-creation-helper | 76098ee70d6a726089f6ac5c0b4486db4a9423ac |
+| <a name="module_drupal_buckets"></a> [drupal\_buckets](#module\_drupal\_buckets) | github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper | dfc4dea56ae9c7e0756c06f49766820fd04c988d |
+| <a name="module_drupal_databases_and_users"></a> [drupal\_databases\_and\_users](#module\_drupal\_databases\_and\_users) | github.com/sparkfabrik/terraform-google-gcp-mysql-db-and-user-creation-helper | 0c12f9e1a5a5b49c215232cd0bbe2ee11163e057 |
 
 <!-- END_TF_DOCS -->

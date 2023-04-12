@@ -10,6 +10,15 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.2.0] - 2023-04-13
+
+### Changed
+
+- Bump to 0.2, since 0.1 was a breaking change.
+- Namespace creation on a kubernetes cluster.
+- Database and user creation is now optional.
+- Bucket creation is now optional.
+
 ## [0.1.0] - 2023-02-20
 
 - First release.
