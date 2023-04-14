@@ -17,26 +17,14 @@ data "template_file" "helm_values_for_buckets" {
 
 data "template_file" "helm_values_for_databases" {
   for_each = { for o in local.map_of_drupal_database : o.database => o
-  if var.create_databases_and_users == true }
+    if var.create_databases_and_users == true && trimspace(o.namespace) != ""
+  }
 
   template = templatefile("${path.module}/files/template/helm_database.tpl",
     {
       secret_database_name = kubernetes_secret.database_secret_name[each.key].metadata[0].name
     }
   )
-}
-
-data "google_sql_database_instance" "cloudsql_instance" {
-  name    = var.cloudsql_instance_name
-  project = var.project_id
-
-  lifecycle {
-
-    postcondition {
-      condition     = self.database_version == "MYSQL_5_7" || self.database_version == "MYSQL_8_0"
-      error_message = "Database version must be \"MYSQL_5_7\" or \"MYSQL_8_0\". Other versions are not supported."
-    }
-  }
 }
 
 resource "kubernetes_secret" "bucket_secret_name" {
@@ -72,7 +60,7 @@ resource "kubernetes_secret" "database_secret_name" {
     labels      = {}
   }
   data = {
-    "endpoint" = each.value.host != null ? each.value.host : data.google_sql_database_instance.cloudsql_instance.private_ip_address
+    "endpoint" = each.value.host != null ? each.value.host : ""
     "database" = each.value.database
     "username" = local.map_of_output_drupal_database[each.key].user
     "password" = local.map_of_output_drupal_database[each.key].password
