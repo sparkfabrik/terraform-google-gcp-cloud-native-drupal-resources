@@ -44,10 +44,8 @@ locals {
 
 # Add new databases and users to the CloudSQL master instance.
 module "drupal_databases_and_users" {
-  count = trimspace(var.cloudsql_instance_name) != "" && trimspace(var.cloudsql_privileged_user_name) != "" && trimspace(var.cloudsql_privileged_user_password) != "" && var.create_databases_and_users == true ? 1 : 0
-  # source                            = "sparkfabrik/gcp-mysql-db-and-user-creation-helper/google"
-  # version                           = ">= 0.3"
-  source                            = "github.com/sparkfabrik/terraform-google-gcp-mysql-db-and-user-creation-helper?ref=0c12f9e1a5a5b49c215232cd0bbe2ee11163e057"
+  count                             = trimspace(var.cloudsql_instance_name) != "" && trimspace(var.cloudsql_privileged_user_name) != "" && trimspace(var.cloudsql_privileged_user_password) != "" && var.create_databases_and_users == true ? 1 : 0
+  source                            = "github.com/sparkfabrik/terraform-google-gcp-mysql-db-and-user-creation-helper?ref=c30924e" # 0.3.1
   project_id                        = var.project_id
   region                            = var.region
   cloudsql_instance_name            = var.cloudsql_instance_name
@@ -62,10 +60,8 @@ module "drupal_databases_and_users" {
 # Add Drupal buckets and Hmac-key credentials with versioning and disaster
 # recovery enabled by default.
 module "drupal_buckets" {
-  count = var.create_buckets == true ? 1 : 0
-  # source              = "sparkfabrik/gcp-application-bucket-creation-helper/google"
-  # version             = ">= 0.1.0"
-  source              = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=a7a6940e047e6f19de3ad1f438c8ad5b9ef17947"
+  count               = var.create_buckets == true ? 1 : 0
+  source              = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=9f41eeb" # 0.2.0
   project_id          = var.project_id
   buckets_list        = local.drupal_buckets_list
   logging_bucket_name = var.logging_bucket_name
