@@ -22,15 +22,23 @@ used to name all resources.
 
 ```terraform
   {
-    project_name                    = string
+    project_name                    = string # The name of the project, it will be used to create the bucket name, the database name and the database user name, will usually match the project gitlab path, but in case of long nomenclature or multi-site project it might be different.
+    gitlab_project_id               = number
+    release_branch_name             = optional(string, "main") # It is the name of the release branch and is used for naming all resources (namespaces, buckets, databases, etc.)
+    kubernetes_namespace            = optional(string, null)   # By default it is built as <project_name>-<gitlab_project_id>-<release_branch_name> and is always created.
+    helm_release_name               = optional(string, null)   # By default it corresponds to the Drupal PKG release that corresponds to drupal-${CI_COMMIT_REF_SLUG}-${CI_PROJECT_ID} and is used for the name of secrets.
     database_name                   = optional(string, null)
     database_user_name              = optional(string, null)
+    database_host                   = optional(string, null)
+    database_port                   = optional(number, 3306)
     bucket_name                     = optional(string, null)
+    bucket_host                     = optional(string, "storage.googleapis.com")
     bucket_append_random_suffix     = optional(bool, true)
     bucket_location                 = optional(string, null)
-    bucket_storage_class            = optional(string, "STANDARD")
+    bucket_storage_class            = optional(string, "STANDARD") # https://cloud.google.com/storage/docs/storage-classes
     bucket_enable_versioning        = optional(bool, true)
     bucket_enable_disaster_recovery = optional(bool, true)
+    bucket_force_destroy            = optional(bool, false)
   }
 ```
 
@@ -40,6 +48,8 @@ output will return the application credentials for each resource.
 ```sh
 terraform output drupal_apps_database_credentials
 terraform output drupal_apps_bucket_credentials
+terraform output helm_values_for_databases
+terraform output helm_values_for_buckets
 ```
 
 If you need to import an existing bucket or database/user, you can specify the
@@ -101,3 +111,7 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | <a name="module_drupal_databases_and_users"></a> [drupal\_databases\_and\_users](#module\_drupal\_databases\_and\_users) | github.com/sparkfabrik/terraform-google-gcp-mysql-db-and-user-creation-helper | 0c12f9e1a5a5b49c215232cd0bbe2ee11163e057 |
 
 <!-- END_TF_DOCS -->
+
+```
+
+```
