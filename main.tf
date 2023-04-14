@@ -78,7 +78,7 @@ module "drupal_buckets" {
   count = var.create_buckets == true ? 1 : 0
   # source              = "sparkfabrik/gcp-application-bucket-creation-helper/google"
   # version             = ">= 0.1.0"
-  source              = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=dfc4dea56ae9c7e0756c06f49766820fd04c988d"
+  source              = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=a7a6940e047e6f19de3ad1f438c8ad5b9ef17947"
   project_id          = var.project_id
   buckets_list        = local.drupal_buckets_list
   logging_bucket_name = var.logging_bucket_name
