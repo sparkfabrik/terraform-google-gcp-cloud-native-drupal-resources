@@ -39,7 +39,7 @@ resource "kubernetes_secret" "bucket_secret_name" {
   }
   data = {
     "endpoint" = each.value.host
-    "name"     = each.value.name
+    "name"     = module.drupal_buckets[0].buckets_access_credentials[each.key].bucket_name
     "username" = module.drupal_buckets[0].buckets_access_credentials[each.key].access_id
     "password" = module.drupal_buckets[0].buckets_access_credentials[each.key].secret
   }
