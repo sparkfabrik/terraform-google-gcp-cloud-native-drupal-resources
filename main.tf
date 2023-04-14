@@ -11,7 +11,7 @@ locals {
       release_branch_name = p.release_branch_name
       database            = p.database_name != null ? p.database_name : "${replace(p.project_name, "-", "_")}_${p.gitlab_project_id}_${p.release_branch_name}_dp"
       user                = p.database_user_name != null ? p.database_user_name : "${replace(p.project_name, "-", "_")}_${p.gitlab_project_id}_${p.release_branch_name}_dp_u"
-      host                = p.database_host == null ? data.google_sql_database_instance.cloudsql_instance.private_ip_address : p.database_host
+      host                = p.database_host != null ? p.database_host : null
       project_id          = p.gitlab_project_id
       helm_release_name   = p.helm_release_name
       port                = p.database_port
@@ -40,19 +40,6 @@ locals {
       namespace = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
     }
   ]
-}
-
-data "google_sql_database_instance" "cloudsql_instance" {
-  name    = var.cloudsql_instance_name
-  project = var.project_id
-
-  lifecycle {
-
-    postcondition {
-      condition     = self.database_version == "MYSQL_5_7" || self.database_version == "MYSQL_8_0"
-      error_message = "Database version must be \"MYSQL_5_7\" or \"MYSQL_8_0\". Other versions are not supported."
-    }
-  }
 }
 
 # Add new databases and users to the CloudSQL master instance.

@@ -61,7 +61,6 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | >= 4.47.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.19 |
 | <a name="provider_template"></a> [template](#provider\_template) | >= 2.2.0 |
 ## Requirements
@@ -100,7 +99,6 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_secret.bucket_secret_name](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 | [kubernetes_secret.database_secret_name](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
-| [google_sql_database_instance.cloudsql_instance](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/sql_database_instance) | data source |
 | [template_file.helm_values_for_buckets](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
 | [template_file.helm_values_for_databases](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
 ## Modules
