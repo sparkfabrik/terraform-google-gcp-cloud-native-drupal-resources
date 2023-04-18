@@ -11,10 +11,6 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = ">= 2.19"
     }
-    gitlab = {
-      source  = "gitlabhq/gitlab"
-      version = ">= 15.10.0"
-    }
     template = {
       source  = "hashicorp/template"
       version = ">= 2.2.0"

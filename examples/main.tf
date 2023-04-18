@@ -70,7 +70,7 @@ resource "google_sql_user" "admin_user_mysql" {
 
 module "drupal_resources" {
   source                            = "sparkfabrik/gcp-cloud-native-drupal-resources/google"
-  version                           = ">= 0.1.0"
+  version                           = ">= 0.2.0"
   project_id                        = var.project_id
   region                            = var.region
   cloudsql_instance_name            = google_sql_database_instance.instance.name
