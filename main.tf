@@ -1,10 +1,12 @@
-locals {
-  # Database, user and bucket list for Drupal projects. If not specified, the
-  # name of the database, user and bucket will be generated using the project
-  # name.
-  # Specifying a database name, user name or bucket name is suggested only when
-  # you want to import in Terraform or move in the module existing resources.
+/*
+ *  Database, user and bucket list for Drupal projects. If not specified, the
+ *  name of the database, user and bucket will be generated using the project
+ *  name.
+ *  Specifying a database name, user name or bucket name is suggested only when
+ *  you want to import in Terraform or move in the module existing resources.
+ */
 
+locals {
   drupal_database_and_user_list = [
     for p in var.drupal_projects_list : {
       namespace           = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
