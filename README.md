@@ -90,8 +90,8 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 |------|-------------|
 | <a name="output_drupal_apps_bucket_credentials"></a> [drupal\_apps\_bucket\_credentials](#output\_drupal\_apps\_bucket\_credentials) | Drupal apps bucket credentials for each Drupal project. |
 | <a name="output_drupal_apps_database_credentials"></a> [drupal\_apps\_database\_credentials](#output\_drupal\_apps\_database\_credentials) | Drupal apps database credentials for each Drupal project. |
-| <a name="output_drupal_apps_helm_values_for_buckets"></a> [drupal\_apps\_helm\_values\_for\_buckets](#output\_drupal\_apps\_helm\_values\_for\_buckets) | n/a |
-| <a name="output_drupal_apps_helm_values_for_databases"></a> [drupal\_apps\_helm\_values\_for\_databases](#output\_drupal\_apps\_helm\_values\_for\_databases) | n/a |
+| <a name="output_drupal_apps_helm_values_for_buckets"></a> [drupal\_apps\_helm\_values\_for\_buckets](#output\_drupal\_apps\_helm\_values\_for\_buckets) | Output helm values to be used for buckets for each Drupal project. |
+| <a name="output_drupal_apps_helm_values_for_databases"></a> [drupal\_apps\_helm\_values\_for\_databases](#output\_drupal\_apps\_helm\_values\_for\_databases) | Output helm values to be used for databases for each Drupal project. |
 ## Resources
 
 | Name | Type |

@@ -11,11 +11,13 @@ output "drupal_apps_bucket_credentials" {
 }
 
 output "drupal_apps_helm_values_for_buckets" {
-  sensitive = true
-  value     = data.template_file.helm_values_for_buckets
+  sensitive   = true
+  description = "Output helm values to be used for buckets for each Drupal project."
+  value       = data.template_file.helm_values_for_buckets
 }
 
 output "drupal_apps_helm_values_for_databases" {
-  sensitive = true
-  value     = data.template_file.helm_values_for_databases
+  sensitive   = true
+  description = "Output helm values to be used for databases for each Drupal project."
+  value       = data.template_file.helm_values_for_databases
 }
