@@ -10,12 +10,12 @@ output "drupal_apps_bucket_credentials" {
   value       = module.drupal_buckets[*].buckets_access_credentials
 }
 
-output "helm_values_for_buckets" {
+output "drupal_apps_helm_values_for_buckets" {
   sensitive = true
   value     = data.template_file.helm_values_for_buckets
 }
 
-output "helm_values_for_databases" {
+output "drupal_apps_helm_values_for_databases" {
   sensitive = true
   value     = data.template_file.helm_values_for_databases
 }
