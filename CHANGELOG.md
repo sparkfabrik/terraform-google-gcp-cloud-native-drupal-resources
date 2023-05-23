@@ -10,6 +10,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.3.0] - 2023-05-24
+
+- Upgrade module `terraform-google-gcp-application-bucket-creation-helper` to version `0.3.0`.
+- Add `disaster_recovery_bucket_location` variable.
+
 ## [0.2.0] - 2023-04-13
 
 ### Changed
