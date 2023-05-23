@@ -84,3 +84,9 @@ variable "create_databases_and_users" {
   description = "If true, the module will create a user and a database for each project."
   default     = true
 }
+
+variable "bucket_disaster_recovery_location" {
+  type        = string
+  description = "The location in which the disaster recovery bucket will be created. For a list of available regions, see https://cloud.google.com/storage/docs/locations. By default, the disaster recovery bucket will be created in the same location as the primary bucket."
+  default     = ""
+}
