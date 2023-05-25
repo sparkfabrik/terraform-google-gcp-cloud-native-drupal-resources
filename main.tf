@@ -62,11 +62,12 @@ module "drupal_databases_and_users" {
 # Add Drupal buckets and Hmac-key credentials with versioning and disaster
 # recovery enabled by default.
 module "drupal_buckets" {
-  count               = var.create_buckets == true ? 1 : 0
-  source              = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=9f41eeb" # 0.2.0
-  project_id          = var.project_id
-  buckets_list        = local.drupal_buckets_list
-  logging_bucket_name = var.logging_bucket_name
+  count                             = var.create_buckets == true ? 1 : 0
+  source                            = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=055a188" # 0.3.0
+  project_id                        = var.project_id
+  buckets_list                      = local.drupal_buckets_list
+  logging_bucket_name               = var.logging_bucket_name
+  disaster_recovery_bucket_location = var.bucket_disaster_recovery_location
 }
 
 resource "kubernetes_namespace" "namespace" {
