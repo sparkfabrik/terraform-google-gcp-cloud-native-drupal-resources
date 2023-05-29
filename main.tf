@@ -63,7 +63,7 @@ module "drupal_databases_and_users" {
 # recovery enabled by default.
 module "drupal_buckets" {
   count                             = var.create_buckets == true ? 1 : 0
-  source                            = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=055a188" # 0.3.0
+  source                            = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=ece958e79f732a2bb41c37922931753480cab189" # 0.3.0
   project_id                        = var.project_id
   buckets_list                      = local.drupal_buckets_list
   logging_bucket_name               = var.logging_bucket_name
