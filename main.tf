@@ -77,4 +77,10 @@ resource "kubernetes_namespace" "namespace" {
   metadata {
     name = each.value.namespace
   }
+
+  lifecycle {
+    ignore_changes = [
+      metadata[0].labels,
+    ]
+  }
 }

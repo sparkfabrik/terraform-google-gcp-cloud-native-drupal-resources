@@ -10,6 +10,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.3.1] - 2023-05-29
+
+- Ignore namespace labels from terraform state.
+
 ## [0.3.0] - 2023-05-24
 
 - Upgrade module `terraform-google-gcp-application-bucket-creation-helper` to version `0.3.0`.
