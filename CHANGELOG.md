@@ -10,6 +10,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.4.0] - 2023-06-26
+
+- Bucket public files path is customizable
+
 ## [0.3.1] - 2023-05-29
 
 - Ignore namespace labels from terraform state.
