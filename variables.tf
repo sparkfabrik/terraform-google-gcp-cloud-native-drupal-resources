@@ -35,11 +35,11 @@ variable "logging_bucket_name" {
 variable "drupal_projects_list" {
   description = "The list of Drupal projects, add a project name and this will create all infrastructure resources needed to run your project (bucket, database, user with relative credentials). Database resources are created in the CloudSQL instance you specified. Please not that you can assign only a database to a single user, the same user cannot be assigned to multiple databases. The default values are thought for a production environment, they will need to be adjusted accordingly for a stage environment."
   type = list(object({
-    project_name                    = string # The name of the project, it will be used to create the bucket name, the database name and the database user name, will usually match the project gitlab path, but in case of long nomenclature or multi-site project it might be different.
+    project_name                    = string
     gitlab_project_id               = number
-    release_branch_name             = optional(string, "main") # It is the name of the release branch and is used for naming all resources (namespaces, buckets, databases, etc.)
-    kubernetes_namespace            = optional(string, null)   # By default it is built as <project_name>-<gitlab_project_id>-<release_branch_name> and is always created.
-    helm_release_name               = optional(string, null)   # By default it corresponds to the Drupal PKG release that corresponds to drupal-${CI_COMMIT_REF_SLUG}-${CI_PROJECT_ID} and is used for the name of secrets.
+    release_branch_name             = optional(string, "main")
+    kubernetes_namespace            = optional(string, null)
+    helm_release_name               = optional(string, null)
     database_name                   = optional(string, null)
     database_user_name              = optional(string, null)
     database_host                   = optional(string, null)
@@ -48,10 +48,11 @@ variable "drupal_projects_list" {
     bucket_host                     = optional(string, "storage.googleapis.com")
     bucket_append_random_suffix     = optional(bool, true)
     bucket_location                 = optional(string, null)
-    bucket_storage_class            = optional(string, "STANDARD") # https://cloud.google.com/storage/docs/storage-classes
+    bucket_storage_class            = optional(string, "STANDARD")
     bucket_enable_versioning        = optional(bool, true)
     bucket_enable_disaster_recovery = optional(bool, true)
     bucket_force_destroy            = optional(bool, false)
+    bucket_public_files_path        = optional(string, "public")
   }))
 
   validation {
