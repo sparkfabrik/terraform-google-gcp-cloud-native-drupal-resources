@@ -34,6 +34,7 @@ locals {
       project_id               = p.gitlab_project_id
       helm_release_name        = p.helm_release_name
       force_destroy            = p.bucket_force_destroy
+      bucket_public_files_path = p.bucket_public_files_path
     }
   ]
 

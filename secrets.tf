@@ -49,7 +49,7 @@ resource "kubernetes_secret" "bucket_secret_name" {
     name        = each.value.helm_release_name == null ? "drupal-${each.value.release_branch_name}-${each.value.project_id}-bucket" : "${each.value.helm_release_name}-bucket"
     namespace   = each.value.namespace
     annotations = {}
-    labels      = {
+    labels = {
       "app.kubernetes.io/managed-by" = "terraform"
     }
   }
@@ -58,7 +58,7 @@ resource "kubernetes_secret" "bucket_secret_name" {
     "name"             = module.drupal_buckets[0].buckets_access_credentials[each.key].bucket_name
     "username"         = module.drupal_buckets[0].buckets_access_credentials[each.key].access_id
     "password"         = module.drupal_buckets[0].buckets_access_credentials[each.key].secret
-    "nginx_osb_bucket" = "https://${each.value.host}/${module.drupal_buckets[0].buckets_access_credentials[each.key].bucket_name}/public"
+    "nginx_osb_bucket" = "https://${each.value.host}/${module.drupal_buckets[0].buckets_access_credentials[each.key].bucket_name}/${each.value.bucket_public_files_path}"
   }
   depends_on = [
     kubernetes_namespace.namespace
@@ -77,7 +77,7 @@ resource "kubernetes_secret" "database_secret_name" {
     name        = each.value.helm_release_name == null ? "drupal-${each.value.release_branch_name}-${each.value.project_id}-db-user" : "${each.value.helm_release_name}-db-user"
     namespace   = each.value.namespace
     annotations = {}
-    labels      = {
+    labels = {
       "app.kubernetes.io/managed-by" = "terraform"
     }
   }
