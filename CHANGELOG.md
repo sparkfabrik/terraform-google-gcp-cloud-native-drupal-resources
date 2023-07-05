@@ -10,6 +10,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.5.1](https://www.github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.5.0...0.5.1) - 2023-07-05
+
+- Fix local with old `bucket_public_files_path` name.
+
 ## [0.5.0](https://www.github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.4.0...0.5.0) - 2023-07-04
 
 - **BREAKING CHANGE**: we renamed the `bucket_public_files_path` to `bucket_legacy_public_files_path` because in future versions of the module it will be deprecated and removed, as the value will have to be specified at the application level and not at infrastructure level. In addition, now the value must be an absolute path and no more relative as before, that is, it **must begin with a /**.
