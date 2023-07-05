@@ -10,6 +10,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.5.0](https://www.github.com/terraform-google-modules/terraform-google-gke-gitlab/compare/v0.4.0...v0.5.0) - 2023-07-04
+
+- **BREAKING CHANGE**: we renamed the `bucket_public_files_path` to `bucket_legacy_public_files_path` because in future versions of the module it will be deprecated and removed, as the value will have to be specified at the application level and not at infrastructure level. In addition, now the value must be an absolute path and no more relative as before, that is, it **must begin with a /**.
+
 ## [0.4.0] - 2023-06-26
 
 - The path of Drupal public files in the bucket is now customizable
