@@ -10,6 +10,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.6.0](https://www.github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.5.1...0.6.0) - 2023-07-18
+
+- **BREAKING CHANGE**: Upgrade module `terraform-google-gcp-application-bucket-creation-helper` to version `0.4.0`. By default, the `allUsers` permission is `roles/storage.legacyObjectReader`.
+
 ## [0.5.1](https://www.github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.5.0...0.5.1) - 2023-07-05
 
 - Fix local with old `bucket_public_files_path` name.
