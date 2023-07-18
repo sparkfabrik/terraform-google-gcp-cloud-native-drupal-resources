@@ -17,7 +17,7 @@ In the event that it is necessary to create resources for a different non Drupal
 application, it is recommended to use and configure the individual modules.
 
 The module accept a list of objects as input, each object represents a Drupal
-project and resource configuration. 
+project and resource configuration.
 
 **The required fields for each project object** are the `project_name`, the `gitlab_project_id`
 used to name all resources; the `database_host` field is also mandatory if we want to create
@@ -35,7 +35,7 @@ The variable structure is the following:
     gitlab_project_id               = number
     # It is the name of the release branch and is used for naming all resources (namespaces, buckets, databases, etc.)
     release_branch_name             = optional(string, "main")
-    # If not specified, the kubernetes_namespace by default it is built as 
+    # If not specified, the kubernetes_namespace by default it is built as
     # <project_name>-<gitlab_project_id>-<release_branch_name>.
     kubernetes_namespace            = optional(string, null)
     # By default it corresponds to the Drupal PKG release that corresponds to
@@ -43,15 +43,15 @@ The variable structure is the following:
     helm_release_name               = optional(string, null)
     # By default the name is <project_name>_<gitlab_project_id>_<release_branch_name>_dp, where dp stands for Drupal.
     database_name                   = optional(string, null)
-    # By default the name is <project_name>_<gitlab_project_id>_<release_branch_name>_dp_u, where dp_u stands 
-    # for Drupal user.    
-    database_user_name              = optional(string, null) 
+    # By default the name is <project_name>_<gitlab_project_id>_<release_branch_name>_dp_u, where dp_u stands
+    # for Drupal user.
+    database_user_name              = optional(string, null)
     # The IP of the CloudSQL instance, it's mandatory to create the secret with credentials to connect to the database.
     database_host                   = optional(string, null)
     # The port of the CloudSQL instance, default to 3306.
     database_port                   = optional(number, 3306)
     # The name of the bucket, by default it is built as <project_name>-<gitlab_project_id>-<release_branch_name>.
-    bucket_name                     = optional(string, null) 
+    bucket_name                     = optional(string, null)
     # The host of the bucket, by default for Google buckets it is storage.googleapis.com.
     bucket_host                     = optional(string, "storage.googleapis.com")
     # True by default, and is used to prevent name collision for created resources.
@@ -71,6 +71,8 @@ The variable structure is the following:
     # Here you can customize the path of public files inside the drupal bucket. This values are used to create
     # the secrets for the application.
     bucket_legacy_public_files_path = optional(string, "/public")
+    # Set to true to enable the all users as viewer of the bucket, by default it is false.
+    bucket_set_all_users_as_viewer  = optional(bool, false)
   }
 ```
 
@@ -113,7 +115,7 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | <a name="input_cloudsql_privileged_user_password"></a> [cloudsql\_privileged\_user\_password](#input\_cloudsql\_privileged\_user\_password) | The password of the privileged user of the Cloud SQL instance | `string` | `""` | no |
 | <a name="input_create_buckets"></a> [create\_buckets](#input\_create\_buckets) | If true, the module will create a bucket for each project. | `bool` | `true` | no |
 | <a name="input_create_databases_and_users"></a> [create\_databases\_and\_users](#input\_create\_databases\_and\_users) | If true, the module will create a user and a database for each project. | `bool` | `true` | no |
-| <a name="input_drupal_projects_list"></a> [drupal\_projects\_list](#input\_drupal\_projects\_list) | The list of Drupal projects, add a project name and this will create all infrastructure resources needed to run your project (bucket, database, user with relative credentials). Database resources are created in the CloudSQL instance you specified. Please not that you can assign only a database to a single user, the same user cannot be assigned to multiple databases. The default values are thought for a production environment, they will need to be adjusted accordingly for a stage environment. | <pre>list(object({<br>    project_name                    = string<br>    gitlab_project_id               = number<br>    release_branch_name             = optional(string, "main")<br>    kubernetes_namespace            = optional(string, null)<br>    helm_release_name               = optional(string, null)<br>    database_name                   = optional(string, null)<br>    database_user_name              = optional(string, null)<br>    database_host                   = optional(string, null)<br>    database_port                   = optional(number, 3306)<br>    bucket_name                     = optional(string, null)<br>    bucket_host                     = optional(string, "storage.googleapis.com")<br>    bucket_append_random_suffix     = optional(bool, true)<br>    bucket_location                 = optional(string, null)<br>    bucket_storage_class            = optional(string, "STANDARD")<br>    bucket_enable_versioning        = optional(bool, true)<br>    bucket_enable_disaster_recovery = optional(bool, true)<br>    bucket_force_destroy            = optional(bool, false)<br>    bucket_legacy_public_files_path = optional(string, "public")<br>  }))</pre> | n/a | yes |
+| <a name="input_drupal_projects_list"></a> [drupal\_projects\_list](#input\_drupal\_projects\_list) | The list of Drupal projects, add a project name and this will create all infrastructure resources needed to run your project (bucket, database, user with relative credentials). Database resources are created in the CloudSQL instance you specified. Please not that you can assign only a database to a single user, the same user cannot be assigned to multiple databases. The default values are thought for a production environment, they will need to be adjusted accordingly for a stage environment, The property bucket\_set\_all\_users\_as\_viewer controls if the bucket will be readable by all users (default false). | <pre>list(object({<br>    project_name                    = string<br>    gitlab_project_id               = number<br>    release_branch_name             = optional(string, "main")<br>    kubernetes_namespace            = optional(string, null)<br>    helm_release_name               = optional(string, null)<br>    database_name                   = optional(string, null)<br>    database_user_name              = optional(string, null)<br>    database_host                   = optional(string, null)<br>    database_port                   = optional(number, 3306)<br>    bucket_name                     = optional(string, null)<br>    bucket_host                     = optional(string, "storage.googleapis.com")<br>    bucket_append_random_suffix     = optional(bool, true)<br>    bucket_location                 = optional(string, null)<br>    bucket_storage_class            = optional(string, "STANDARD")<br>    bucket_enable_versioning        = optional(bool, true)<br>    bucket_enable_disaster_recovery = optional(bool, true)<br>    bucket_force_destroy            = optional(bool, false)<br>    bucket_legacy_public_files_path = optional(string, "/public")<br>    bucket_set_all_users_as_viewer  = optional(bool, false)<br>  }))</pre> | n/a | yes |
 | <a name="input_logging_bucket_name"></a> [logging\_bucket\_name](#input\_logging\_bucket\_name) | The name of the logging bucket. If empty, no logging bucket will be added and bucket logs will be disabled. | `string` | `""` | no |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The ID of the project in which the resource belongs. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The region in which the resources belongs. | `string` | n/a | yes |
@@ -138,7 +140,7 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_drupal_buckets"></a> [drupal\_buckets](#module\_drupal\_buckets) | github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper | 055a188 |
+| <a name="module_drupal_buckets"></a> [drupal\_buckets](#module\_drupal\_buckets) | github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper | f0b50e5 |
 | <a name="module_drupal_databases_and_users"></a> [drupal\_databases\_and\_users](#module\_drupal\_databases\_and\_users) | github.com/sparkfabrik/terraform-google-gcp-mysql-db-and-user-creation-helper | c30924e |
 
 <!-- END_TF_DOCS -->
