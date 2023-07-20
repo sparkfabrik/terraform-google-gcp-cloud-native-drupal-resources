@@ -24,8 +24,8 @@ for BUCKET in ${BUCKETS}; do
   if [ "${DRY_RUN}" -ne "0" ]; then
     echo "Exec the dry run commands..."
     echo "DRY RUN: gsutil -m acl set private gs://${BUCKET}/*"
-    echo "DRY RUN: gsutil -m acl set -r public-read gs://${BUCKET}/public/"
-    echo "DRY RUN: gsutil -m acl set -r private gs://${BUCKET}/private/"
+    echo "DRY RUN: gsutil -m acl set -r public-read gs://${BUCKET}/public/**"
+    echo "DRY RUN: gsutil -m acl set -r private gs://${BUCKET}/private/**"
     echo "End of dry run commands."
     continue
   fi
@@ -34,8 +34,8 @@ for BUCKET in ${BUCKETS}; do
   # This gsutil command is useful to set the private ACL to the root level objects.
   gsutil -m acl set private "gs://${BUCKET}/*"
   # Set public-read ACL to all objects inside the public folder.
-  gsutil -m acl set -r public-read "gs://${BUCKET}/public/"
+  gsutil -m acl set -r public-read "gs://${BUCKET}/public/**"
   # Set private ACL to all objects inside the private folder.
-  gsutil -m acl set -r private "gs://${BUCKET}/private/"
+  gsutil -m acl set -r private "gs://${BUCKET}/private/**"
   echo "Bucket '${BUCKET}' processed."
 done
