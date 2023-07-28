@@ -33,7 +33,7 @@ variable "logging_bucket_name" {
 }
 
 variable "drupal_projects_list" {
-  description = "The list of Drupal projects, add a project name and this will create all infrastructure resources needed to run your project (bucket, database, user with relative credentials). Database resources are created in the CloudSQL instance you specified. Please not that you can assign only a database to a single user, the same user cannot be assigned to multiple databases. The default values are thought for a production environment, they will need to be adjusted accordingly for a stage environment, The property bucket_set_all_users_as_viewer controls if the bucket will be readable by all users (default false)."
+  description = "The list of Drupal projects, add a project name and this will create all infrastructure resources needed to run your project (bucket, database, user with relative credentials). Database resources are created in the CloudSQL instance you specified. Please not that you can assign only a database to a single user, the same user cannot be assigned to multiple databases. The default values are thought for a production environment, they will need to be adjusted accordingly for a stage environment."
   type = list(object({
     project_name                    = string
     gitlab_project_id               = number
@@ -54,6 +54,8 @@ variable "drupal_projects_list" {
     bucket_force_destroy            = optional(bool, false)
     bucket_legacy_public_files_path = optional(string, "/public")
     bucket_set_all_users_as_viewer  = optional(bool, false)
+    bucket_labels                   = optional(map(string), {})
+    bucket_tag_value_name_list      = optional(list(string), [])
   }))
 
   validation {

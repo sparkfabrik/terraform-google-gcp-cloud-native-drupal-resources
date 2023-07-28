@@ -28,6 +28,10 @@ variable "drupal_projects_list" {
     bucket_enable_versioning        = optional(bool, true)
     bucket_enable_disaster_recovery = optional(bool, true)
     bucket_force_destroy            = optional(bool, false)
+    bucket_legacy_public_files_path = optional(string, "/public")
+    bucket_set_all_users_as_viewer  = optional(bool, false)
+    bucket_labels                   = optional(map(string), {})
+    bucket_tag_value_name_list      = optional(list(string), [])
   }))
   default = []
 }
