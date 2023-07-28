@@ -22,20 +22,22 @@ locals {
 
   drupal_buckets_list = [
     for p in var.drupal_projects_list : {
-      name                            = p.bucket_name != null ? p.bucket_name : "${replace(p.project_name, "_", "-")}-${p.gitlab_project_id}-${p.release_branch_name}-drupal"
-      namespace                       = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
-      release_branch_name             = p.release_branch_name
-      append_random_suffix            = p.bucket_append_random_suffix
-      location                        = p.bucket_location != null ? p.bucket_location : var.region
-      storage_class                   = p.bucket_storage_class
-      enable_versioning               = p.bucket_enable_versioning
-      enable_disaster_recovery        = p.bucket_enable_disaster_recovery
-      host                            = p.bucket_host
-      project_id                      = p.gitlab_project_id
-      helm_release_name               = p.helm_release_name
-      force_destroy                   = p.bucket_force_destroy
-      bucket_legacy_public_files_path = p.bucket_legacy_public_files_path
-      set_all_users_as_viewer         = p.bucket_set_all_users_as_viewer
+      name                     = p.bucket_name != null ? p.bucket_name : "${replace(p.project_name, "_", "-")}-${p.gitlab_project_id}-${p.release_branch_name}-drupal"
+      namespace                = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
+      release_branch_name      = p.release_branch_name
+      append_random_suffix     = p.bucket_append_random_suffix
+      location                 = p.bucket_location != null ? p.bucket_location : var.region
+      storage_class            = p.bucket_storage_class
+      enable_versioning        = p.bucket_enable_versioning
+      enable_disaster_recovery = p.bucket_enable_disaster_recovery
+      host                     = p.bucket_host
+      project_id               = p.gitlab_project_id
+      helm_release_name        = p.helm_release_name
+      force_destroy            = p.bucket_force_destroy
+      legacy_public_files_path = p.bucket_legacy_public_files_path
+      set_all_users_as_viewer  = p.bucket_set_all_users_as_viewer
+      labels                   = p.bucket_labels
+      tag_value_name_list      = p.bucket_tag_value_name_list
     }
   ]
 
@@ -65,7 +67,7 @@ module "drupal_databases_and_users" {
 # recovery enabled by default.
 module "drupal_buckets" {
   count                             = var.create_buckets == true ? 1 : 0
-  source                            = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=f0b50e5" # 0.4.0
+  source                            = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=9850676" # 0.5.0
   project_id                        = var.project_id
   buckets_list                      = local.drupal_buckets_list
   logging_bucket_name               = var.logging_bucket_name

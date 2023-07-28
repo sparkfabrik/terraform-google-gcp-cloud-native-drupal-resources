@@ -15,5 +15,10 @@ drupal_projects_list = [
     bucket_name                     = "test-project-bucket-name"
     bucket_append_random_suffix     = false
     bucket_enable_disaster_recovery = false
+    bucket_labels                   = {
+      "project" = "test-project"
+      "env"     = "stage"
+    }
+    bucket_tag_value_name_list = ["123456789012345", "543210123456789"]
   },
 ]
