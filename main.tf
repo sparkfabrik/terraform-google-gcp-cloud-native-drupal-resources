@@ -31,7 +31,7 @@ locals {
       enable_disaster_recovery = p.bucket_enable_disaster_recovery
       set_all_users_as_viewer  = p.bucket_set_all_users_as_viewer
       labels                   = p.bucket_labels
-      tag_value_name_list      = p.bucket_tag_value_name_list
+      tag_list                 = p.bucket_tag_list
       bucket_obj_adm           = p.bucket_obj_adm
       bucket_obj_vwr           = p.bucket_obj_vwr
       namespace                = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
@@ -69,11 +69,12 @@ module "drupal_databases_and_users" {
 # recovery enabled by default.
 module "drupal_buckets" {
   count                             = var.create_buckets == true ? 1 : 0
-  source                            = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=9850676" # 0.5.0
+  source                            = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=48fe737" # 0.6.1
   project_id                        = var.project_id
   buckets_list                      = local.drupal_buckets_list
   logging_bucket_name               = var.logging_bucket_name
   disaster_recovery_bucket_location = var.bucket_disaster_recovery_location
+  global_tags                       = var.global_tags
 }
 
 resource "kubernetes_namespace" "namespace" {

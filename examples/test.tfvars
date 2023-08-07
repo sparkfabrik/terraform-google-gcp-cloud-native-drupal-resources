@@ -19,6 +19,10 @@ drupal_projects_list = [
       "project" = "test-project"
       "env"     = "stage"
     }
-    bucket_tag_value_name_list = ["123456789012345", "543210123456789"]
+    bucket_tag_list = ["dev/editor", "ops/admin"]
+    bucket_obj_vwr = [
+      "group:test-gcp-ops@test.example.com",
+      "user:test-gcp-ops-user@test.example.com",
+    ]
   },
 ]

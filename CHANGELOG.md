@@ -10,6 +10,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.8.0] - 2023-08-07
+
+[Compare with previous version](https://www.github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.7.0...0.8.0)
+
+- Add support for `bucket_obj_vwr` and `bucket_obj_adm` the bucket.
+- Add support for global tags to be passed to buckets.
+
 ## [0.7.0] - 2023-07-27
 
 [Compare with previous version](https://www.github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.6.0...0.7.0)
