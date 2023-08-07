@@ -23,21 +23,23 @@ locals {
   drupal_buckets_list = [
     for p in var.drupal_projects_list : {
       name                     = p.bucket_name != null ? p.bucket_name : "${replace(p.project_name, "_", "-")}-${p.gitlab_project_id}-${p.release_branch_name}-drupal"
-      namespace                = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
-      release_branch_name      = p.release_branch_name
+      force_destroy            = p.bucket_force_destroy
       append_random_suffix     = p.bucket_append_random_suffix
       location                 = p.bucket_location != null ? p.bucket_location : var.region
       storage_class            = p.bucket_storage_class
       enable_versioning        = p.bucket_enable_versioning
       enable_disaster_recovery = p.bucket_enable_disaster_recovery
-      host                     = p.bucket_host
-      project_id               = p.gitlab_project_id
-      helm_release_name        = p.helm_release_name
-      force_destroy            = p.bucket_force_destroy
-      legacy_public_files_path = p.bucket_legacy_public_files_path
       set_all_users_as_viewer  = p.bucket_set_all_users_as_viewer
       labels                   = p.bucket_labels
       tag_value_name_list      = p.bucket_tag_value_name_list
+      bucket_obj_adm           = p.bucket_obj_adm
+      bucket_obj_vwr           = p.bucket_obj_vwr
+      namespace                = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
+      release_branch_name      = p.release_branch_name
+      host                     = p.bucket_host
+      project_id               = p.gitlab_project_id
+      helm_release_name        = p.helm_release_name
+      legacy_public_files_path = p.bucket_legacy_public_files_path
     }
   ]
 

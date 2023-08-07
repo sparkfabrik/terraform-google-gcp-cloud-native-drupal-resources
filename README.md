@@ -109,7 +109,7 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.2 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.47.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.47.0 , < 5.0.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.19 |
 | <a name="requirement_template"></a> [template](#requirement\_template) | >= 2.2.0 |
 ## Inputs
@@ -147,8 +147,8 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_drupal_buckets"></a> [drupal\_buckets](#module\_drupal\_buckets) | github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper | 9850676 |
-| <a name="module_drupal_databases_and_users"></a> [drupal\_databases\_and\_users](#module\_drupal\_databases\_and\_users) | github.com/sparkfabrik/terraform-google-gcp-mysql-db-and-user-creation-helper | c30924e |
+| <a name="module_drupal_buckets"></a> [drupal\_buckets](#module\_drupal\_buckets) | sparkfabrik/gcp-application-bucket-creation-helper/google | 0.6.1 |
+| <a name="module_drupal_databases_and_users"></a> [drupal\_databases\_and\_users](#module\_drupal\_databases\_and\_users) | sparkfabrik/gcp-mysql-db-and-user-creation-helper/sparkfabrik | 0.3.1 |
 
 <!-- END_TF_DOCS -->
 
