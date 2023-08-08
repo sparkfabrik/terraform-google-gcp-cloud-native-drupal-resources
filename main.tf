@@ -23,21 +23,23 @@ locals {
   drupal_buckets_list = [
     for p in var.drupal_projects_list : {
       name                     = p.bucket_name != null ? p.bucket_name : "${replace(p.project_name, "_", "-")}-${p.gitlab_project_id}-${p.release_branch_name}-drupal"
-      namespace                = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
-      release_branch_name      = p.release_branch_name
+      force_destroy            = p.bucket_force_destroy
       append_random_suffix     = p.bucket_append_random_suffix
       location                 = p.bucket_location != null ? p.bucket_location : var.region
       storage_class            = p.bucket_storage_class
       enable_versioning        = p.bucket_enable_versioning
       enable_disaster_recovery = p.bucket_enable_disaster_recovery
+      set_all_users_as_viewer  = p.bucket_set_all_users_as_viewer
+      labels                   = p.bucket_labels
+      tag_list                 = p.bucket_tag_list
+      bucket_obj_adm           = p.bucket_obj_adm
+      bucket_obj_vwr           = p.bucket_obj_vwr
+      namespace                = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
+      release_branch_name      = p.release_branch_name
       host                     = p.bucket_host
       project_id               = p.gitlab_project_id
       helm_release_name        = p.helm_release_name
-      force_destroy            = p.bucket_force_destroy
       legacy_public_files_path = p.bucket_legacy_public_files_path
-      set_all_users_as_viewer  = p.bucket_set_all_users_as_viewer
-      labels                   = p.bucket_labels
-      tag_value_name_list      = p.bucket_tag_value_name_list
     }
   ]
 
@@ -51,7 +53,7 @@ locals {
 # Add new databases and users to the CloudSQL master instance.
 module "drupal_databases_and_users" {
   count                             = trimspace(var.cloudsql_instance_name) != "" && trimspace(var.cloudsql_privileged_user_name) != "" && trimspace(var.cloudsql_privileged_user_password) != "" && var.create_databases_and_users == true ? 1 : 0
-  source                            = "github.com/sparkfabrik/terraform-google-gcp-mysql-db-and-user-creation-helper?ref=c30924e" # 0.3.1
+  source                            = "github.com/sparkfabrik/terraform-google-gcp-mysql-db-and-user-creation-helper?ref=0.3.1"
   project_id                        = var.project_id
   region                            = var.region
   cloudsql_instance_name            = var.cloudsql_instance_name
@@ -67,11 +69,12 @@ module "drupal_databases_and_users" {
 # recovery enabled by default.
 module "drupal_buckets" {
   count                             = var.create_buckets == true ? 1 : 0
-  source                            = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=9850676" # 0.5.0
+  source                            = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=0.7.0"
   project_id                        = var.project_id
   buckets_list                      = local.drupal_buckets_list
   logging_bucket_name               = var.logging_bucket_name
   disaster_recovery_bucket_location = var.bucket_disaster_recovery_location
+  global_tags                       = var.global_tags
 }
 
 resource "kubernetes_namespace" "namespace" {

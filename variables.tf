@@ -32,6 +32,12 @@ variable "logging_bucket_name" {
   default     = ""
 }
 
+variable "global_tags" {
+  description = "A list of tags to be applied to all the drupal buckets, in the form <TAG_KEY_SHORTNAME>/<TAG_VALUE_SHORTNAME>. If a resource specify a list of tags, the global tags will be overridden and replaced by those specified in the resource. Please note that actually only the buckets are tagged by this module."
+  type        = list(string)
+  default     = []
+}
+
 variable "drupal_projects_list" {
   description = "The list of Drupal projects, add a project name and this will create all infrastructure resources needed to run your project (bucket, database, user with relative credentials). Database resources are created in the CloudSQL instance you specified. Please not that you can assign only a database to a single user, the same user cannot be assigned to multiple databases. The default values are thought for a production environment, they will need to be adjusted accordingly for a stage environment."
   type = list(object({
@@ -55,7 +61,9 @@ variable "drupal_projects_list" {
     bucket_legacy_public_files_path = optional(string, "/public")
     bucket_set_all_users_as_viewer  = optional(bool, false)
     bucket_labels                   = optional(map(string), {})
-    bucket_tag_value_name_list      = optional(list(string), [])
+    bucket_tag_list                 = optional(list(string), [])
+    bucket_obj_adm                  = optional(list(string), [])
+    bucket_obj_vwr                  = optional(list(string), [])
   }))
 
   validation {
