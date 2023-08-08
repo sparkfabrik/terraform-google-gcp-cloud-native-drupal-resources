@@ -111,7 +111,7 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.2 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.47.0 , < 5.0.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.47.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.19 |
 | <a name="requirement_template"></a> [template](#requirement\_template) | >= 2.2.0 |
 ## Inputs
