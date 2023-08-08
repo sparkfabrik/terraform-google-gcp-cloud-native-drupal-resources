@@ -21,3 +21,13 @@ output "drupal_apps_helm_values_for_databases" {
   description = "Output helm values to be used for databases for each Drupal project."
   value       = data.template_file.helm_values_for_databases
 }
+
+output "details_of_used_tag_keys" {
+  description = "Details of the tag keys passed to this module."
+  value       = module.drupal_buckets[*].details_of_used_tag_keys
+}
+
+output "details_of_used_tag_values" {
+  description = "Details of the tag values passed to this module."
+  value       = module.drupal_buckets[*].details_of_used_tag_values
+}

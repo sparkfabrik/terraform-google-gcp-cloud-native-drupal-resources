@@ -33,7 +33,7 @@ variable "logging_bucket_name" {
 }
 
 variable "global_tags" {
-  description = "A list of tags to be applied to all the resources, in the form <TAG_KEY_SHORTNAME>/<TAG_VALUE_SHORTNAME>. If a resource specify a list of tags, the global tags will be overridden and replaced by those specified in the resource."
+  description = "A list of tags to be applied to all the drupal buckets, in the form <TAG_KEY_SHORTNAME>/<TAG_VALUE_SHORTNAME>. If a resource specify a list of tags, the global tags will be overridden and replaced by those specified in the resource. Please note that actually only the buckets are tagged by this module."
   type        = list(string)
   default     = []
 }
