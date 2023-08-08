@@ -16,7 +16,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Add support for `bucket_obj_vwr` and `bucket_obj_adm` the bucket.
 - Add support for global tags to be passed to buckets.
-- Upgraded module `terraform-google-gcp-application-bucket-creation-helper` to version `0.6.1`.
+- Upgraded module `terraform-google-gcp-application-bucket-creation-helper` to version `0.7.0`.
 
 
 ## [0.7.0] - 2023-07-27
