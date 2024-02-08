@@ -47,7 +47,7 @@ resource "kubernetes_secret" "bucket_secret_name" {
     # the following convention (the default of sparkfabrik/pkg_drupal):
     # PKG_DRUPAL_HELM_RELEASE_NAME: drupal-${CI_COMMIT_REF_SLUG}-${CI_PROJECT_ID}
     name        = each.value.helm_release_name == null ? "drupal-${each.value.release_branch_name}-${each.value.project_id}-bucket" : "${each.value.helm_release_name}-bucket"
-    namespace   = each.value.namespace
+    namespace   = var.use_existing_kubernetes_namespaces ? each.value.namespace : kubernetes_namespace.namespace[each.value.namespace].metadata[0].name
     annotations = {}
     labels = {
       "app.kubernetes.io/managed-by" = "terraform"
@@ -60,9 +60,6 @@ resource "kubernetes_secret" "bucket_secret_name" {
     "password"         = module.drupal_buckets[0].buckets_access_credentials[each.key].secret
     "nginx_osb_bucket" = "https://${each.value.host}/${module.drupal_buckets[0].buckets_access_credentials[each.key].bucket_name}${each.value.legacy_public_files_path}"
   }
-  depends_on = [
-    kubernetes_namespace.namespace
-  ]
 }
 
 resource "kubernetes_secret" "database_secret_name" {
@@ -75,7 +72,7 @@ resource "kubernetes_secret" "database_secret_name" {
     # the following convention (the default of sparkfabrik/pkg_drupal):
     # PKG_DRUPAL_HELM_RELEASE_NAME: drupal-${CI_COMMIT_REF_SLUG}-${CI_PROJECT_ID}
     name        = each.value.helm_release_name == null ? "drupal-${each.value.release_branch_name}-${each.value.project_id}-db-user" : "${each.value.helm_release_name}-db-user"
-    namespace   = each.value.namespace
+    namespace   = var.use_existing_kubernetes_namespaces ? each.value.namespace : kubernetes_namespace.namespace[each.value.namespace].metadata[0].name
     annotations = {}
     labels = {
       "app.kubernetes.io/managed-by" = "terraform"
@@ -88,7 +85,4 @@ resource "kubernetes_secret" "database_secret_name" {
     "username" = local.map_of_output_drupal_databases[each.key].user
     "password" = local.map_of_output_drupal_databases[each.key].password
   }
-  depends_on = [
-    kubernetes_namespace.namespace
-  ]
 }

@@ -97,6 +97,12 @@ variable "create_databases_and_users" {
   default     = true
 }
 
+variable "use_existing_kubernetes_namespaces" {
+  type        = bool
+  description = "If false, the module will create the namespace for Kubernetes resources (secrets). Set to true to prevent namespaces creation, useful if the namespaces have been created, for example, by the Helm release during the deploy of the application or in other ways."
+  default     = false
+}
+
 variable "bucket_disaster_recovery_location" {
   type        = string
   description = "The location in which the disaster recovery bucket will be created. For a list of available regions, see https://cloud.google.com/storage/docs/locations. By default, the disaster recovery bucket will be created in the same location as the primary bucket."
