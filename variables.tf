@@ -99,7 +99,7 @@ variable "create_databases_and_users" {
 
 variable "use_existing_kubernetes_namespaces" {
   type        = bool
-  description = "If false, the module will create the namespace for Kubernetes resources (secrets). Set to true to prevent namespaces creation, useful if the namespaces have been created, for example, by the Helm release during the deploy of the application or in other ways."
+  description = "If false, the module will create the various namespaces for Kubernetes resources (secrets). Set to true to prevent at a global level the namespaces creation, useful if the namespaces have been created outside of Terraform, for example, by the Helm release during the deploy of the application or in other ways."
   default     = false
 }
 

@@ -129,7 +129,7 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | <a name="input_logging_bucket_name"></a> [logging\_bucket\_name](#input\_logging\_bucket\_name) | The name of the logging bucket. If empty, no logging bucket will be added and bucket logs will be disabled. | `string` | `""` | no |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The ID of the project in which the resource belongs. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The region in which the resources belongs. | `string` | n/a | yes |
-| <a name="input_use_existing_kubernetes_namespaces"></a> [use\_existing\_kubernetes\_namespaces](#input\_use\_existing\_kubernetes\_namespaces) | If false, the module will create the namespace for Kubernetes resources (secrets). Set to true to prevent namespaces creation, useful if the namespaces have been created, for example, by the Helm release during the deploy of the application or in other ways. | `bool` | `false` | no |
+| <a name="input_use_existing_kubernetes_namespaces"></a> [use\_existing\_kubernetes\_namespaces](#input\_use\_existing\_kubernetes\_namespaces) | If false, the module will create the various namespaces for Kubernetes resources (secrets). Set to true to prevent at a global level the namespaces creation, useful if the namespaces have been created outside of Terraform, for example, by the Helm release during the deploy of the application or in other ways. | `bool` | `false` | no |
 ## Outputs
 
 | Name | Description |
