@@ -78,9 +78,10 @@ module "drupal_buckets" {
 }
 
 resource "kubernetes_namespace" "namespace" {
-  for_each = {
+  for_each = var.use_existing_kubernetes_namespaces ? {} : {
     for p in tolist(toset(local.namespace_list)) : p.namespace => p
   }
+
   metadata {
     name = each.value.namespace
   }
