@@ -108,3 +108,9 @@ variable "bucket_disaster_recovery_location" {
   description = "The location in which the disaster recovery bucket will be created. For a list of available regions, see https://cloud.google.com/storage/docs/locations. By default, the disaster recovery bucket will be created in the same location as the primary bucket."
   default     = ""
 }
+
+variable "create_clousql_dumps_bucket" {
+  type        = bool
+  description = "If true, the module will create a Google Storage bucket that can be used as a destination for CloudSQL dumps. The bucket will also be tagged with the global tags."
+  default     = false
+}

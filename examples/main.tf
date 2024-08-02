@@ -76,6 +76,6 @@ module "drupal_resources" {
   cloudsql_instance_name            = google_sql_database_instance.instance.name
   cloudsql_privileged_user_name     = google_sql_user.admin_user_mysql.name
   cloudsql_privileged_user_password = google_sql_user.admin_user_mysql.password
-  drupal_projects_list              = var.drupal_projects_list
+  drupal_projects_list              = var.my_drupal_projects_list
   global_tags                       = ["dev/viewer", "ops/editor"]
 }
