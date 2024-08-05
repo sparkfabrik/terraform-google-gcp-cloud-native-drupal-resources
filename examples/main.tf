@@ -1,12 +1,40 @@
+terraform {
+  required_version = ">= 1.2"
+
+  required_providers {
+    # tflint-ignore: terraform_unused_required_providers
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.47.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 2.19"
+    }
+    template = {
+      source  = "hashicorp/template"
+      version = ">= 2.2.0"
+    }
+    random = {
+      source = "hashicorp/random"
+      version = "3.6.2"
+    }
+  }
+}
+
+provider "random" {
+  # Configuration options
+}
+
 resource "google_compute_network" "private_network" {
   provider = google
-  project  = var.project_id
+  project  = var.my_project_id
   name     = "private-network"
 }
 
 resource "google_compute_global_address" "private_ip_address" {
   provider      = google
-  project       = var.project_id
+  project       = var.my_project_id
   name          = "private-ip-address"
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
@@ -31,9 +59,9 @@ resource "random_id" "db_name_suffix" {
 # Create a CloudSQL MySQL 8 instance
 resource "google_sql_database_instance" "instance" {
   provider            = google
-  project             = var.project_id
+  project             = var.my_project_id
   name                = "private-instance-${random_id.db_name_suffix.hex}"
-  region              = var.region
+  region              = var.my_region
   database_version    = "MYSQL_8_0"
   deletion_protection = false
   depends_on = [
@@ -61,7 +89,7 @@ resource "random_password" "admin_sql_user_password_mysql" {
 }
 
 resource "google_sql_user" "admin_user_mysql" {
-  project  = var.project_id
+  project  = var.my_project_id
   instance = google_sql_database_instance.instance.name
   name     = "admin"
   password = random_password.admin_sql_user_password_mysql.result
@@ -71,11 +99,11 @@ resource "google_sql_user" "admin_user_mysql" {
 module "drupal_resources" {
   source                            = "sparkfabrik/gcp-cloud-native-drupal-resources/google"
   version                           = ">= 0.8.0"
-  project_id                        = var.project_id
-  region                            = var.region
+  project_id                        = var.my_project_id
+  region                            = var.my_region
   cloudsql_instance_name            = google_sql_database_instance.instance.name
   cloudsql_privileged_user_name     = google_sql_user.admin_user_mysql.name
   cloudsql_privileged_user_password = google_sql_user.admin_user_mysql.password
-  drupal_projects_list              = var.drupal_projects_list
+  drupal_projects_list              = var.my_drupal_projects_list
   global_tags                       = ["dev/viewer", "ops/editor"]
 }

@@ -1,16 +1,16 @@
-variable "project_id" {
+variable "my_project_id" {
   type    = string
   default = "my-project"
 }
 
-variable "region" {
+variable "my_region" {
   type    = string
   default = "europe-west1"
 }
 
-variable "drupal_projects_list" {
+variable "my_drupal_projects_list" {
   description = "The list of Drupal projects, add a project name and this will create all infrastructure resources needed to run your project (bucket, database, user with relative credentials). Database resources are created in the CloudSQL instance you specified. Please not that you can assign only a database to a single user, the same user cannot be assigned to multiple databases. The default values are thought for a production environment, they will need to be adjusted accordingly for a stage environment."
-  type        = list(object({
+  type = list(object({
     project_name                    = string
     gitlab_project_id               = number
     release_branch_name             = optional(string, "main")

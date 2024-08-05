@@ -1,5 +1,5 @@
 # Drupal projects installed on production cluster.
-drupal_projects_list = [
+my_drupal_projects_list = [
   {
     gitlab_project_id               = 1
     project_name                    = "corporate"
