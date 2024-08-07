@@ -138,7 +138,8 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_buckets_names_list"></a> [buckets\_names\_list](#output\_buckets\_names\_list) | List of buckets created. |
+| <a name="output_buckets_names_list"></a> [buckets\_names\_list](#output\_buckets\_names\_list) | The list with the names of the buckets managed by this module. |
+| <a name="output_cloudsql_dumps_bucket_name"></a> [cloudsql\_dumps\_bucket\_name](#output\_cloudsql\_dumps\_bucket\_name) | CloudSQL dumps bucket name. |
 | <a name="output_details_of_used_tag_keys"></a> [details\_of\_used\_tag\_keys](#output\_details\_of\_used\_tag\_keys) | Details of the tag keys passed to this module. |
 | <a name="output_details_of_used_tag_values"></a> [details\_of\_used\_tag\_values](#output\_details\_of\_used\_tag\_values) | Details of the tag values passed to this module. |
 | <a name="output_drupal_apps_bucket_credentials"></a> [drupal\_apps\_bucket\_credentials](#output\_drupal\_apps\_bucket\_credentials) | Drupal apps bucket credentials for each Drupal project. |

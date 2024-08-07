@@ -33,6 +33,11 @@ output "details_of_used_tag_values" {
 }
 
 output "buckets_names_list" {
-  description = "List of buckets created."
+  description = "The list with the names of the buckets managed by this module."
   value       = module.drupal_buckets.generated_bucket_names
+}
+
+output "cloudsql_dumps_bucket_name" {
+  description = "CloudSQL dumps bucket name."
+  value       = local.cloudsql_dumps_bucket_name
 }
