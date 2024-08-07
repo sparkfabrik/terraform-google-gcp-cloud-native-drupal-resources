@@ -14,9 +14,13 @@ resource "random_id" "cloudsql_dumps_bucket_name_suffix" {
   byte_length = 4
 }
 
+locals {
+  cloudsql_dumps_bucket_name = var.create_clousql_dumps_bucket ? "${var.project_id}-cloudsql-dumps-${random_id.cloudsql_dumps_bucket_name_suffix[0].hex}" : null
+}
+
 resource "google_storage_bucket" "cloudsql_dumps" {
   count         = var.create_clousql_dumps_bucket ? 1 : 0
-  name          = "${var.project_id}-cloudsql-dumps-${random_id.cloudsql_dumps_bucket_name_suffix[0].hex}"
+  name          = local.cloudsql_dumps_bucket_name
   location      = var.region
   storage_class = "NEARLINE"
 
