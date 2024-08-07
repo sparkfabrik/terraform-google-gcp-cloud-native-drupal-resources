@@ -31,3 +31,8 @@ output "details_of_used_tag_values" {
   description = "Details of the tag values passed to this module."
   value       = module.drupal_buckets[*].details_of_used_tag_values
 }
+
+output "buckets_names_list" {
+  description = "List of buckets created."
+  value       = module.drupal_buckets.generated_bucket_names
+}

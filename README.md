@@ -104,10 +104,10 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 5.15.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.25.2 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.6.0 |
-| <a name="provider_template"></a> [template](#provider\_template) | 2.2.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | >= 4.47.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.19 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.6.2 |
+| <a name="provider_template"></a> [template](#provider\_template) | >= 2.2.0 |
 ## Requirements
 
 | Name | Version |
@@ -138,6 +138,7 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_buckets_names_list"></a> [buckets\_names\_list](#output\_buckets\_names\_list) | List of buckets created. |
 | <a name="output_details_of_used_tag_keys"></a> [details\_of\_used\_tag\_keys](#output\_details\_of\_used\_tag\_keys) | Details of the tag keys passed to this module. |
 | <a name="output_details_of_used_tag_values"></a> [details\_of\_used\_tag\_values](#output\_details\_of\_used\_tag\_values) | Details of the tag values passed to this module. |
 | <a name="output_drupal_apps_bucket_credentials"></a> [drupal\_apps\_bucket\_credentials](#output\_drupal\_apps\_bucket\_credentials) | Drupal apps bucket credentials for each Drupal project. |
@@ -164,7 +165,7 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_drupal_buckets"></a> [drupal\_buckets](#module\_drupal\_buckets) | github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper | 588903d |
+| <a name="module_drupal_buckets"></a> [drupal\_buckets](#module\_drupal\_buckets) | github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper | 0.7.2 |
 | <a name="module_drupal_databases_and_users"></a> [drupal\_databases\_and\_users](#module\_drupal\_databases\_and\_users) | github.com/sparkfabrik/terraform-google-gcp-mysql-db-and-user-creation-helper | 0.3.1 |
 
 <!-- END_TF_DOCS -->
