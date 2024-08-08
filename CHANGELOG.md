@@ -9,6 +9,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
 ---
+
+## [0.11.1] - 2024-08-08
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.11.0...0.11.1)
+
+- Fix `drupal_buckets_names_list` output
+
 ## [0.11.0] - 2024-08-07
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.10.0...0.11.0)
