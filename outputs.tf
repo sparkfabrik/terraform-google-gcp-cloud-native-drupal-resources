@@ -34,7 +34,7 @@ output "details_of_used_tag_values" {
 
 output "drupal_buckets_names_list" {
   description = "The list with the names of the Drupal buckets managed by this module."
-  value       = module.drupal_buckets.generated_bucket_names
+  value       = flatten(module.drupal_buckets[*].generated_bucket_names)
 }
 
 output "cloudsql_dumps_bucket_name" {
