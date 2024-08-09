@@ -82,6 +82,9 @@ The variable structure is the following:
     # Properties bucket_obj_vwr and bucket_obj_adm set a list of specific IAM members as objectViewers and objectAdmin
     bucket_obj_adm                  = optional(list(string), [])
     bucket_obj_vwr                  = optional(list(string), [])
+    #  The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently 
+    #  deleted. Default value is 604800. 
+    bucket_soft_delete_retention_seconds = optional(number, 604800)
   }
 ```
 
@@ -104,10 +107,10 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | >= 4.47.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.19 |
+| <a name="provider_google"></a> [google](#provider\_google) | 5.40.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.31.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.2 |
-| <a name="provider_template"></a> [template](#provider\_template) | >= 2.2.0 |
+| <a name="provider_template"></a> [template](#provider\_template) | 2.2.0 |
 ## Requirements
 
 | Name | Version |
@@ -128,7 +131,7 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | <a name="input_create_buckets"></a> [create\_buckets](#input\_create\_buckets) | If true, the module will create a bucket for each project. | `bool` | `true` | no |
 | <a name="input_create_clousql_dumps_bucket"></a> [create\_clousql\_dumps\_bucket](#input\_create\_clousql\_dumps\_bucket) | If true, the module will create a Google Storage bucket that can be used as a destination for CloudSQL dumps. The bucket will also be tagged with the global tags. | `bool` | `false` | no |
 | <a name="input_create_databases_and_users"></a> [create\_databases\_and\_users](#input\_create\_databases\_and\_users) | If true, the module will create a user and a database for each project. | `bool` | `true` | no |
-| <a name="input_drupal_projects_list"></a> [drupal\_projects\_list](#input\_drupal\_projects\_list) | The list of Drupal projects, add a project name and this will create all infrastructure resources needed to run your project (bucket, database, user with relative credentials). Database resources are created in the CloudSQL instance you specified. Please not that you can assign only a database to a single user, the same user cannot be assigned to multiple databases. The default values are thought for a production environment, they will need to be adjusted accordingly for a stage environment. | <pre>list(object({<br>    project_name                    = string<br>    gitlab_project_id               = number<br>    release_branch_name             = optional(string, "main")<br>    kubernetes_namespace            = optional(string, null)<br>    helm_release_name               = optional(string, null)<br>    database_name                   = optional(string, null)<br>    database_user_name              = optional(string, null)<br>    database_host                   = optional(string, null)<br>    database_port                   = optional(number, 3306)<br>    bucket_name                     = optional(string, null)<br>    bucket_host                     = optional(string, "storage.googleapis.com")<br>    bucket_append_random_suffix     = optional(bool, true)<br>    bucket_location                 = optional(string, null)<br>    bucket_storage_class            = optional(string, "STANDARD")<br>    bucket_enable_versioning        = optional(bool, true)<br>    bucket_enable_disaster_recovery = optional(bool, true)<br>    bucket_force_destroy            = optional(bool, false)<br>    bucket_legacy_public_files_path = optional(string, "/public")<br>    bucket_set_all_users_as_viewer  = optional(bool, false)<br>    bucket_labels                   = optional(map(string), {})<br>    bucket_tag_list                 = optional(list(string), [])<br>    bucket_obj_adm                  = optional(list(string), [])<br>    bucket_obj_vwr                  = optional(list(string), [])<br>  }))</pre> | n/a | yes |
+| <a name="input_drupal_projects_list"></a> [drupal\_projects\_list](#input\_drupal\_projects\_list) | The list of Drupal projects, add a project name and this will create all infrastructure resources needed to run your project (bucket, database, user with relative credentials). Database resources are created in the CloudSQL instance you specified. Please not that you can assign only a database to a single user, the same user cannot be assigned to multiple databases. The default values are thought for a production environment, they will need to be adjusted accordingly for a stage environment. | <pre>list(object({<br>    project_name                         = string<br>    gitlab_project_id                    = number<br>    release_branch_name                  = optional(string, "main")<br>    kubernetes_namespace                 = optional(string, null)<br>    helm_release_name                    = optional(string, null)<br>    database_name                        = optional(string, null)<br>    database_user_name                   = optional(string, null)<br>    database_host                        = optional(string, null)<br>    database_port                        = optional(number, 3306)<br>    bucket_name                          = optional(string, null)<br>    bucket_host                          = optional(string, "storage.googleapis.com")<br>    bucket_append_random_suffix          = optional(bool, true)<br>    bucket_location                      = optional(string, null)<br>    bucket_storage_class                 = optional(string, "STANDARD")<br>    bucket_enable_versioning             = optional(bool, true)<br>    bucket_enable_disaster_recovery      = optional(bool, true)<br>    bucket_force_destroy                 = optional(bool, false)<br>    bucket_legacy_public_files_path      = optional(string, "/public")<br>    bucket_set_all_users_as_viewer       = optional(bool, false)<br>    bucket_labels                        = optional(map(string), {})<br>    bucket_tag_list                      = optional(list(string), [])<br>    bucket_obj_adm                       = optional(list(string), [])<br>    bucket_obj_vwr                       = optional(list(string), [])<br>    bucket_soft_delete_retention_seconds = optional(number, 604800)<br>  }))</pre> | n/a | yes |
 | <a name="input_global_tags"></a> [global\_tags](#input\_global\_tags) | A list of tags to be applied to all the drupal buckets, in the form <TAG\_KEY\_SHORTNAME>/<TAG\_VALUE\_SHORTNAME>. If a resource specify a list of tags, the global tags will be overridden and replaced by those specified in the resource. Please note that actually only the buckets are tagged by this module. | `list(string)` | `[]` | no |
 | <a name="input_logging_bucket_name"></a> [logging\_bucket\_name](#input\_logging\_bucket\_name) | The name of the logging bucket. If empty, no logging bucket will be added and bucket logs will be disabled. | `string` | `""` | no |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The ID of the project in which the resource belongs. | `string` | n/a | yes |
@@ -166,7 +169,7 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_drupal_buckets"></a> [drupal\_buckets](#module\_drupal\_buckets) | github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper | 0.7.2 |
+| <a name="module_drupal_buckets"></a> [drupal\_buckets](#module\_drupal\_buckets) | github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper | 0.8.0 |
 | <a name="module_drupal_databases_and_users"></a> [drupal\_databases\_and\_users](#module\_drupal\_databases\_and\_users) | github.com/sparkfabrik/terraform-google-gcp-mysql-db-and-user-creation-helper | 0.3.1 |
 
 <!-- END_TF_DOCS -->

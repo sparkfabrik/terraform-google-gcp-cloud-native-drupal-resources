@@ -10,6 +10,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.12.0] - 2024-08-08
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.11.1...0.11.2)
+
+- Update module `terraform-google-gcp-application-bucket-creation-helper` to `0.8.0` with support to finetune the soft_delete_retention policy of the buckets.
+
 ## [0.11.1] - 2024-08-08
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.11.0...0.11.1)
