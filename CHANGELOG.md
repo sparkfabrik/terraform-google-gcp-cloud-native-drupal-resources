@@ -10,7 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
-## [0.11.2] - 2024-08-08
+## [0.12.0] - 2024-08-08
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.11.1...0.11.2)
 
