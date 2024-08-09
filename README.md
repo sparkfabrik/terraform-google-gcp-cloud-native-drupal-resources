@@ -82,6 +82,9 @@ The variable structure is the following:
     # Properties bucket_obj_vwr and bucket_obj_adm set a list of specific IAM members as objectViewers and objectAdmin
     bucket_obj_adm                  = optional(list(string), [])
     bucket_obj_vwr                  = optional(list(string), [])
+    #  The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently 
+    #  deleted. Default value is 604800. 
+    bucket_soft_delete_retention_seconds = optional(number, 604800)
   }
 ```
 
@@ -104,10 +107,10 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | >= 4.47.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.19 |
+| <a name="provider_google"></a> [google](#provider\_google) | 5.40.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.31.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.2 |
-| <a name="provider_template"></a> [template](#provider\_template) | >= 2.2.0 |
+| <a name="provider_template"></a> [template](#provider\_template) | 2.2.0 |
 ## Requirements
 
 | Name | Version |
