@@ -68,16 +68,16 @@ variable "drupal_projects_list" {
   }))
 
   validation {
-    # The project name must contain only lower caps letters and "-" and "_" and be between 6 and 23 characters long, since the database user name must be less than 32 chars and we append "_drupal_u" to the project name.
+    # The project name must contain only lower caps letters and "-" and "_" and be between 6 and 16 characters long, since the database user name must be less than 32 chars and we append "<PRJ_ID>_<BRANCH>_dp_u" (i.e.:"_759_main_dp_u") to the project name.
     condition = alltrue([
       for p in var.drupal_projects_list :
-      can(regex("^[0-9a-z_-]{6,23}$", p.project_name))
+      can(regex("^[0-9a-z_-]{6,16}$", p.project_name))
     ])
-    error_message = "The name of the Drupal project should be between 6 and 23 characters long and contains only numbers, lower caps letters and \"_-\"."
+    error_message = "The name of the Drupal project should be between 6 and 16 characters long and contains only numbers, lower caps letters and \"_-\"."
   }
 
   validation {
-    # The project name must contain only lower caps letters and "-" and "_" and be between 6 and 20 characters long, since the database user name must be less than 32 chars and we append "_drupal_user" to the project name.
+    # The project name must contain only lower caps letters and "-" and "_" and be between 6 and 16 characters long, since the database user name must be less than 32 chars and we append and we append "<PRJ_ID>_<BRANCH>_dp_u" (i.e.:"_759_main_dp_u") to the project name.
     condition = alltrue([
       for p in var.drupal_projects_list :
       can(regex("^[0-9a-z]{1}[0-9a-z_-]+[0-9a-z]{1}$", p.project_name))
