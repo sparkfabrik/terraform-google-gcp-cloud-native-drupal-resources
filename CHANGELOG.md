@@ -10,6 +10,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.12.1] - 2024-10-30
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.12.0...0.12.1)
+
+- Update module `terraform-google-gcp-application-bucket-creation-helper` to `0.8.1` with fix compatibility between tags and random suffix in resource creation.
+- Update module `terraform-google-gcp-mysql-db-and-user-creation-helper` to `0.3.2` with fix to accidental mysql credential exposure.
+- Changed `drupal_projects_list.project_name` max lenght to 16 (was 23).
+
 ## [0.12.0] - 2024-08-08
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.11.1...0.11.2)
