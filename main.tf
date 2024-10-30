@@ -54,7 +54,7 @@ locals {
 # Add new databases and users to the CloudSQL master instance.
 module "drupal_databases_and_users" {
   count                             = trimspace(var.cloudsql_instance_name) != "" && trimspace(var.cloudsql_privileged_user_name) != "" && trimspace(var.cloudsql_privileged_user_password) != "" && var.create_databases_and_users == true ? 1 : 0
-  source                            = "github.com/sparkfabrik/terraform-google-gcp-mysql-db-and-user-creation-helper?ref=3083-bugs-terraform-google-gcp-cloud-native-drupal-resources-module"
+  source                            = "github.com/sparkfabrik/terraform-google-gcp-mysql-db-and-user-creation-helper?ref=0.3.2"
   project_id                        = var.project_id
   region                            = var.region
   cloudsql_instance_name            = var.cloudsql_instance_name
@@ -70,7 +70,7 @@ module "drupal_databases_and_users" {
 # recovery enabled by default.
 module "drupal_buckets" {
   count                             = var.create_buckets == true ? 1 : 0
-  source                            = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=3083-bugs-terraform-google-gcp-cloud-native-drupal-resources-module"
+  source                            = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=0.8.1"
   project_id                        = var.project_id
   buckets_list                      = local.drupal_buckets_list
   logging_bucket_name               = var.logging_bucket_name
