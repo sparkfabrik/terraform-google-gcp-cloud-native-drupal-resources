@@ -87,8 +87,7 @@ variable "drupal_projects_list" {
   validation {
     condition = alltrue([
       for p in var.drupal_projects_list :
-      (can(regex("^[0-9a-z_-]{6,32}$", p.database_user_name))) ||
-      (p.database_user_name == null)
+      (can(regex("^[0-9a-z_-]{6,32}$", p.database_user_name))) || p.database_user_name == null
     ])
     error_message = "The database user name is invalid. Must be 6 to 32 characters long, with only lowercase letters, numbers, hyphens and underscores."
   }
