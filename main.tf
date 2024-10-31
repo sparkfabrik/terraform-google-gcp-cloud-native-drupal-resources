@@ -47,6 +47,7 @@ locals {
   namespace_list = [
     for p in var.drupal_projects_list : {
       namespace = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
+      labels    = p.kubernetes_namespace_labels
     }
   ]
 }
@@ -85,6 +86,7 @@ resource "kubernetes_namespace" "namespace" {
 
   metadata {
     name = each.value.namespace
+    labels = each.value.labels
   }
 
   lifecycle {
