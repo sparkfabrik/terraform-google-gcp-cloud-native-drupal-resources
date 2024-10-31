@@ -74,7 +74,7 @@ variable "drupal_projects_list" {
     # and be:
     # - 6 to 16 characters long if database_host is not null meaning that the database will be created from the module
     # - 6 to 23 characters long if database_host, database_name, database_user_name are not null meaning that database name and user name are passed to the module
-    # - 6 to 23 characters long if database_host is null meaning that the no database will be created from the module
+    # - 6 to 23 characters long if database_host is null meaning that no database will be created from the module
     condition = alltrue([
       for p in var.drupal_projects_list :
       (can(regex("^[0-9a-z][0-9a-z_-]{4,21}[0-9a-z]$", p.project_name)) && length(p.project_name) > 5) &&
