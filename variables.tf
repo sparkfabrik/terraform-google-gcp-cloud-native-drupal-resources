@@ -81,7 +81,7 @@ variable "drupal_projects_list" {
       (can(regex("^[0-9a-z_-]{6,23}$", p.project_name)) && p.database_host != null && p.database_name != null && p.database_user_name != null && can(regex("^[0-9a-z]{1}[0-9a-z_-]+[0-9a-z]{1}$", p.project_name))) ||
       (can(regex("^[0-9a-z_-]{6,23}$", p.project_name)) && p.database_host == null && can(regex("^[0-9a-z]{1}[0-9a-z_-]+[0-9a-z]{1}$", p.project_name)))
     ])
-    error_message = "The project name is invalid. Must be 6 to 16 characters long, with only lowercase letters, numbers, hyphens and underscores if the database must be created or 16 to 23 characters long if database already exists."
+    error_message = "The project name is invalid. Must be 6 to 16 characters long, with only lowercase letters, numbers, hyphens and underscores if the database must be created or 6 to 23 characters long if database already exists."
   }
 
   validation {
