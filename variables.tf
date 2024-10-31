@@ -45,6 +45,7 @@ variable "drupal_projects_list" {
     gitlab_project_id                    = number
     release_branch_name                  = optional(string, "main")
     kubernetes_namespace                 = optional(string, null)
+    kubernetes_namespace_labels          = optional(map(string), {})
     helm_release_name                    = optional(string, null)
     database_name                        = optional(string, null)
     database_user_name                   = optional(string, null)
