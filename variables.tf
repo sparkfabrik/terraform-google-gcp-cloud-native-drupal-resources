@@ -73,7 +73,7 @@ variable "drupal_projects_list" {
     # - contain only lowercase letters, numbers, hyphens and underscores
     # and be:
     # - 6 to 16 characters long if database_host is not null meaning that the database will be created from the module
-    # - 6 to 23 characters long if database_host,database_name,database_user_name are not null meaning that the database already exists
+    # - 6 to 23 characters long if database_host, database_name, database_user_name are not null meaning that database name and user name are passed to the module
     # - 6 to 23 characters long if database_host is null meaning that the no database will be created from the module
     condition = alltrue([
       for p in var.drupal_projects_list :
