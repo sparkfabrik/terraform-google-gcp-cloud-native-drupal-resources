@@ -68,21 +68,31 @@ variable "drupal_projects_list" {
   }))
 
   validation {
-    # The project name must contain only lower caps letters and "-" and "_" and be between 6 and 16 characters long, since the database user name must be less than 32 chars and we append "<PRJ_ID>_<BRANCH>_dp_u" (i.e.:"_759_main_dp_u") to the project name.
+    # project_name must:
+    # - start with a lowercase letter or a number
+    # - contain only lowercase letters, numbers, hyphens and underscores
+    # and be:
+    # - 6 to 16 characters long if database_host is not null meaning that the database will be created from the module
+    # - 6 to 23 characters long if database_host, database_name, database_user_name are not null meaning that database name and user name are passed to the module
+    # - 6 to 23 characters long if database_host is null meaning that no database will be created from the module
     condition = alltrue([
       for p in var.drupal_projects_list :
-      can(regex("^[0-9a-z_-]{6,16}$", p.project_name))
+      (can(regex("^[0-9a-z][0-9a-z_-]{4,21}[0-9a-z]$", p.project_name)) && length(p.project_name) > 5) &&
+      (
+        (p.database_host != null && p.database_name == null && p.database_user_name == null && length(p.project_name) <= 16) ||
+        (p.database_host != null && p.database_name != null && p.database_user_name != null && length(p.project_name) <= 23) ||
+        (p.database_host == null && length(p.project_name) <= 23)
+      )
     ])
-    error_message = "The name of the Drupal project should be between 6 and 16 characters long and contains only numbers, lower caps letters and \"_-\"."
+    error_message = "The project name is invalid. Must be 6 to 16 characters long, with only lowercase letters, numbers, hyphens and underscores if the database must be created by the module or 6 to 23 characters long if we pass database_host database_user_name and database_name to the module."
   }
 
   validation {
-    # The project name must contain only lower caps letters and "-" and "_" and be between 6 and 16 characters long, since the database user name must be less than 32 chars and we append and we append "<PRJ_ID>_<BRANCH>_dp_u" (i.e.:"_759_main_dp_u") to the project name.
     condition = alltrue([
       for p in var.drupal_projects_list :
-      can(regex("^[0-9a-z]{1}[0-9a-z_-]+[0-9a-z]{1}$", p.project_name))
+      (can(regex("^[0-9a-z_-]{6,32}$", p.database_user_name))) || p.database_user_name == null
     ])
-    error_message = "The name of the Drupal project can start and end only with a lower caps letters or numbers."
+    error_message = "The database user name is invalid. Must be 6 to 32 characters long, with only lowercase letters, numbers, hyphens and underscores."
   }
 }
 
