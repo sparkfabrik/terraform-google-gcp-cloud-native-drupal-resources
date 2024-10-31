@@ -10,32 +10,6 @@ locals {
   } : {}
 }
 
-data "template_file" "helm_values_for_buckets" {
-  for_each = {
-    for o in local.map_of_drupal_buckets : o.name => o
-    if var.create_buckets == true
-  }
-
-  template = templatefile("${path.module}/files/template/helm_bucket.tpl",
-    {
-      bucket_secret_name = kubernetes_secret.bucket_secret_name[each.key].metadata[0].name
-    }
-  )
-}
-
-data "template_file" "helm_values_for_databases" {
-  for_each = {
-    for o in local.map_of_drupal_databases : o.database => o
-    if var.create_databases_and_users == true
-  }
-
-  template = templatefile("${path.module}/files/template/helm_database.tpl",
-    {
-      database_secret_name = kubernetes_secret.database_secret_name[each.key].metadata[0].name
-    }
-  )
-}
-
 resource "kubernetes_secret" "bucket_secret_name" {
   for_each = {
     for o in local.map_of_drupal_buckets : o.name => o
