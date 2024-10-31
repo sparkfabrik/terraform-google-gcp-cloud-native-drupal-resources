@@ -8,7 +8,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
----
+### Added
+
+- Add support for Kubernetes namespace labels in the Drupal projects configuration
+
+### Changed
+
+- **BREAKING CHANGE**: We have removed the `lifecycle.ignore_changes` block from the `kubernetes_namespace` resource configuration. External modifications on namespace labels will now cause drift in the configuration. Ensure all necessary labels are defined in Terraform to avoid unexpected updates.
 
 ## [0.12.1] - 2024-10-30
 
