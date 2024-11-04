@@ -110,7 +110,6 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | <a name="provider_google"></a> [google](#provider\_google) | >= 4.47.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.19 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.2 |
-| <a name="provider_template"></a> [template](#provider\_template) | >= 2.2.0 |
 ## Requirements
 
 | Name | Version |
@@ -119,7 +118,6 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.47.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.19 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | 3.6.2 |
-| <a name="requirement_template"></a> [template](#requirement\_template) | >= 2.2.0 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -146,8 +144,6 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | <a name="output_details_of_used_tag_values"></a> [details\_of\_used\_tag\_values](#output\_details\_of\_used\_tag\_values) | Details of the tag values passed to this module. |
 | <a name="output_drupal_apps_bucket_credentials"></a> [drupal\_apps\_bucket\_credentials](#output\_drupal\_apps\_bucket\_credentials) | Drupal apps bucket credentials for each Drupal project. |
 | <a name="output_drupal_apps_database_credentials"></a> [drupal\_apps\_database\_credentials](#output\_drupal\_apps\_database\_credentials) | Drupal apps database credentials for each Drupal project. |
-| <a name="output_drupal_apps_helm_values_for_buckets"></a> [drupal\_apps\_helm\_values\_for\_buckets](#output\_drupal\_apps\_helm\_values\_for\_buckets) | Output helm values to be used for buckets for each Drupal project. |
-| <a name="output_drupal_apps_helm_values_for_databases"></a> [drupal\_apps\_helm\_values\_for\_databases](#output\_drupal\_apps\_helm\_values\_for\_databases) | Output helm values to be used for databases for each Drupal project. |
 | <a name="output_drupal_buckets_names_list"></a> [drupal\_buckets\_names\_list](#output\_drupal\_buckets\_names\_list) | The list with the names of the Drupal buckets managed by this module. |
 ## Resources
 
@@ -163,8 +159,6 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | [google_sql_database_instance.cloudsql_instance](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/sql_database_instance) | data source |
 | [google_tags_tag_key.tag_keys](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/tags_tag_key) | data source |
 | [google_tags_tag_value.tag_values](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/tags_tag_value) | data source |
-| [template_file.helm_values_for_buckets](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
-| [template_file.helm_values_for_databases](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
 ## Modules
 
 | Name | Source | Version |
