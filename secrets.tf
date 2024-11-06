@@ -23,9 +23,7 @@ resource "kubernetes_secret" "bucket_secret_name" {
     name        = each.value.helm_release_name == null ? "drupal-${each.value.release_branch_name}-${each.value.project_id}-bucket" : "${each.value.helm_release_name}-bucket"
     namespace   = var.use_existing_kubernetes_namespaces ? each.value.namespace : kubernetes_namespace.namespace[each.value.namespace].metadata[0].name
     annotations = {}
-    labels = {
-      "app.kubernetes.io/managed-by" = "terraform"
-    }
+    labels = var.default_k8s_labels
   }
   data = {
     "endpoint"         = each.value.host
@@ -48,9 +46,7 @@ resource "kubernetes_secret" "database_secret_name" {
     name        = each.value.helm_release_name == null ? "drupal-${each.value.release_branch_name}-${each.value.project_id}-db-user" : "${each.value.helm_release_name}-db-user"
     namespace   = var.use_existing_kubernetes_namespaces ? each.value.namespace : kubernetes_namespace.namespace[each.value.namespace].metadata[0].name
     annotations = {}
-    labels = {
-      "app.kubernetes.io/managed-by" = "terraform"
-    }
+    labels = var.default_k8s_labels
   }
   data = {
     "endpoint" = each.value.host != null ? each.value.host : ""

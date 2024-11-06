@@ -38,6 +38,14 @@ variable "global_tags" {
   default     = []
 }
 
+variable "default_k8s_labels" {
+    description = "A map of labels to be applied to all the kubernetes resources created by this module. If a resource specify a map of labels, the default labels will merged with those specified in the resource."
+    type        = map(string)
+    default     = {
+      "managed-by" = "terraform"
+    }
+}
+
 variable "drupal_projects_list" {
   description = "The list of Drupal projects, add a project name and this will create all infrastructure resources needed to run your project (bucket, database, user with relative credentials). Database resources are created in the CloudSQL instance you specified. Please not that you can assign only a database to a single user, the same user cannot be assigned to multiple databases. The default values are thought for a production environment, they will need to be adjusted accordingly for a stage environment."
   type = list(object({
