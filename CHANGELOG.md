@@ -10,6 +10,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.14.0] - 2024-11-06
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.13.0...0.14.0)
+
+### Added
+
+- Add support to customize the default labels of Kubernetes resources created by this module.
+
 ## [0.13.0] - 2024-11-05
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.12.1...0.13.0)
