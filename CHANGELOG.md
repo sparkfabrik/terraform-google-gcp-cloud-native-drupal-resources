@@ -16,7 +16,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-- Add support to customize the default Kubernetes labels created by this module.
+- Add support to customize the default labels of Kubernetes resources created by this module.
 
 ## [0.13.0] - 2024-11-05
 
