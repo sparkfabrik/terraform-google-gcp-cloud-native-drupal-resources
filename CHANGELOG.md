@@ -10,6 +10,15 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.15.0] - 2024-14-11
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.14.0...0.15.0)
+
+### Added
+
+- ⚠️ **BREAKING CHANGES**:
+  - The cloudsql dump bucket has a new lifecycle policy. After 180 days the files are moved from `NEARLINE` to `COLDLINE`. After 360 days they will be deleted.
+
 ## [0.14.0] - 2024-11-06
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.13.0...0.14.0)

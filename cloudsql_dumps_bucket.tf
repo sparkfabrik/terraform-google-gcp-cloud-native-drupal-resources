@@ -29,6 +29,16 @@ resource "google_storage_bucket" "cloudsql_dumps" {
       type = "Delete"
     }
     condition {
+      age = 360
+    }
+  }
+
+  lifecycle_rule {
+    action {
+      type = "SetStorageClass"
+      storage_class = "COLDLINE"
+    }
+    condition {
       age = 180
     }
   }
