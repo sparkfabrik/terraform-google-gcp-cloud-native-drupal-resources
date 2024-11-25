@@ -10,7 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
-## [0.15.1] - 2024-11-25
+## [0.16.0] - 2024-11-25
 
 - Update module `terraform-google-gcp-application-bucket-creation-helper` to `0.9.0` with lifecycle policy for buckets.
 
