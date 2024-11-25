@@ -47,7 +47,7 @@ locals {
   namespace_list = [
     for p in var.drupal_projects_list : {
       namespace = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
-      labels    = merge(
+      labels = merge(
         p.kubernetes_namespace_labels,
         var.default_k8s_labels
       )
@@ -74,7 +74,7 @@ module "drupal_databases_and_users" {
 # recovery enabled by default.
 module "drupal_buckets" {
   count                             = var.create_buckets == true ? 1 : 0
-  source                            = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=0.8.1"
+  source                            = "github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper?ref=0.9.0"
   project_id                        = var.project_id
   buckets_list                      = local.drupal_buckets_list
   logging_bucket_name               = var.logging_bucket_name
@@ -88,7 +88,7 @@ resource "kubernetes_namespace" "namespace" {
   }
 
   metadata {
-    name = each.value.namespace
+    name   = each.value.namespace
     labels = each.value.labels
   }
 }
