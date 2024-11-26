@@ -1,6 +1,22 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "github>sparkfabrik/renovatebot-default-configuration"
-  ]
+  "extends": ["github>sparkfabrik/renovatebot-default-configuration"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["Makefile"],
+      "matchStrings": ["TERRAFORM_DOCS_VERSION \\?= (?<currentValue>.*?)\n"],
+      "depNameTemplate": "terraform_docs_makefile",
+      "versioningTemplate": "semver-coerced",
+      "datasourceTemplate": "custom.terraform_docs_makefile"
+    }
+  ],
+  "customDatasources": {
+    "terraform_docs_makefile": {
+      "defaultRegistryUrlTemplate": "https://quay.io/api/v1/repository/terraform-docs/terraform-docs/tag/",
+      "transformTemplates": [
+        "{ \"releases\": $map($.tags, function($v) { { \"version\": $v.name } }) }"
+      ]
+    }
+  }
 }
