@@ -8,11 +8,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-- Update terraform docs docker image version using renovate.
-
 ## [0.17.0] - 2024-11-26
 
+[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.16.0...0.17.0)
+
 - Update module `terraform-google-gcp-application-bucket-creation-helper` to `0.10.0` with lifecycle policy for buckets.
+- Update terraform docs docker image version using renovate.
 
 ## [0.16.0] - 2024-11-25
 
