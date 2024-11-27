@@ -39,11 +39,11 @@ variable "global_tags" {
 }
 
 variable "default_k8s_labels" {
-    description = "A map of labels to be applied to all the kubernetes resources created by this module. If a resource specify a map of labels, the default labels will merged with those specified in the resource."
-    type        = map(string)
-    default     = {
-      "managed-by" = "terraform"
-    }
+  description = "A map of labels to be applied to all the kubernetes resources created by this module. If a resource specify a map of labels, the default labels will merged with those specified in the resource."
+  type        = map(string)
+  default = {
+    "managed-by" = "terraform"
+  }
 }
 
 variable "drupal_projects_list" {
@@ -73,7 +73,7 @@ variable "drupal_projects_list" {
     bucket_tag_list                      = optional(list(string), [])
     bucket_obj_adm                       = optional(list(string), [])
     bucket_obj_vwr                       = optional(list(string), [])
-    bucket_soft_delete_retention_seconds = optional(number, 604800)
+    bucket_soft_delete_retention_seconds = optional(number, 0)
   }))
 
   validation {
