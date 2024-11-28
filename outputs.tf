@@ -16,6 +16,10 @@ locals {
         local.bucket_secrets_map["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"],
         null
       )
+      kubernetes_database_secret = try(
+        local.database_secrets_map["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"],
+        null
+      )
     }
   }
   bucket_secrets_map = {
