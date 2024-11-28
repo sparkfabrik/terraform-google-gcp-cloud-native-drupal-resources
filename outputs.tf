@@ -4,22 +4,12 @@ locals {
       # Add the values you want to store for each project here
       # Example:
       namespace          = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
-      bucket_credentials = module.drupal_buckets[0].buckets_access_credentials["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-drupal"]
+      bucket_credentials = try(module.drupal_buckets[0].buckets_access_credentials["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-drupal"], null)
       database_credentials = try(
-        [
-          for cred in module.drupal_databases_and_users[0].sql_users_creds : cred
-          if cred.database == "${p.project_name}_${p.gitlab_project_id}_${p.release_branch_name}_dp"
-        ][0],
-        null
-      )
-      kubernetes_bucket_secret = try(
-        local.bucket_secrets_map["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"],
-        null
-      )
-      kubernetes_database_secret = try(
-        local.database_secrets_map["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"],
-        null
-      )
+        [for cred in module.drupal_databases_and_users[0].sql_users_creds : cred
+      if cred.database == "${p.project_name}_${p.gitlab_project_id}_${p.release_branch_name}_dp"][0], null)
+      kubernetes_bucket_secret   = try(local.bucket_secrets_map["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"], null)
+      kubernetes_database_secret = try(local.database_secrets_map["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"], null)
     }
   }
   bucket_secrets_map = {
