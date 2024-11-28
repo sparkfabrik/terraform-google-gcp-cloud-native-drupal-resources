@@ -4,10 +4,15 @@ locals {
       # Add the values you want to store for each project here
       # Example:
       namespace            = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
-      database_credentials = module.drupal_databases_and_users["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"].sql_users_creds
-      bucket_credentials   = module.drupal_buckets["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"].buckets_access_credentials
+      database_credentials = module.drupal_databases_and_users[0]["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"].sql_users_creds
+      bucket_credentials   = module.drupal_buckets[0]["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"].buckets_access_credentials
     }
   }
+}
+
+output "all_data_output" {
+  description = "All data for each Drupal project."
+  value       = local.all_data
 }
 
 output "drupal_apps_database_credentials" {
