@@ -14,7 +14,7 @@ locals {
   }
 
   bucket_secrets_map = {
-    for o in local.drupal_buckets_list : "${replace(o.name, "-drupal", "")}" => {
+    for o in local.drupal_buckets_list : replace(o.name, "-drupal", "") => {
       secret_name = try(
         kubernetes_secret.bucket_secret_name[o.name].metadata[0].name,
         null
@@ -80,7 +80,7 @@ output "drupal_all_namespaces" {
   description = "Namespace for each Drupal project"
   sensitive   = true
   value = {
-    for key, value in local.all_data : key => value.namespace
+    for key, value in local.all_data : key => value.
   }
 }
 
