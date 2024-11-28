@@ -1,5 +1,5 @@
 locals {
-  all_data = {
+  all_data = [
     for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" => {
       # Add the values you want to store for each project here
       # Example:
@@ -11,7 +11,7 @@ locals {
       kubernetes_bucket_secret   = try(local.bucket_secrets_map["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"], null)
       kubernetes_database_secret = try(local.database_secrets_map["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"], null)
     }
-  }
+  ]
 
   bucket_secrets_map = {
     for o in local.drupal_buckets_list : "${replace(o.name, "-drupal", "")}" => {
