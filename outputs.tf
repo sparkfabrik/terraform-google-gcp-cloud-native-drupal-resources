@@ -12,6 +12,7 @@ locals {
       kubernetes_database_secret = try(local.database_secrets_map["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"], null)
     }
   }
+
   bucket_secrets_map = {
     for o in local.drupal_buckets_list : "${replace(o.name, "-drupal", "")}" => {
       secret_name = try(
@@ -24,6 +25,7 @@ locals {
       )
     }
   }
+
   database_secrets_map = {
     for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" => {
       secret_name = try(
@@ -40,6 +42,12 @@ locals {
 output "all_data_output" {
   description = "All data for each Drupal project."
   value       = local.all_data
+}
+
+output "all_bucket_credentials" {
+  description = "Bucket credentials for each Drupal project from all_data map"
+  sensitive   = true
+  value       = local.all_data[*].bucket_credentials
 }
 
 output "drupal_apps_database_credentials" {
