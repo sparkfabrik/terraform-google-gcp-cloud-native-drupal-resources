@@ -14,15 +14,31 @@ locals {
       )
     }
   }
+  bucket_secrets_map = {
+    for o in local.drupal_buckets_list : "${replace(o.name, "-drupal", "")}" => {
+      secret_name = try(
+        kubernetes_secret.bucket_secret_name[o.name].metadata[0].name,
+        null
+      )
+      namespace = try(
+        kubernetes_secret.bucket_secret_name[o.name].metadata[0].namespace,
+        null
+      )
+    }
+  }
 }
-
-
-
 
 output "all_data_output" {
   description = "All data for each Drupal project."
   value       = local.all_data
 }
+
+output "bucket_secrets" {
+  description = "Map of project identifiers to their bucket secret names and namespaces"
+  value       = local.bucket_secrets_map
+}
+
+
 
 output "drupal_apps_database_credentials" {
   sensitive   = true
