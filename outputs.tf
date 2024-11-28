@@ -34,10 +34,18 @@ locals {
     for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" => {
       secret_name = try(
         kubernetes_secret.database_secret_name["${p.project_name}_${p.gitlab_project_id}_${p.release_branch_name}_dp"].metadata[0].name,
+      null)
+      namespace = try(
+        kubernetes_secret.database_secret_name["${p.project_name}_${p.gitlab_project_id}_${p.release_branch_name}_dp"].metadata[0].namespace,
         null
       )
     }
   }
+}
+
+output "database_secrets_map_output" {
+  description = "Map of project identifiers with their database secret names and namespaces from local map"
+  value       = local.database_secrets_map
 }
 
 output "database_secret_names" {
