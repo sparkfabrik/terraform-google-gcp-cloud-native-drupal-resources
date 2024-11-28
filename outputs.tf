@@ -30,19 +30,13 @@ locals {
       )
     }
   }
-  database_secrets_map = {
-    for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" => {
-      secret_name = try(
-        kubernetes_secret.database_secret_name["drupal-${p.release_branch_name}-${p.gitlab_project_id}-db-user"].metadata[0].name,
-        null
-      )
-    }
-  }
 }
 
 output "database_secret_names" {
   description = "Map of project identifiers to their database secret names"
-  value       = local.database_secrets_map
+  value = {
+    for key, secret in kubernetes_secret.database_secret_name : key => secret.metadata[0].name
+  }
 }
 
 
