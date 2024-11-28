@@ -41,9 +41,12 @@ locals {
 }
 
 output "database_secret_names" {
-  description = "Map of project identifiers to their database secret names"
+  description = "Map of project identifiers to their database secret names and namespaces"
   value = {
-    for key, secret in kubernetes_secret.database_secret_name : key => secret.metadata[0]
+    for key, secret in kubernetes_secret.database_secret_name : key => {
+      name      = secret.metadata[0].name
+      namespace = secret.metadata[0].namespace
+    }
   }
 }
 
