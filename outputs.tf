@@ -39,16 +39,40 @@ locals {
   }
 }
 
-output "all_data_output" {
+output "drupal_all_data" {
   description = "All data for each Drupal project."
   value       = local.all_data
 }
 
-output "all_bucket_credentials" {
-  description = "Bucket credentials for each Drupal project from all_data map"
+output "drupal_all_bucket_credentials" {
+  description = "Bucket credentials for each Drupal project"
   sensitive   = true
   value = {
     for key, value in local.all_data : key => value.bucket_credentials
+  }
+}
+
+output "drupal_all_database_credentials" {
+  description = "Database credentials for each Drupal project"
+  sensitive   = true
+  value = {
+    for key, value in local.all_data : key => value.database_credentials
+  }
+}
+
+output "drupal_all_bucket_secrets" {
+  description = "Bucket kubernetes secrets for each Drupal project"
+  sensitive   = true
+  value = {
+    for key, value in local.all_data : key => value.kubernetes_bucket_secret
+  }
+}
+
+output "drupal_all_database_secrets" {
+  description = "Database kubernetes secrets for each Drupal project"
+  sensitive   = true
+  value = {
+    for key, value in local.all_data : key => value.kubernetes_database_secret
   }
 }
 
