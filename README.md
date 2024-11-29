@@ -37,10 +37,10 @@ The variable structure is the following:
     # If not specified, the kubernetes_namespace by default it is built as
     # <project_name>-<gitlab_project_id>-<release_branch_name>.
     kubernetes_namespace            = optional(string, null)
-    # By default it corresponds to the Drupal PKG release that corresponds to
-    # drupal-${CI_COMMIT_REF_SLUG}-${CI_PROJECT_ID} and is used for the name of secrets.
-    kubernetes_namespace_labels     = optional(map(string), {})
     # Namespace labels added to default_k8s_labels
+    kubernetes_namespace_labels     = optional(map(string), {})
+    # The Helm release name by default corresponds to the Drupal PKG release that corresponds to
+    # drupal-${CI_COMMIT_REF_SLUG}-${CI_PROJECT_ID} and is used for the name of secrets.
     helm_release_name               = optional(string, null)
     # By default the name is <project_name>_<gitlab_project_id>_<release_branch_name>_dp, where dp stands for Drupal.
     database_name                   = optional(string, null)
