@@ -41,7 +41,7 @@ locals {
 }
 
 
-output "drupal_all_data" {
+output "drupal_resources_all_data" {
   description = "All data for each Drupal project."
   value       = local.all_data
 }
