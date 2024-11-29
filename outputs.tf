@@ -46,7 +46,7 @@ output "drupal_resources_all_data" {
   value       = local.all_data
 }
 
-output "drupal_all_bucket_credentials" {
+output "drupal_resources_all_bucket_credentials" {
   description = "Bucket credentials for each Drupal project"
   sensitive   = true
   value = {
