@@ -78,7 +78,6 @@ output "drupal_all_database_secrets" {
 
 output "drupal_all_namespaces" {
   description = "Namespace for each Drupal project"
-  sensitive   = true
   value = {
     for key, value in local.all_data : key => value.namespace
   }
