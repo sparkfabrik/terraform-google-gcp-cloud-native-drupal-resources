@@ -16,11 +16,11 @@ locals {
   bucket_secrets_map = {
     for o in local.drupal_buckets_list : replace(o.name, "-drupal", "") => {
       secret_name = try(
-        kubernetes_secret.bucket_secret_name[replace("o.name", "-", "_")].metadata[0].name,
+        kubernetes_secret.bucket_secret_name[o.name].metadata[0].name,
         null
       )
       namespace = try(
-        kubernetes_secret.bucket_secret_name[replace("o.name", "-", "_")].metadata[0].namespace,
+        kubernetes_secret.bucket_secret_name[o.name].metadata[0].namespace,
         null
       )
     }
