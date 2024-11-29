@@ -54,7 +54,7 @@ output "drupal_resources_all_bucket_credentials" {
   }
 }
 
-output "drupal_all_database_credentials" {
+output "drupal_resources_all_database_credentials" {
   description = "Database credentials for each Drupal project"
   sensitive   = true
   value = {
@@ -62,7 +62,7 @@ output "drupal_all_database_credentials" {
   }
 }
 
-output "drupal_all_bucket_secrets" {
+output "drupal_resources_all_bucket_secrets" {
   description = "Bucket kubernetes secrets for each Drupal project"
   sensitive   = true
   value = {
@@ -70,7 +70,7 @@ output "drupal_all_bucket_secrets" {
   }
 }
 
-output "drupal_all_database_secrets" {
+output "drupal_resources_all_database_secrets" {
   description = "Database kubernetes secrets for each Drupal project"
   sensitive   = true
   value = {
@@ -78,7 +78,7 @@ output "drupal_all_database_secrets" {
   }
 }
 
-output "drupal_all_namespaces" {
+output "drupal_resources_all_namespaces" {
   description = "Namespace for each Drupal project"
   value = {
     for key, value in local.all_data : key => value.namespace
