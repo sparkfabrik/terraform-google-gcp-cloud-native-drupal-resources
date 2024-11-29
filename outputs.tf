@@ -4,6 +4,7 @@ locals {
       # Add the values you want to store for each project here
       # Example:
       namespace          = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
+      helm_release_name  = p.helm_release_name == null ? "drupal-${p.release_branch_name}-${p.project_id}" : p.helm_release_name
       bucket_credentials = try(module.drupal_buckets[0].buckets_access_credentials["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-drupal"], null)
       database_credentials = try(
         [for cred in module.drupal_databases_and_users[0].sql_users_creds : cred
