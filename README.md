@@ -37,7 +37,9 @@ The variable structure is the following:
     # If not specified, the kubernetes_namespace by default it is built as
     # <project_name>-<gitlab_project_id>-<release_branch_name>.
     kubernetes_namespace            = optional(string, null)
-    # By default it corresponds to the Drupal PKG release that corresponds to
+    # Namespace labels added to default_k8s_labels
+    kubernetes_namespace_labels     = optional(map(string), {})
+    # The Helm release name by default corresponds to the Drupal PKG release that corresponds to
     # drupal-${CI_COMMIT_REF_SLUG}-${CI_PROJECT_ID} and is used for the name of secrets.
     helm_release_name               = optional(string, null)
     # By default the name is <project_name>_<gitlab_project_id>_<release_branch_name>_dp, where dp stands for Drupal.
@@ -143,6 +145,12 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | <a name="output_cloudsql_dumps_bucket_name"></a> [cloudsql\_dumps\_bucket\_name](#output\_cloudsql\_dumps\_bucket\_name) | CloudSQL dumps bucket name. |
 | <a name="output_details_of_used_tag_keys"></a> [details\_of\_used\_tag\_keys](#output\_details\_of\_used\_tag\_keys) | Details of the tag keys passed to this module. |
 | <a name="output_details_of_used_tag_values"></a> [details\_of\_used\_tag\_values](#output\_details\_of\_used\_tag\_values) | Details of the tag values passed to this module. |
+| <a name="output_drupal_apps_all_bucket_credentials"></a> [drupal\_apps\_all\_bucket\_credentials](#output\_drupal\_apps\_all\_bucket\_credentials) | Bucket credentials for each Drupal project |
+| <a name="output_drupal_apps_all_bucket_secrets"></a> [drupal\_apps\_all\_bucket\_secrets](#output\_drupal\_apps\_all\_bucket\_secrets) | Bucket kubernetes secrets for each Drupal project |
+| <a name="output_drupal_apps_all_data"></a> [drupal\_apps\_all\_data](#output\_drupal\_apps\_all\_data) | All data for each Drupal project. |
+| <a name="output_drupal_apps_all_database_credentials"></a> [drupal\_apps\_all\_database\_credentials](#output\_drupal\_apps\_all\_database\_credentials) | Database credentials for each Drupal project |
+| <a name="output_drupal_apps_all_database_secrets"></a> [drupal\_apps\_all\_database\_secrets](#output\_drupal\_apps\_all\_database\_secrets) | Database kubernetes secrets for each Drupal project |
+| <a name="output_drupal_apps_all_namespaces"></a> [drupal\_apps\_all\_namespaces](#output\_drupal\_apps\_all\_namespaces) | Namespace for each Drupal project |
 | <a name="output_drupal_apps_bucket_credentials"></a> [drupal\_apps\_bucket\_credentials](#output\_drupal\_apps\_bucket\_credentials) | Drupal apps bucket credentials for each Drupal project. |
 | <a name="output_drupal_apps_database_credentials"></a> [drupal\_apps\_database\_credentials](#output\_drupal\_apps\_database\_credentials) | Drupal apps database credentials for each Drupal project. |
 | <a name="output_drupal_buckets_names_list"></a> [drupal\_buckets\_names\_list](#output\_drupal\_buckets\_names\_list) | The list with the names of the Drupal buckets managed by this module. |
