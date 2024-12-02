@@ -3,10 +3,12 @@ locals {
     for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" => p...
   }
 
-  index_list = {
-    for p in var.drupal_projects_list : distinct("${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}") => p
+  all_data = {
+    for key, r in local.grouped_resources : key => {
+      namespace         = r.kubernetes_namespace == null ? "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" : r.kubernetes_namespace
+      helm_release_name = r.helm_release_name != null ? r.helm_release_name : "drupal-${r.release_branch_name}-${r.gitlab_project_id}"
+    }
   }
-
   # all_data = {
   #   for p in var.drupal_projects_list : distinct("${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}") => {
 
@@ -83,11 +85,6 @@ locals {
   }
 }
 
-output "index_list" {
-  value = local.index_list
-
-}
-
 output "grouped_resources" {
   value = local.grouped_resources
 }
@@ -105,10 +102,10 @@ output "database_secrets_map" {
   value = local.database_secrets_map
 }
 
-# output "drupal_apps_all_data" {
-#   description = "All data for each Drupal project."
-#   value       = local.all_data
-# }
+output "drupal_apps_all_data" {
+  description = "All data for each Drupal project."
+  value       = local.all_data
+}
 
 # output "drupal_apps_all_bucket_credentials" {
 #   description = "Bucket credentials for each Drupal project"
