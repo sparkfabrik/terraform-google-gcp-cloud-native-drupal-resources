@@ -4,10 +4,10 @@ locals {
       helm_releases = {
         for r in var.drupal_projects_list : r.helm_release_name != null ? r.helm_release_name : "drupal-${r.release_branch_name}-${r.gitlab_project_id}" => {
           namespace = r.kubernetes_namespace == null ? "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" : p.kubernetes_namespace
-        }...
+        }
         if "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" == "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"
       }
-    }
+    }...
   }
 
   # all_data = {
