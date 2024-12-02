@@ -14,7 +14,7 @@ locals {
 
   all_data = {
     for r in local.grouped_resources : r => {
-      namespace = r.kubernetes_namespace == null ? "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" : p.kubernetes_namespace
+      namespace = r.kubernetes_namespace == null ? "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" : r.kubernetes_namespace
     }
   }
 
