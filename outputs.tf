@@ -24,11 +24,11 @@ locals {
     }
   }
 
-  database_credentials_map = {
-    for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-${p.helm_release_name != null ? p.helm_release_name : "drupal-${p.release_branch_name}-${p.gitlab_project_id}"}" => {
-      database_credentials = try(module.drupal_databases_and_users[0].sql_users_creds, null)
-    }
-  }
+  # database_credentials_map = {
+  #   for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-${p.helm_release_name != null ? p.helm_release_name : "drupal-${p.release_branch_name}-${p.gitlab_project_id}"}" => {
+  #     database_credentials = try(module.drupal_databases_and_users[0].sql_users_creds, null)
+  #   }
+  # }
 
   bucket_secrets_map = var.create_buckets ? {
     for o in local.drupal_buckets_list : replace(o.name, "-drupal", "") => {
@@ -62,7 +62,7 @@ locals {
 }
 
 output "database_credentials_map" {
-  value = local.database_credentials_map
+  value = module.drupal_databases_and_users[0].sql_users_creds
 
 }
 
