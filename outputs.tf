@@ -10,7 +10,14 @@ locals {
       for r in resources : (r.helm_release_name != null ? r.helm_release_name : "drupal-${r.release_branch_name}-${r.gitlab_project_id}") => {
         namespace          = r.kubernetes_namespace == null ? "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" : r.kubernetes_namespace
         bucket_credentials = try(module.drupal_buckets[0].buckets_access_credentials["${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}-drupal"], null)
-        project_info       = r
+        database_credentials = try(
+          [for cred in module.drupal_databases_and_users[0].sql_users_creds : cred
+            if cred.database == (
+              p.database_name != null ?
+              p.database_name :
+              replace("${p.project_name}_${p.gitlab_project_id}_${p.release_branch_name}_dp", "-", "_")
+        )][0], null)
+        project_info = r
       }
     }
   }
