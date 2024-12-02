@@ -53,7 +53,8 @@ locals {
   # }
 
   database_secrets_map = {
-    for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-${p.helm_release_name}" => {
+    #for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-${p.helm_release_name}" => {
+    for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-${p.helm_release_name != null ? p.helm_release_name : "default-release"}" => {
       secret_name = try(
         kubernetes_secret.database_secret_name[
           p.helm_release_name != null ? "${p.helm_release_name}" : replace("${p.project_name}_${p.gitlab_project_id}_${p.release_branch_name}_dp", "-", "_")
