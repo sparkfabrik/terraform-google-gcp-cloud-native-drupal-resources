@@ -1,15 +1,11 @@
 locals {
   all_data = {
     for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-${p.helm_release_name != null ? p.helm_release_name : "drupal-${p.release_branch_name}-${p.gitlab_project_id}"}" => {
-      #for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" => {
       # Add the values you want to store for each project here
       # Example:
       namespace          = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
       helm_release_name  = p.helm_release_name == null ? "drupal-${p.release_branch_name}-${p.gitlab_project_id}" : p.helm_release_name
       bucket_credentials = try(module.drupal_buckets[0].buckets_access_credentials["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-drupal"], null)
-      # database_credentials = try(
-      #   [for cred in module.drupal_databases_and_users[0].sql_users_creds : cred
-      # if cred.database == replace("${p.project_name}_${p.gitlab_project_id}_${p.release_branch_name}_dp", "-", "_")][0], null)
       database_credentials = try(
         [for cred in module.drupal_databases_and_users[0].sql_users_creds : cred
           if cred.database == (
@@ -23,12 +19,6 @@ locals {
       kubernetes_database_secret = try(local.database_secrets_map["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-${p.helm_release_name != null ? p.helm_release_name : "drupal-${p.release_branch_name}-${p.gitlab_project_id}"}"], null)
     }
   }
-
-  # database_credentials_map = {
-  #   for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-${p.helm_release_name != null ? p.helm_release_name : "drupal-${p.release_branch_name}-${p.gitlab_project_id}"}" => {
-  #     database_credentials = try(module.drupal_databases_and_users[0].sql_users_creds, null)
-  #   }
-  # }
 
   bucket_secrets_map = var.create_buckets ? {
     for o in local.drupal_buckets_list : replace(o.name, "-drupal", "") => {
