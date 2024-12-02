@@ -15,7 +15,7 @@ locals {
   }
 
   bucket_secrets_map = {
-    for o in local.drupal_buckets_list : replace(o.name, "-drupal", "") => {
+    for o in local.drupal_buckets_list : replace(o.name, "-drupal", "") => o... {
       secret_name = try(
         kubernetes_secret.bucket_secret_name[o.name].metadata[0].name,
         null
@@ -28,7 +28,7 @@ locals {
   }
 
   database_secrets_map = {
-    for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" => {
+    for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" => p... {
       secret_name = try(
         kubernetes_secret.database_secret_name[replace("${p.project_name}_${p.gitlab_project_id}_${p.release_branch_name}_dp", "-", "_")].metadata[0].name,
       null)
