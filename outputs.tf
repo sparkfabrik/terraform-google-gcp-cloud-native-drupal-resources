@@ -4,7 +4,7 @@ locals {
   }
 
   all_data = {
-    for r in local.grouped_resources : r.helm_releases => {
+    for r in local.grouped_resources : r.helm_release_name => {
       #for h in r : h.helm_release_name != null ? h.helm_release_name : "drupal-${h.release_branch_name}-${h.gitlab_project_id}" => {
       namespace = "test"
       #}
