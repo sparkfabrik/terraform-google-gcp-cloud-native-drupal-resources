@@ -29,10 +29,7 @@ locals {
       database_credentials = try(
         [for cred in module.drupal_databases_and_users[0].sql_users_creds : cred
           if cred.database == (
-            p.database_name != null ?
-            p.database_name :
-            replace("${p.project_name}_${p.gitlab_project_id}_${p.release_branch_name}_dp", "-", "_")
-          )
+          p.database_name)
         ][0],
       null)
     }
