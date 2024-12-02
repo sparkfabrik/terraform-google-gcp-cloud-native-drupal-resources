@@ -11,7 +11,7 @@ locals {
         [for cred in module.drupal_databases_and_users[0].sql_users_creds : cred
       if cred.database == replace("${p.project_name}_${p.gitlab_project_id}_${p.release_branch_name}_dp", "-", "_")][0], null)
       kubernetes_bucket_secret   = try(local.bucket_secrets_map["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"], null)
-      kubernetes_database_secret = try(local.database_secrets_map["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"], null)
+      kubernetes_database_secret = try(local.database_secrets_map["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}${p.helm_release_name != null ? p.helm_release_name : "drupal-${p.release_branch_name}-${p.gitlab_project_id}"}"], null)
     }
   }
 
