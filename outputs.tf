@@ -5,9 +5,9 @@ locals {
 
   all_data = {
     for r in local.grouped_resources : r => {
-      for h in r : h.helm_release_name != null ? h.helm_release_name : "drupal-${h.release_branch_name}-${h.gitlab_project_id}" => {
-        namespace = "test"
-      }
+      #for h in r : h.helm_release_name != null ? h.helm_release_name : "drupal-${h.release_branch_name}-${h.gitlab_project_id}" => {
+      namespace = "test"
+      #}
       #namespace = r.kubernetes_namespace == null ? "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" : r.kubernetes_namespace
 
     }
