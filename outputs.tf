@@ -26,11 +26,7 @@ locals {
 
   database_credentials_map = {
     for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-${p.helm_release_name != null ? p.helm_release_name : "drupal-${p.release_branch_name}-${p.gitlab_project_id}"}" => {
-      database_credentials = try(
-        [for cred in module.drupal_databases_and_users[0].sql_users_creds : cred
-
-        ][0],
-      null)
+      database_credentials = try(module.drupal_databases_and_users[0].sql_users_creds, null)
     }
   }
 
