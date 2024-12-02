@@ -3,8 +3,6 @@ locals {
     for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" => p...
   }
 
-  grouped_index = keys(local.grouped_resources)
-
   all_data = {
     for key, resources in local.grouped_resources : key => {
       for r in resources : (r.helm_release_name != null ? r.helm_release_name : "drupal-${r.release_branch_name}-${r.gitlab_project_id}") => {
@@ -19,7 +17,6 @@ locals {
         )][0], null)
         kubernetes_bucket_secret   = try(local.bucket_secrets_map["${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}"], null)
         kubernetes_database_secret = try(local.database_secrets_map["${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}-${r.helm_release_name != null ? r.helm_release_name : "drupal-${r.release_branch_name}-${r.gitlab_project_id}"}"], null)
-        #project_info               = r
       }
     }
   }
@@ -77,6 +74,14 @@ output "drupal_apps_all_data" {
   value       = local.all_data
 }
 
+output "drupal_apps_namespaces" {
+  description = "Map of all Kubernetes namespaces used by Drupal apps, indexed same as all_data"
+  value = {
+    for key, values in local.all_data : key => {
+      for helm_release, data in values : helm_release => data.namespace
+    }
+  }
+}
 # output "drupal_apps_all_bucket_credentials" {
 #   description = "Bucket credentials for each Drupal project"
 #   sensitive   = true
