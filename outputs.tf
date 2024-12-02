@@ -8,6 +8,7 @@ locals {
   all_data = {
     for i in grouped_index : i => {
       for r in local.grouped_resources[i] : r.helm_release_name != null ? r.helm_release_name : "drupal-${r.release_branch_name}-${r.gitlab_project_id}" => {
+        index     = i
         namespace = "pippo"
       }
     }
