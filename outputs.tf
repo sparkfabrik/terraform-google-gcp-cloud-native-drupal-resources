@@ -45,6 +45,13 @@ locals {
     }
   }
 }
+output "buket_secrets_map" {
+  value = local.bucket_secrets_map
+}
+
+output "database_secrets_map" {
+  value = local.database_secrets_map
+}
 
 output "drupal_apps_all_data" {
   description = "All data for each Drupal project."
