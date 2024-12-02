@@ -74,7 +74,7 @@ output "drupal_apps_all_data" {
   value       = local.all_data
 }
 
-output "drupal_apps_namespaces" {
+output "drupal_apps_all_namespaces" {
   description = "Map of all Kubernetes namespaces used by Drupal apps, indexed same as all_data"
   value = {
     for key, values in local.all_data : key => {
@@ -83,7 +83,7 @@ output "drupal_apps_namespaces" {
   }
 }
 
-output "drupal_apps_bucket_credentials" {
+output "drupal_apps_all_bucket_credentials" {
   description = "Bucket credentials for each Drupal project, indexed same as all_data"
   sensitive   = true
   value = {
@@ -93,7 +93,7 @@ output "drupal_apps_bucket_credentials" {
   }
 }
 
-output "drupal_apps_bucket_secrets" {
+output "drupal_apps_all_bucket_secrets" {
   description = "Bucket kubernetes secrets for each Drupal project, indexed same as all_data"
   sensitive   = true
   value = {
@@ -103,7 +103,7 @@ output "drupal_apps_bucket_secrets" {
   }
 }
 
-output "drupal_apps_database_credentials" {
+output "drupal_apps_all_database_credentials" {
   description = "Database credentials for each Drupal project, indexed same as all_data"
   sensitive   = true
   value = {
@@ -113,7 +113,7 @@ output "drupal_apps_database_credentials" {
   }
 }
 
-output "drupal_apps_database_secrets" {
+output "drupal_apps_all_database_secrets" {
   description = "Database kubernetes secrets for each Drupal project, indexed same as all_data"
   sensitive   = true
   value = {
