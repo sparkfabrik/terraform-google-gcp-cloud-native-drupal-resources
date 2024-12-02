@@ -17,7 +17,9 @@ locals {
               r.database_name :
               replace("${r.project_name}_${r.gitlab_project_id}_${r.release_branch_name}_dp", "-", "_")
         )][0], null)
-        project_info = r
+        kubernetes_bucket_secret   = try(local.bucket_secrets_map["${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}"], null)
+        kubernetes_database_secret = try(local.database_secrets_map["${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}-${r.helm_release_name != null ? r.helm_release_name : "drupal-${r.release_branch_name}-${r.gitlab_project_id}"}"], null)
+        project_info               = r
       }
     }
   }
