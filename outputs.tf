@@ -1,6 +1,7 @@
 locals {
   all_data = {
-    for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" => {
+    for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-${p.helm_release_name != null ? p.helm_release_name : "drupal-${p.release_branch_name}-${p.gitlab_project_id}"}" => {
+      #for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" => {
       # Add the values you want to store for each project here
       # Example:
       namespace          = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
@@ -13,19 +14,6 @@ locals {
       kubernetes_database_secret = try(local.database_secrets_map["${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"], null)
     }
   }
-
-  # bucket_secrets_map = {
-  #   for o in local.drupal_buckets_list : replace(o.name, "-drupal", "") => {
-  #     secret_name = try(
-  #       kubernetes_secret.bucket_secret_name[o.name].metadata[0].name,
-  #       null
-  #     )
-  #     namespace = try(
-  #       kubernetes_secret.bucket_secret_name[o.name].metadata[0].namespace,
-  #       null
-  #     )
-  #   }
-  # }
 
   bucket_secrets_map = var.create_buckets ? {
     for o in local.drupal_buckets_list : replace(o.name, "-drupal", "") => {
@@ -40,21 +28,8 @@ locals {
     }
   } : {}
 
-  # database_secrets_map = {
-  #   for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" => {
-  #     secret_name = try(
-  #       kubernetes_secret.database_secret_name[replace("${p.project_name}_${p.gitlab_project_id}_${p.release_branch_name}_dp", "-", "_")].metadata[0].name,
-  #     null)
-  #     namespace = try(
-  #       kubernetes_secret.database_secret_name[replace("${p.project_name}_${p.gitlab_project_id}_${p.release_branch_name}_dp", "-", "_")].metadata[0].namespace,
-  #       null
-  #     )
-  #   }
-  # }
-
   database_secrets_map = {
-    #for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-${p.helm_release_name}" => {
-    for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-${p.helm_release_name != null ? p.helm_release_name : "default-release"}" => {
+    for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-${p.helm_release_name != null ? p.helm_release_name : "drupal-${p.release_branch_name}-${p.gitlab_project_id}"}" => {
       secret_name = try(
         kubernetes_secret.database_secret_name[
           p.helm_release_name != null ? "${p.helm_release_name}" : replace("${p.project_name}_${p.gitlab_project_id}_${p.release_branch_name}_dp", "-", "_")
@@ -70,8 +45,6 @@ locals {
     }
   }
 }
-
-
 
 output "drupal_apps_all_data" {
   description = "All data for each Drupal project."
