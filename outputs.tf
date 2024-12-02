@@ -7,8 +7,8 @@ locals {
       #   }
       #   if "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" == "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"
       # }
-      dato1 = p.project_name
-      dato2 = p.gitlab_project_id
+      dato1 = p
+
     }...
   }
 
