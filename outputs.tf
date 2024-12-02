@@ -82,44 +82,46 @@ output "drupal_apps_namespaces" {
     }
   }
 }
-# output "drupal_apps_all_bucket_credentials" {
-#   description = "Bucket credentials for each Drupal project"
-#   sensitive   = true
-#   value = {
-#     for key, value in local.all_data : key => value.bucket_credentials
-#   }
-# }
 
-# output "drupal_apps_all_database_credentials" {
-#   description = "Database credentials for each Drupal project"
-#   sensitive   = true
-#   value = {
-#     for key, value in local.all_data : key => value.database_credentials
-#   }
-# }
+output "drupal_apps_bucket_credentials" {
+  description = "Bucket credentials for each Drupal project, indexed same as all_data"
+  sensitive   = true
+  value = {
+    for key, values in local.all_data : key => {
+      for helm_release, data in values : helm_release => data.bucket_credentials
+    }
+  }
+}
 
-# output "drupal_apps_all_bucket_secrets" {
-#   description = "Bucket kubernetes secrets for each Drupal project"
-#   sensitive   = true
-#   value = {
-#     for key, value in local.all_data : key => value.kubernetes_bucket_secret
-#   }
-# }
+output "drupal_apps_bucket_secrets" {
+  description = "Bucket kubernetes secrets for each Drupal project, indexed same as all_data"
+  sensitive   = true
+  value = {
+    for key, values in local.all_data : key => {
+      for helm_release, data in values : helm_release => data.kubernetes_bucket_secret
+    }
+  }
+}
 
-# output "drupal_apps_all_database_secrets" {
-#   description = "Database kubernetes secrets for each Drupal project"
-#   sensitive   = true
-#   value = {
-#     for key, value in local.all_data : key => value.kubernetes_database_secret
-#   }
-# }
+output "drupal_apps_database_credentials" {
+  description = "Database credentials for each Drupal project, indexed same as all_data"
+  sensitive   = true
+  value = {
+    for key, values in local.all_data : key => {
+      for helm_release, data in values : helm_release => data.database_credentials
+    }
+  }
+}
 
-# output "drupal_apps_all_namespaces" {
-#   description = "Namespace for each Drupal project"
-#   value = {
-#     for key, value in local.all_data : key => value.namespace
-#   }
-# }
+output "drupal_apps_database_secrets" {
+  description = "Database kubernetes secrets for each Drupal project, indexed same as all_data"
+  sensitive   = true
+  value = {
+    for key, values in local.all_data : key => {
+      for helm_release, data in values : helm_release => data.kubernetes_database_secret
+    }
+  }
+}
 
 output "drupal_apps_database_credentials" {
   sensitive   = true
