@@ -7,18 +7,18 @@ locals {
     for p in var.drupal_projects_list : distinct("${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}") => p
   }
 
-  # all_data = {
-  #   for p in var.drupal_projects_list : distinct("${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}") => {
+  all_data = {
+    for p in var.drupal_projects_list : distinct("${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}") => {
 
-  #   }
-  #   for r in local.grouped_resources : r.helm_release_name => {
-  #     #for h in r : h.helm_release_name != null ? h.helm_release_name : "drupal-${h.release_branch_name}-${h.gitlab_project_id}" => {
-  #     namespace = "test"
-  #     #}
-  #     #namespace = r.kubernetes_namespace == null ? "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" : r.kubernetes_namespace
+    }
+    for r in local.grouped_resources : r.helm_release_name => {
+      #for h in r : h.helm_release_name != null ? h.helm_release_name : "drupal-${h.release_branch_name}-${h.gitlab_project_id}" => {
+      namespace = "test"
+      #}
+      #namespace = r.kubernetes_namespace == null ? "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" : r.kubernetes_namespace
 
-  #   }
-  # }
+    }
+  }
 
 
   # helm_releases = {
