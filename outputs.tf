@@ -6,9 +6,10 @@ locals {
   grouped_index = keys(local.grouped_resources)
 
   all_data = {
-    for i in grouped_index : "${i}" => {
-      for r in local.grouped_resources["${i}"] : r.helm_release_name != null ? r.helm_release_name : "drupal-${r.release_branch_name}-${r.gitlab_project_id}" => {
-        namespace = "pippo"
+    for key, resources in local.grouped_resources : key => {
+      for r in resources : (r.helm_release_name != null ? r.helm_release_name : "drupal-${r.release_branch_name}-${r.gitlab_project_id}") => {
+        namespace    = r.kubernetes_namespace == null ? "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" : r.kubernetes_namespace
+        project_info = r
       }
     }
   }
