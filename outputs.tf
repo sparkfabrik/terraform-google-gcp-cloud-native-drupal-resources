@@ -1,5 +1,5 @@
 locals {
-  all_data = {
+  grouped_resources = {
     for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" => {
       # helm_releases = {
       #   for r in var.drupal_projects_list : r.helm_release_name != null ? r.helm_release_name : "drupal-${r.release_branch_name}-${r.gitlab_project_id}" => {
@@ -7,10 +7,31 @@ locals {
       #   }
       #   if "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" == "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"
       # }
-      dato1 = p
+      resource = p
 
     }...
   }
+
+  all_data = {
+    for r in local.grouped_resources : r.key => {
+      namespace          = r.value.resource.kubernetes_namespace == null ? "${r.value.resource.project_name}-${r.value.resource.gitlab_project_id}-${r.value.resource.release_branch_name}" : r.value.resource.kubernetes_namespace
+      helm_release_name  = r.value.resource.helm_release_name == null ? "drupal-${r.value.resource.release_branch_name}-${r.value.resource.gitlab_project_id}" : r.value.resource.helm_release_name
+      bucket_credentials = try(module.drupal_buckets[0].buckets_access_credentials["${r.value.resource.project_name}-${r.value.resource.gitlab_project_id}-${r.value.resource.release_branch_name}-drupal"], null)
+      database_credentials = try(
+        [for cred in module.drupal_databases_and_users[0].sql_users_creds : cred
+          if cred.database == (
+            r.value.resource.database_name != null ?
+            r.value.resource.database_name :
+            replace("${r.value.resource.project_name}_${r.value.resource.gitlab_project_id}_${r.value.resource.release_branch_name}_dp", "-", "_")
+          )
+        ][0],
+      null)
+      kubernetes_bucket_secret   = try(local.bucket_secrets_map["${r.value.resource.project_name}-${r.value.resource.gitlab_project_id}-${r.value.resource.release_branch_name}"], null)
+      kubernetes_database_secret = try(local.database_secrets_map["${r.value.resource.project_name}-${r.value.resource.gitlab_project_id}-${r.value.resource.release_branch_name}-${r.value.resource.helm_release_name != null ? r.value.resource.helm_release_name : "drupal-${r.value.resource.release_branch_name}-${r.value.resource.gitlab_project_id}"}"], null)
+    }
+  }
+
+
 
   # all_data = {
   #   for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-${p.helm_release_name != null ? p.helm_release_name : "drupal-${p.release_branch_name}-${p.gitlab_project_id}"}" => {
