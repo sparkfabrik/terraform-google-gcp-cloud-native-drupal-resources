@@ -3,16 +3,8 @@ locals {
     for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" => p...
   }
 
-  all_data = {
-    for key, resources in local.grouped_resources : key => {
-      namespace = resources[0].kubernetes_namespace == null ? 
-        "${resources[0].project_name}-${resources[0].gitlab_project_id}-${resources[0].release_branch_name}" : 
-        resources[0].kubernetes_namespace
-      helm_release_name = resources[0].helm_release_name != null ? 
-        resources[0].helm_release_name : 
-        "drupal-${resources[0].release_branch_name}-${resources[0].gitlab_project_id}"
-    }
-  }
+  all_data = "pippo"
+
   # all_data = {
   #   for p in var.drupal_projects_list : distinct("${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}") => {
 
