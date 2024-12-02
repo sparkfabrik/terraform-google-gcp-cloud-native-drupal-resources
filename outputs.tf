@@ -4,9 +4,13 @@ locals {
   }
 
   all_data = {
-    for key, r in local.grouped_resources : key => {
-      namespace         = r.kubernetes_namespace == null ? "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" : r.kubernetes_namespace
-      helm_release_name = r.helm_release_name != null ? r.helm_release_name : "drupal-${r.release_branch_name}-${r.gitlab_project_id}"
+    for key, resources in local.grouped_resources : key => {
+      namespace = resources[0].kubernetes_namespace == null ? 
+        "${resources[0].project_name}-${resources[0].gitlab_project_id}-${resources[0].release_branch_name}" : 
+        resources[0].kubernetes_namespace
+      helm_release_name = resources[0].helm_release_name != null ? 
+        resources[0].helm_release_name : 
+        "drupal-${resources[0].release_branch_name}-${resources[0].gitlab_project_id}"
     }
   }
   # all_data = {
