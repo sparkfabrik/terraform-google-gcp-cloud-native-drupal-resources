@@ -74,6 +74,10 @@ locals {
   }
 }
 
+output "grouped_resources" {
+  value = local.grouped_resources
+}
+
 output "database_credentials_map" {
   value = module.drupal_databases_and_users[0].sql_users_creds
 
