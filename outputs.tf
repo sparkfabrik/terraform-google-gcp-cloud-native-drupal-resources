@@ -13,21 +13,8 @@ locals {
   }
 
   all_data = {
-    for r in local.grouped_resources : r.key => {
-      namespace          = r.value.resource.kubernetes_namespace == null ? "${r.value.resource.project_name}-${r.value.resource.gitlab_project_id}-${r.value.resource.release_branch_name}" : r.value.resource.kubernetes_namespace
-      helm_release_name  = r.value.resource.helm_release_name == null ? "drupal-${r.value.resource.release_branch_name}-${r.value.resource.gitlab_project_id}" : r.value.resource.helm_release_name
-      bucket_credentials = try(module.drupal_buckets[0].buckets_access_credentials["${r.value.resource.project_name}-${r.value.resource.gitlab_project_id}-${r.value.resource.release_branch_name}-drupal"], null)
-      database_credentials = try(
-        [for cred in module.drupal_databases_and_users[0].sql_users_creds : cred
-          if cred.database == (
-            r.value.resource.database_name != null ?
-            r.value.resource.database_name :
-            replace("${r.value.resource.project_name}_${r.value.resource.gitlab_project_id}_${r.value.resource.release_branch_name}_dp", "-", "_")
-          )
-        ][0],
-      null)
-      kubernetes_bucket_secret   = try(local.bucket_secrets_map["${r.value.resource.project_name}-${r.value.resource.gitlab_project_id}-${r.value.resource.release_branch_name}"], null)
-      kubernetes_database_secret = try(local.database_secrets_map["${r.value.resource.project_name}-${r.value.resource.gitlab_project_id}-${r.value.resource.release_branch_name}-${r.value.resource.helm_release_name != null ? r.value.resource.helm_release_name : "drupal-${r.value.resource.release_branch_name}-${r.value.resource.gitlab_project_id}"}"], null)
+    for r in local.grouped_resources : r => {
+      namespace = r.kubernetes_namespace == null ? "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" : p.kubernetes_namespace
     }
   }
 
