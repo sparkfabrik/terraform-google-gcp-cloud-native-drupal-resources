@@ -28,8 +28,7 @@ locals {
     for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}-${p.helm_release_name != null ? p.helm_release_name : "drupal-${p.release_branch_name}-${p.gitlab_project_id}"}" => {
       database_credentials = try(
         [for cred in module.drupal_databases_and_users[0].sql_users_creds : cred
-          if cred.database == (
-          p.database_name)
+
         ][0],
       null)
     }
