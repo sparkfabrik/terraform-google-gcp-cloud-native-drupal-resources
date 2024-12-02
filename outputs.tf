@@ -1,15 +1,22 @@
 locals {
-  all_data = {
+  grouped_resources = {
     for p in var.drupal_projects_list : "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" => p...
   }
 
-  # all_data = {
-  #   for r in local.grouped_resources : r => {
-  #     #namespace = r.kubernetes_namespace == null ? "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" : r.kubernetes_namespace
-  #     namespace = "pippo"
-  #   }
-  # }
+  all_data = {
+    for r in local.grouped_resources : r.helm_release_name != null ? r.helm_release_name : "drupal-${r.release_branch_name}-${r.gitlab_project_id}" => {
 
+      project_name = r.project_name
+      #namespace = r.kubernetes_namespace == null ? "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" : r.kubernetes_namespace
+
+    }
+  }
+  # helm_releases = {
+  #   for r in var.drupal_projects_list : r.helm_release_name != null ? r.helm_release_name : "drupal-${r.release_branch_name}-${r.gitlab_project_id}" => {
+  #     namespace = r.kubernetes_namespace == null ? "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" : p.kubernetes_namespace
+  #   }
+  #   if "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" == "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}"
+  # }
 
 
   # all_data = {
