@@ -7,18 +7,20 @@ locals {
     for p in var.drupal_projects_list : distinct("${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}") => p
   }
 
-  all_data = {
-    for p in var.drupal_projects_list : distinct("${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}") => {
+  # all_data = {
+  #   for p in var.drupal_projects_list : distinct("${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}") => {
 
-    }
-    for r in local.grouped_resources : r.helm_release_name => {
-      #for h in r : h.helm_release_name != null ? h.helm_release_name : "drupal-${h.release_branch_name}-${h.gitlab_project_id}" => {
-      namespace = "test"
-      #}
-      #namespace = r.kubernetes_namespace == null ? "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" : r.kubernetes_namespace
+  #   }
+  #   for r in local.grouped_resources : r.helm_release_name => {
+  #     #for h in r : h.helm_release_name != null ? h.helm_release_name : "drupal-${h.release_branch_name}-${h.gitlab_project_id}" => {
+  #     namespace = "test"
+  #     #}
+  #     #namespace = r.kubernetes_namespace == null ? "${r.project_name}-${r.gitlab_project_id}-${r.release_branch_name}" : r.kubernetes_namespace
 
-    }
-  }
+  #   }
+  # }
+
+  #echo 'module.production_db.grouped_resources["zambon-website-304-main"][0].helm_release_name' | terraform console
 
 
   # helm_releases = {
@@ -103,49 +105,49 @@ output "database_secrets_map" {
   value = local.database_secrets_map
 }
 
-output "drupal_apps_all_data" {
-  description = "All data for each Drupal project."
-  value       = local.all_data
-}
+# output "drupal_apps_all_data" {
+#   description = "All data for each Drupal project."
+#   value       = local.all_data
+# }
 
-output "drupal_apps_all_bucket_credentials" {
-  description = "Bucket credentials for each Drupal project"
-  sensitive   = true
-  value = {
-    for key, value in local.all_data : key => value.bucket_credentials
-  }
-}
+# output "drupal_apps_all_bucket_credentials" {
+#   description = "Bucket credentials for each Drupal project"
+#   sensitive   = true
+#   value = {
+#     for key, value in local.all_data : key => value.bucket_credentials
+#   }
+# }
 
-output "drupal_apps_all_database_credentials" {
-  description = "Database credentials for each Drupal project"
-  sensitive   = true
-  value = {
-    for key, value in local.all_data : key => value.database_credentials
-  }
-}
+# output "drupal_apps_all_database_credentials" {
+#   description = "Database credentials for each Drupal project"
+#   sensitive   = true
+#   value = {
+#     for key, value in local.all_data : key => value.database_credentials
+#   }
+# }
 
-output "drupal_apps_all_bucket_secrets" {
-  description = "Bucket kubernetes secrets for each Drupal project"
-  sensitive   = true
-  value = {
-    for key, value in local.all_data : key => value.kubernetes_bucket_secret
-  }
-}
+# output "drupal_apps_all_bucket_secrets" {
+#   description = "Bucket kubernetes secrets for each Drupal project"
+#   sensitive   = true
+#   value = {
+#     for key, value in local.all_data : key => value.kubernetes_bucket_secret
+#   }
+# }
 
-output "drupal_apps_all_database_secrets" {
-  description = "Database kubernetes secrets for each Drupal project"
-  sensitive   = true
-  value = {
-    for key, value in local.all_data : key => value.kubernetes_database_secret
-  }
-}
+# output "drupal_apps_all_database_secrets" {
+#   description = "Database kubernetes secrets for each Drupal project"
+#   sensitive   = true
+#   value = {
+#     for key, value in local.all_data : key => value.kubernetes_database_secret
+#   }
+# }
 
-output "drupal_apps_all_namespaces" {
-  description = "Namespace for each Drupal project"
-  value = {
-    for key, value in local.all_data : key => value.namespace
-  }
-}
+# output "drupal_apps_all_namespaces" {
+#   description = "Namespace for each Drupal project"
+#   value = {
+#     for key, value in local.all_data : key => value.namespace
+#   }
+# }
 
 output "drupal_apps_database_credentials" {
   sensitive   = true
