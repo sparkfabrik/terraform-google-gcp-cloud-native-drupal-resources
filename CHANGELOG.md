@@ -8,6 +8,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.19.0] - 2024-12-3
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.18.0...0.19.0)
+
+- Refactor of `drupal_apps_all_data` to handle multiple deployment in same `project_name - project-id - release-branch-name`
+
 ## [0.18.0] - 2024-11-29
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.17.1...0.18.0)

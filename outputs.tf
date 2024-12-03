@@ -52,23 +52,6 @@ locals {
   }
 }
 
-output "grouped_resources" {
-  value = local.grouped_resources
-}
-
-output "database_credentials_map" {
-  value = module.drupal_databases_and_users[0].sql_users_creds
-
-}
-
-output "bucket_secrets_map" {
-  value = local.bucket_secrets_map
-}
-
-output "database_secrets_map" {
-  value = local.database_secrets_map
-}
-
 output "drupal_apps_all_data" {
   description = "All data for each Drupal project."
   value       = local.all_data
