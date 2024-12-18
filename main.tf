@@ -92,3 +92,35 @@ resource "kubernetes_namespace" "namespace" {
     labels = each.value.labels
   }
 }
+
+locals {
+  isolated_namespaces = [
+    for p in var.drupal_projects_list : p.network_policy == "isolated" ? {} : {
+      namespace    = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
+      project_name = p.project_name
+    }
+  ]
+}
+
+resource "kubernetes_network_policy" "example" {
+  for_each = local.isolated_namespaces
+
+  metadata {
+    name      = "network-policy-${each.value.project_name}"
+    namespace = each.value.namespace
+  }
+
+  spec {
+    pod_selector {
+      match_labels = {}
+    }
+
+    policy_types = ["Ingress"]
+
+    ingress {
+      from {
+        pod_selector {}
+      }
+    }
+  }
+}
