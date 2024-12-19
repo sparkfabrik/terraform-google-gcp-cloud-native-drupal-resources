@@ -7,14 +7,6 @@
  */
 
 locals {
-  drupal_network_policy_list = [
-    for p in var.drupal_projects_list : {
-      namespace      = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
-      project_name   = p.project_name
-      network_policy = p.network_policy
-    }
-  ]
-
   drupal_database_and_user_list = [
     for p in var.drupal_projects_list : {
       namespace           = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
@@ -59,6 +51,8 @@ locals {
         p.kubernetes_namespace_labels,
         var.default_k8s_labels
       )
+      project_name   = p.project_name
+      network_policy = p.network_policy
     }
   ]
 }
@@ -101,9 +95,9 @@ resource "kubernetes_namespace" "namespace" {
   }
 }
 
-resource "kubernetes_network_policy" "isolated" {
+resource "kubernetes_network_policy_v1" "isolated" {
   for_each = {
-    for p in local.drupal_network_policy_list : p.namespace => p.project_name if p.network_policy == "isolated"
+    for p in local.namespace_list : p.namespace => p.project_name if p.network_policy == "isolated"
   }
 
   metadata {
@@ -126,13 +120,13 @@ resource "kubernetes_network_policy" "isolated" {
   }
 
   depends_on = [
-    kubernetes_namespace.namespace
+    kubernetes_namespace.namespace[each.key].name
   ]
 }
 
-resource "kubernetes_network_policy" "restricted" {
+resource "kubernetes_network_policy_v1" "restricted" {
   for_each = {
-    for p in local.drupal_network_policy_list : p.namespace => p.project_name if p.network_policy == "restricted"
+    for p in local.namespace_list : p.namespace => p.project_name if p.network_policy == "restricted"
   }
 
   metadata {
@@ -151,6 +145,6 @@ resource "kubernetes_network_policy" "restricted" {
   }
 
   depends_on = [
-    kubernetes_namespace.namespace
+    kubernetes_namespace.namespace[each.key].name
   ]
 }

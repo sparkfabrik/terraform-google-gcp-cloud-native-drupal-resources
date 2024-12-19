@@ -8,6 +8,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.20.0] - 2024-12-19
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.19.0...0.20.0)
+
+- Add feature to enable network policy between `isolated` and `restricted` at namespace level.
+
 ## [0.19.0] - 2024-12-3
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.18.0...0.19.0)
