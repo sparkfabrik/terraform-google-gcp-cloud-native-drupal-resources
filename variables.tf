@@ -98,7 +98,7 @@ variable "drupal_projects_list" {
         (p.network_policy == "")
       )
     ])
-    error_message = "The project name is invalid. Must be 6 to 16 characters long, with only lowercase letters, numbers, hyphens and underscores if the database must be created by the module or 6 to 23 characters long if we pass database_host database_user_name and database_name to the module."
+    error_message = "The project name is invalid. Must be 6 to 16 characters long, with only lowercase letters, numbers, hyphens and underscores if the database must be created by the module or 6 to 23 characters long if we pass database_host database_user_name and database_name to the module. If a network policy is specified, it must be 'isolated' or 'restricted'."
   }
 
   validation {

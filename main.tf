@@ -7,6 +7,14 @@
  */
 
 locals {
+  drupal_network_policy_list = [
+    for p in var.drupal_projects_list : {
+      namespace      = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
+      project_name   = p.project_name
+      network_policy = p.network_policy
+    }
+  ]
+
   drupal_database_and_user_list = [
     for p in var.drupal_projects_list : {
       namespace           = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
@@ -93,21 +101,14 @@ resource "kubernetes_namespace" "namespace" {
   }
 }
 
-locals {
-  isolated_namespaces = [
-    for p in var.drupal_projects_list : p.network_policy == "isolated" ? {
-      namespace    = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
-      project_name = p.project_name
-    } : {}
-  ]
-}
-
-resource "kubernetes_network_policy" "example" {
-  for_each = local.isolated_namespaces
+resource "kubernetes_network_policy" "isolated" {
+  for_each = {
+    for p in local.drupal_network_policy_list : p.namespace => p.project_name if p.network_policy == "isolated"
+  }
 
   metadata {
-    name      = "network-policy-${each.value.project_name}"
-    namespace = each.value.namespace
+    name      = "network-policy-isolated-${each.value}"
+    namespace = each.key
   }
 
   spec {
@@ -123,4 +124,33 @@ resource "kubernetes_network_policy" "example" {
       }
     }
   }
+
+  depends_on = [
+    kubernetes_namespace.namespace
+  ]
+}
+
+resource "kubernetes_network_policy" "restricted" {
+  for_each = {
+    for p in local.drupal_network_policy_list : p.namespace => p.project_name if p.network_policy == "restricted"
+  }
+
+  metadata {
+    name      = "network-policy-restricted-${each.value}"
+    namespace = each.key
+  }
+
+  spec {
+    pod_selector {}
+
+    policy_types = ["Ingress"]
+
+    ingress {
+      from {}
+    }
+  }
+
+  depends_on = [
+    kubernetes_namespace.namespace
+  ]
 }
