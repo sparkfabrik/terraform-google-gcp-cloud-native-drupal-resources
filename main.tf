@@ -95,43 +95,18 @@ resource "kubernetes_namespace" "namespace" {
   }
 }
 
-resource "kubernetes_network_policy_v1" "isolated" {
-  for_each = {
-    for p in local.namespace_list : p.namespace => p.project_name if p.network_policy == "isolated"
-  }
-
-  metadata {
-    name      = "network-policy-isolated-${each.value}"
-    namespace = each.key
-  }
-
-  spec {
-    pod_selector {
-      match_labels = {}
-    }
-
-    policy_types = ["Ingress"]
-
-    ingress {
-      from {
-        pod_selector {}
-      }
-    }
-  }
-
-  depends_on = [
-    kubernetes_namespace.namespace
-  ]
+locals {
+  unique_namespaces = toset([for p in local.namespace_list : p.namespace if p.network_policy != ""])
 }
 
-resource "kubernetes_network_policy_v1" "restricted" {
+resource "kubernetes_network_policy_v1" "isolated" {
   for_each = {
-    for p in local.namespace_list : p.namespace => p.project_name if p.network_policy == "restricted"
+    for p in local.namespace_list : p.namespace => p.network_policy if contains(local.unique_namespaces, p.namespace)
   }
 
   metadata {
-    name      = "network-policy-restricted-${each.value}"
-    namespace = each.key
+    name      = "network-policy-${each.value}"
+    namespace = kubernetes_namespace.namespace[each.key].metadata[0].name
   }
 
   spec {
@@ -140,11 +115,12 @@ resource "kubernetes_network_policy_v1" "restricted" {
     policy_types = ["Ingress"]
 
     ingress {
-      from {}
+      dynamic "from" {
+        for_each = each.value == "isolated" ? { "isolated" : true } : {}
+        content {
+          pod_selector {}
+        }
+      }
     }
   }
-
-  depends_on = [
-    kubernetes_namespace.namespace
-  ]
 }
