@@ -99,7 +99,7 @@ locals {
   unique_namespaces = toset([for p in local.namespace_list : p.namespace if p.network_policy != ""])
 }
 
-resource "kubernetes_network_policy_v1" "isolated" {
+resource "kubernetes_network_policy_v1" "this" {
   for_each = {
     for p in local.namespace_list : p.namespace => p.network_policy if contains(local.unique_namespaces, p.namespace)
   }
