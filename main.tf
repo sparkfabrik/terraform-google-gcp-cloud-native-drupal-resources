@@ -51,6 +51,8 @@ locals {
         p.kubernetes_namespace_labels,
         var.default_k8s_labels
       )
+      project_name   = p.project_name
+      network_policy = p.network_policy
     }
   ]
 }
@@ -90,5 +92,39 @@ resource "kubernetes_namespace" "namespace" {
   metadata {
     name   = each.value.namespace
     labels = each.value.labels
+  }
+}
+
+locals {
+  unique_namespaces = toset([for p in local.namespace_list : p.namespace if p.network_policy != ""])
+}
+
+resource "kubernetes_network_policy_v1" "this" {
+  for_each = {
+    for p in local.namespace_list : p.namespace => p.network_policy if contains(local.unique_namespaces, p.namespace)
+  }
+
+  metadata {
+    name      = "network-policy-${each.value}"
+    namespace = kubernetes_namespace.namespace[each.key].metadata[0].name
+  }
+
+  spec {
+    pod_selector {}
+
+    policy_types = ["Ingress"]
+
+    ingress {
+      dynamic "from" {
+        for_each = each.value == "isolated" ? { "isolated" : true } : {}
+        content {
+          pod_selector {}
+        }
+      }
+      dynamic "from" {
+        for_each = each.value == "restricted" ? { "restricted" : true } : {}
+        content {}
+      }
+    }
   }
 }
