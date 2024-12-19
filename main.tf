@@ -121,6 +121,10 @@ resource "kubernetes_network_policy_v1" "isolated" {
           pod_selector {}
         }
       }
+      dynamic "from" {
+        for_each = each.value == "restricted" ? { "restricted" : true } : {}
+        content {}
+      }
     }
   }
 }
