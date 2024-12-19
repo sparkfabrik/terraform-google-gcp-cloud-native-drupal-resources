@@ -120,7 +120,7 @@ resource "kubernetes_network_policy_v1" "isolated" {
   }
 
   depends_on = [
-    kubernetes_namespace.namespace[each.key].name
+    kubernetes_namespace.namespace
   ]
 }
 
@@ -145,6 +145,6 @@ resource "kubernetes_network_policy_v1" "restricted" {
   }
 
   depends_on = [
-    kubernetes_namespace.namespace[each.key].name
+    kubernetes_namespace.namespace
   ]
 }
