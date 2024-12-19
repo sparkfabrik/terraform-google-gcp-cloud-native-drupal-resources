@@ -95,10 +95,10 @@ resource "kubernetes_namespace" "namespace" {
 
 locals {
   isolated_namespaces = [
-    for p in var.drupal_projects_list : p.network_policy == "isolated" ? {} : {
+    for p in var.drupal_projects_list : p.network_policy == "isolated" ? {
       namespace    = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
       project_name = p.project_name
-    }
+    } : {}
   ]
 }
 

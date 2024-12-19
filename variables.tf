@@ -74,7 +74,7 @@ variable "drupal_projects_list" {
     bucket_obj_adm                       = optional(list(string), [])
     bucket_obj_vwr                       = optional(list(string), [])
     bucket_soft_delete_retention_seconds = optional(number, 0)
-    network_policy                       = optional(string, null)
+    network_policy                       = optional(string, "")
   }))
 
   validation {
@@ -93,7 +93,7 @@ variable "drupal_projects_list" {
         (p.database_host != null && p.database_name != null && p.database_user_name != null && length(p.project_name) <= 23) ||
         (p.database_host == null && length(p.project_name) <= 23)
       ) &&
-      (p.network_policy != null && contains(["isolated", "restricted"], p.network_policy))
+      (p.network_policy != "" && contains(["isolated", "restricted"], p.network_policy))
     ])
     error_message = "The project name is invalid. Must be 6 to 16 characters long, with only lowercase letters, numbers, hyphens and underscores if the database must be created by the module or 6 to 23 characters long if we pass database_host database_user_name and database_name to the module."
   }
