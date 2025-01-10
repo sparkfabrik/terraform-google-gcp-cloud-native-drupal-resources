@@ -141,8 +141,6 @@ output "cloudsql_dumps_bucket_name" {
 output "namespaces_network_policy" {
   description = "Namespaces with network policy enabled."
   value = {
-    "isolated" : { for obj in local.namespace_list : obj.namespace => obj.project_name if obj.network_policy == "isolated" },
-    "restricted" : { for obj in local.namespace_list : obj.namespace => obj.project_name if obj.network_policy == "restricted" },
-    "none" : { for obj in local.namespace_list : obj.namespace => obj.project_name if obj.network_policy == "" }
+    for namespace, network_policy in local.network_policy_per_namespace : namespace => network_policy == "" ? "none" : network_policy
   }
 }

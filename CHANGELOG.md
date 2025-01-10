@@ -8,6 +8,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.20.1] - 2025-01-10
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.20.0...0.20.1)
+
+- Fix NetworkPolicy configuration to guarantee that there is only one NetworkPolicy type per namespace.
+- Fix NetworkPolicy deployment when you use an existing namespace.
+
 ## [0.20.0] - 2024-12-19
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.19.0...0.20.0)
@@ -24,7 +31,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.17.1...0.18.0)
 
-- Add more complete outputs. 
+- Add more complete outputs.
 
 ## [0.17.1] - 2024-11-27
 
@@ -126,7 +133,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add support for `bucket_obj_vwr` and `bucket_obj_adm` to set punctual permissions on the bucket.
 - Add support for global tags to be passed to buckets.
 - Upgraded module `terraform-google-gcp-application-bucket-creation-helper` to version `0.7.0`.
-
 
 ## [0.7.0] - 2023-07-27
 
