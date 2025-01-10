@@ -103,6 +103,17 @@ variable "drupal_projects_list" {
 
   validation {
     condition = alltrue([
+      for namespace, network_policies in {
+        for ns in distinct([for p in var.drupal_projects_list : p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace]) : ns => distinct([
+          for p in var.drupal_projects_list : p.network_policy if(p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace) == ns
+        ])
+      } : length(network_policies) == 1
+    ])
+    error_message = "The NetworkPolicy type must be the same for all projects in the same namespace."
+  }
+
+  validation {
+    condition = alltrue([
       for p in var.drupal_projects_list :
       (can(regex("^[0-9a-z_-]{6,32}$", p.database_user_name))) || p.database_user_name == null
     ])

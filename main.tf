@@ -55,6 +55,15 @@ locals {
       network_policy = p.network_policy
     }
   ]
+
+  distinct_namespaces = distinct([for n in local.namespace_list : n.namespace])
+
+  # NetworkPolicy per namespace. The variable validation guarantees that there is only one NetworkPolicy type per namespace.
+  network_policy_per_namespace = {
+    for i in local.distinct_namespaces : i => [
+      for p in var.drupal_projects_list : p.network_policy if(p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace) == i
+    ][0]
+  }
 }
 
 # Add new databases and users to the CloudSQL master instance.
@@ -95,18 +104,23 @@ resource "kubernetes_namespace" "namespace" {
   }
 }
 
-locals {
-  unique_namespaces = toset([for p in local.namespace_list : p.namespace if p.network_policy != ""])
+data "kubernetes_namespace" "namespace" {
+  for_each = var.use_existing_kubernetes_namespaces ? {
+    for p in tolist(toset(local.namespace_list)) : p.namespace => p
+  } : {}
+  metadata {
+    name = each.value.namespace
+  }
 }
 
 resource "kubernetes_network_policy_v1" "this" {
   for_each = {
-    for p in local.namespace_list : p.namespace => p.network_policy if contains(local.unique_namespaces, p.namespace)
+    for namespace, network_policy in local.network_policy_per_namespace : namespace => network_policy if network_policy != ""
   }
 
   metadata {
     name      = "network-policy-${each.value}"
-    namespace = kubernetes_namespace.namespace[each.key].metadata[0].name
+    namespace = var.use_existing_kubernetes_namespaces ? data.kubernetes_namespace.namespace[each.key].metadata[0].name : resource.kubernetes_namespace.namespace[each.key].metadata[0].name
   }
 
   spec {
