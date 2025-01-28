@@ -8,6 +8,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.21.0] - 2025-01-28
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.20.1...0.21.0)
+
+- Upgrade module `terraform-google-gcp-mysql-db-and-user-creation-helper` to `0.4.0` with support for MySQL minor version selection.
+
 ## [0.20.1] - 2025-01-10
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.20.0...0.20.1)
