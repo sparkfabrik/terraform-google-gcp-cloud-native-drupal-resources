@@ -76,6 +76,11 @@ variable "drupal_projects_list" {
     bucket_soft_delete_retention_seconds = optional(number, 0)
     network_policy                       = optional(string, "")
     network_policy_acme_port             = optional(number, 8089)
+    network_policy_acme_labels = optional(map(string),
+      {
+        "acme.cert-manager.io/http01-solver" = "true"
+      }
+    )
   }))
 
   validation {

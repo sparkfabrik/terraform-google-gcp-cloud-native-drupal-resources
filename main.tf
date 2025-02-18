@@ -155,9 +155,7 @@ resource "kubernetes_network_policy_v1" "acme" {
 
   spec {
     pod_selector {
-      match_labels = {
-        "acme.cert-manager.io/http01-solver" = "true"
-      }
+      match_labels = each.value.network_policy_acme_labels
     }
 
     policy_types = ["Ingress"]
