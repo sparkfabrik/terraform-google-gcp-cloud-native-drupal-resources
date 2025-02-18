@@ -142,3 +142,31 @@ resource "kubernetes_network_policy_v1" "this" {
     }
   }
 }
+
+resource "kubernetes_network_policy_v1" "acm" {
+  for_each = {
+    for namespace, network_policy in local.network_policy_per_namespace : namespace => network_policy if network_policy != ""
+  }
+
+  metadata {
+    name      = "network-policy-allow-acm"
+    namespace = var.use_existing_kubernetes_namespaces ? data.kubernetes_namespace.namespace[each.key].metadata[0].name : resource.kubernetes_namespace.namespace[each.key].metadata[0].name
+  }
+
+  spec {
+    pod_selector {
+      match_labels = {
+        "acme.cert-manager.io/http01-solver" = "true"
+      }
+    }
+
+    policy_types = ["Ingress"]
+
+    ingress {
+      ports {
+        port     = 8089
+        protocol = "TCP"
+      }
+    }
+  }
+}
