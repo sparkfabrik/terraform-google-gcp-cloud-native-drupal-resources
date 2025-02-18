@@ -12,7 +12,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.21.0...0.22.0)
 
-- Add `network-policy-allow-acm` to allow ACM traffic from ingress controller
+- Add `network-policy-allow-acme` to allow ACME traffic from ingress controller
 
 ## [0.21.0] - 2025-01-28
 

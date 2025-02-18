@@ -61,7 +61,7 @@ locals {
   # NetworkPolicy per namespace. The variable validation guarantees that there is only one NetworkPolicy type per namespace.
   network_policy_per_namespace = {
     for i in local.distinct_namespaces : i => [
-      for p in var.drupal_projects_list : p.network_policy if(p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace) == i
+      for p in var.drupal_projects_list : p if(p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace) == i
     ][0]
   }
 }
@@ -115,11 +115,11 @@ data "kubernetes_namespace" "namespace" {
 
 resource "kubernetes_network_policy_v1" "this" {
   for_each = {
-    for namespace, network_policy in local.network_policy_per_namespace : namespace => network_policy if network_policy != ""
+    for namespace, project in local.network_policy_per_namespace : namespace => project if project.network_policy != ""
   }
 
   metadata {
-    name      = "network-policy-${each.value}"
+    name      = "network-policy-${each.value.network_policy}"
     namespace = var.use_existing_kubernetes_namespaces ? data.kubernetes_namespace.namespace[each.key].metadata[0].name : resource.kubernetes_namespace.namespace[each.key].metadata[0].name
   }
 
@@ -130,26 +130,26 @@ resource "kubernetes_network_policy_v1" "this" {
 
     ingress {
       dynamic "from" {
-        for_each = each.value == "isolated" ? { "isolated" : true } : {}
+        for_each = each.value.network_policy == "isolated" ? { "isolated" : true } : {}
         content {
           pod_selector {}
         }
       }
       dynamic "from" {
-        for_each = each.value == "restricted" ? { "restricted" : true } : {}
+        for_each = each.value.network_policy == "restricted" ? { "restricted" : true } : {}
         content {}
       }
     }
   }
 }
 
-resource "kubernetes_network_policy_v1" "acm" {
+resource "kubernetes_network_policy_v1" "acme" {
   for_each = {
-    for namespace, network_policy in local.network_policy_per_namespace : namespace => network_policy if network_policy != ""
+    for namespace, project in local.network_policy_per_namespace : namespace => project if project.network_policy != ""
   }
 
   metadata {
-    name      = "network-policy-allow-acm"
+    name      = "network-policy-allow-acme"
     namespace = var.use_existing_kubernetes_namespaces ? data.kubernetes_namespace.namespace[each.key].metadata[0].name : resource.kubernetes_namespace.namespace[each.key].metadata[0].name
   }
 
@@ -164,7 +164,7 @@ resource "kubernetes_network_policy_v1" "acm" {
 
     ingress {
       ports {
-        port     = 8089
+        port     = each.value.network_policy_acme_port
         protocol = "TCP"
       }
     }
