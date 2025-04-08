@@ -111,7 +111,7 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 |------|---------|
 | <a name="provider_google"></a> [google](#provider\_google) | >= 4.47.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.19 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.6.3 |
+| <a name="provider_random"></a> [random](#provider\_random) | >= 3.7.0 |
 ## Requirements
 
 | Name | Version |
@@ -119,7 +119,7 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.2 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.47.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.19 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | 3.6.3 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.7.0 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -167,7 +167,7 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | [kubernetes_network_policy_v1.this](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/network_policy_v1) | resource |
 | [kubernetes_secret.bucket_secret_name](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 | [kubernetes_secret.database_secret_name](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
-| [random_id.cloudsql_dumps_bucket_name_suffix](https://registry.terraform.io/providers/hashicorp/random/3.6.3/docs/resources/id) | resource |
+| [random_id.cloudsql_dumps_bucket_name_suffix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [google_sql_database_instance.cloudsql_instance](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/sql_database_instance) | data source |
 | [google_tags_tag_key.tag_keys](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/tags_tag_key) | data source |
 | [google_tags_tag_value.tag_values](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/tags_tag_value) | data source |
