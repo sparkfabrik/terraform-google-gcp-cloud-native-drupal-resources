@@ -45,23 +45,19 @@ locals {
   ]
 
   namespace_list = [
-    for p in var.drupal_projects_list : {
+    for p in var.drupal_projects_list : merge(p, {
       namespace = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
       labels = merge(
         p.kubernetes_namespace_labels,
         var.default_k8s_labels
       )
-      project_name   = p.project_name
-      network_policy = p.network_policy
-    }
+    })
   ]
 
-  distinct_namespaces = distinct([for n in local.namespace_list : n.namespace])
-
-  # NetworkPolicy per namespace. The variable validation guarantees that there is only one NetworkPolicy type per namespace.
-  network_policy_per_namespace = {
-    for i in local.distinct_namespaces : i => [
-      for p in var.drupal_projects_list : p if(p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace) == i
+  # Create a map of distinct namespaces with their corresponding project information. This is used to create Kubernetes namespaces and NetworkPolicies.
+  distinct_namespaces = {
+    for i in distinct([for n in local.namespace_list : n.namespace]) : i => [
+      for p in local.namespace_list : p if p.namespace == i
     ][0]
   }
 }
@@ -94,9 +90,7 @@ module "drupal_buckets" {
 }
 
 resource "kubernetes_namespace" "namespace" {
-  for_each = var.use_existing_kubernetes_namespaces ? {} : {
-    for p in tolist(toset(local.namespace_list)) : p.namespace => p
-  }
+  for_each = var.use_existing_kubernetes_namespaces ? {} : local.distinct_namespaces
 
   metadata {
     name   = each.value.namespace
@@ -105,9 +99,7 @@ resource "kubernetes_namespace" "namespace" {
 }
 
 data "kubernetes_namespace" "namespace" {
-  for_each = var.use_existing_kubernetes_namespaces ? {
-    for p in tolist(toset(local.namespace_list)) : p.namespace => p
-  } : {}
+  for_each = var.use_existing_kubernetes_namespaces ? local.distinct_namespaces : {}
   metadata {
     name = each.value.namespace
   }
@@ -115,7 +107,7 @@ data "kubernetes_namespace" "namespace" {
 
 resource "kubernetes_network_policy_v1" "this" {
   for_each = {
-    for namespace, project in local.network_policy_per_namespace : namespace => project if project.network_policy != ""
+    for namespace, project in local.distinct_namespaces : namespace => project if project.network_policy != ""
   }
 
   metadata {
@@ -145,7 +137,7 @@ resource "kubernetes_network_policy_v1" "this" {
 
 resource "kubernetes_network_policy_v1" "acme" {
   for_each = {
-    for namespace, project in local.network_policy_per_namespace : namespace => project if project.network_policy != ""
+    for namespace, project in local.distinct_namespaces : namespace => project if project.network_policy != ""
   }
 
   metadata {
