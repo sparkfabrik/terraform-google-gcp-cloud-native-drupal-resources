@@ -35,7 +35,7 @@ resource "google_storage_bucket" "cloudsql_dumps" {
 
   lifecycle_rule {
     action {
-      type = "SetStorageClass"
+      type          = "SetStorageClass"
       storage_class = "COLDLINE"
     }
     condition {
