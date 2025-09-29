@@ -74,6 +74,8 @@ variable "drupal_projects_list" {
     bucket_obj_adm                       = optional(list(string), [])
     bucket_obj_vwr                       = optional(list(string), [])
     bucket_soft_delete_retention_seconds = optional(number, 0)
+    redis_host                           = optional(string, null)
+    redis_port                           = optional(number, null)
     network_policy                       = optional(string, "")
     network_policy_acme_port             = optional(number, 8089)
     network_policy_acme_labels = optional(map(string),
@@ -155,4 +157,16 @@ variable "create_clousql_dumps_bucket" {
   type        = bool
   description = "If true, the module will create a Google Storage bucket that can be used as a destination for CloudSQL dumps. The bucket will also be tagged with the global tags."
   default     = false
+}
+
+variable "redis_host" {
+  type        = string
+  description = "The Redis host to be used by all the Drupal projects. If not specified, the host must be specified in each project of the drupal_projects_list variable."
+  default     = ""
+}
+
+variable "redis_port" {
+  type        = number
+  description = "The Redis port to be used by all the Drupal projects. If not specified, the port must be specified in each project of the drupal_projects_list variable."
+  default     = 6379
 }

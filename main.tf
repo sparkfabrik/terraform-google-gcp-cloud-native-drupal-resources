@@ -44,6 +44,17 @@ locals {
     }
   ]
 
+  drupal_redis_list = [
+    for p in var.drupal_projects_list : {
+      namespace           = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
+      release_branch_name = p.release_branch_name
+      host                = p.redis_host != null ? p.redis_host : var.redis_host
+      port                = p.redis_port != null ? p.redis_port : var.redis_port
+      project_id          = p.gitlab_project_id
+      helm_release_name   = p.helm_release_name
+    }
+  ]
+
   namespace_list = [
     for p in var.drupal_projects_list : merge(p, {
       namespace = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace

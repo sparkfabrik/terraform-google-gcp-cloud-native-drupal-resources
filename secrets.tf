@@ -8,6 +8,18 @@ locals {
   map_of_output_drupal_databases = trimspace(var.cloudsql_instance_name) != "" && trimspace(var.cloudsql_privileged_user_name) != "" && trimspace(var.cloudsql_privileged_user_password) != "" && var.create_databases_and_users == true ? {
     for o in module.drupal_databases_and_users[0].sql_users_creds : o.database => o
   } : {}
+  map_of_drupal_redis = {
+    for k, v in {
+      for o in local.drupal_redis_list :
+      "${o.namespace}-${o.helm_release_name != null ? "${o.helm_release_name}-redis" : "drupal-${o.release_branch_name}-${o.project_id}-redis"}" => {
+        namespace   = o.namespace
+        host        = o.host
+        port        = o.port
+        secret_name = (o.helm_release_name != null ? "${o.helm_release_name}-redis" : "drupal-${o.release_branch_name}-${o.project_id}-redis")
+      }...
+      if trimspace(o.host) != "" && o.host != null && o.port != null && o.port != ""
+    } : k => v[0]
+  }
 }
 
 resource "kubernetes_secret" "bucket_secret_name" {
@@ -23,7 +35,7 @@ resource "kubernetes_secret" "bucket_secret_name" {
     name        = each.value.helm_release_name == null ? "drupal-${each.value.release_branch_name}-${each.value.project_id}-bucket" : "${each.value.helm_release_name}-bucket"
     namespace   = var.use_existing_kubernetes_namespaces ? each.value.namespace : kubernetes_namespace.namespace[each.value.namespace].metadata[0].name
     annotations = {}
-    labels = var.default_k8s_labels
+    labels      = var.default_k8s_labels
   }
   data = {
     "endpoint"         = each.value.host
@@ -46,7 +58,7 @@ resource "kubernetes_secret" "database_secret_name" {
     name        = each.value.helm_release_name == null ? "drupal-${each.value.release_branch_name}-${each.value.project_id}-db-user" : "${each.value.helm_release_name}-db-user"
     namespace   = var.use_existing_kubernetes_namespaces ? each.value.namespace : kubernetes_namespace.namespace[each.value.namespace].metadata[0].name
     annotations = {}
-    labels = var.default_k8s_labels
+    labels      = var.default_k8s_labels
   }
   data = {
     "endpoint" = each.value.host != null ? each.value.host : ""
@@ -54,5 +66,19 @@ resource "kubernetes_secret" "database_secret_name" {
     "database" = local.map_of_output_drupal_databases[each.key].database
     "username" = local.map_of_output_drupal_databases[each.key].user
     "password" = local.map_of_output_drupal_databases[each.key].password
+  }
+}
+
+resource "kubernetes_secret" "redis_secret_name" {
+  for_each = local.map_of_drupal_redis
+  metadata {
+    name        = each.value.secret_name
+    namespace   = var.use_existing_kubernetes_namespaces ? each.value.namespace : kubernetes_namespace.namespace[each.value.namespace].metadata[0].name
+    annotations = {}
+    labels      = var.default_k8s_labels
+  }
+  data = {
+    "host" = each.value.host
+    "port" = tostring(each.value.port)
   }
 }
