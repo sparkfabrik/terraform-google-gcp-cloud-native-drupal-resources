@@ -69,7 +69,7 @@ resource "kubernetes_secret" "database_secret_name" {
   }
 }
 
-resource "kubernetes_secret_v1" "redis_secret_name" {
+resource "kubernetes_secret_v1" "redis" {
   for_each = local.map_of_drupal_redis
   metadata {
     name        = each.value.secret_name
