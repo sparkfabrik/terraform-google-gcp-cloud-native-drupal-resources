@@ -17,7 +17,7 @@ locals {
         port        = o.port
         secret_name = (o.helm_release_name != null ? "${o.helm_release_name}-redis" : "drupal-${o.release_branch_name}-${o.project_id}-redis")
       }...
-      if trimspace(o.host) != "" && o.host != null && o.port != null && o.port != ""
+      if trimspace(o.host) != "" && trimspace(o.port) != ""
     } : k => v[0]
   }
 }
@@ -69,7 +69,7 @@ resource "kubernetes_secret" "database_secret_name" {
   }
 }
 
-resource "kubernetes_secret" "redis_secret_name" {
+resource "kubernetes_secret_v1" "redis_secret_name" {
   for_each = local.map_of_drupal_redis
   metadata {
     name        = each.value.secret_name
