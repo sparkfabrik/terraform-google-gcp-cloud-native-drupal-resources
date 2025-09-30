@@ -74,8 +74,8 @@ variable "drupal_projects_list" {
     bucket_obj_adm                       = optional(list(string), [])
     bucket_obj_vwr                       = optional(list(string), [])
     bucket_soft_delete_retention_seconds = optional(number, 0)
-    redis_host                           = optional(string, null)
-    redis_port                           = optional(number, null)
+    redis_host                           = optional(string, "")
+    redis_port                           = optional(number, 6379)
     network_policy                       = optional(string, "")
     network_policy_acme_port             = optional(number, 8089)
     network_policy_acme_labels = optional(map(string),

@@ -17,7 +17,7 @@ locals {
         port        = o.port
         secret_name = (o.helm_release_name != null ? "${o.helm_release_name}-redis" : "drupal-${o.release_branch_name}-${o.project_id}-redis")
       }...
-      if trimspace(o.host) != "" && trimspace(o.port) != ""
+      if trimspace(o.host) != "" && o.port != null
     } : k => v[0]
   }
 }
@@ -79,6 +79,6 @@ resource "kubernetes_secret_v1" "redis" {
   }
   data = {
     "host" = each.value.host
-    "port" = tostring(each.value.port)
+    "port" = each.value.port
   }
 }

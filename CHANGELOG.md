@@ -8,6 +8,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.24.0] - 2025-10-02
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.23.0...0.24.0)
+
+- Add support for Redis secret creation per project, the secret contains the Redis host and port.
+
 ## [0.23.0] - 2025-04-08
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.22.1...0.23.0)
