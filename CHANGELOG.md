@@ -10,7 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.25.0] - 2025-10-24
 
-[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.24.0...0.25.0)
+[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.24.1...0.25.0)
 
 - Add `name: <namespace_name>` label to the kubernetes namespaces created for each drupal project to support legacy configuration of NetworkPolicies.
 
