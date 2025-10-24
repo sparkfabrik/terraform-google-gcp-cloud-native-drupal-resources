@@ -59,6 +59,7 @@ locals {
     for p in var.drupal_projects_list : merge(p, {
       namespace = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace
       labels = merge(
+        { "name" = p.kubernetes_namespace == null ? "${p.project_name}-${p.gitlab_project_id}-${p.release_branch_name}" : p.kubernetes_namespace },
         p.kubernetes_namespace_labels,
         var.default_k8s_labels
       )
