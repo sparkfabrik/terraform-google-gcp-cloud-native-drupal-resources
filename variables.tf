@@ -26,6 +26,17 @@ variable "cloudsql_privileged_user_password" {
   default     = ""
 }
 
+variable "permissions_refresh_id" {
+  type        = string
+  default     = ""
+  description = "Optional identifier used to force Terraform to rerun the proxy/grant scripts without recreating users. Change the value whenever you need to reapply permissions."
+
+  validation {
+    condition     = var.permissions_refresh_id == "" || can(regex("^\\d{8}(\\d{4})?$", var.permissions_refresh_id))
+    error_message = "Set permissions_refresh_id to an 8-digit date (YYYYMMDD) or a 12-digit date-time (YYYYMMDDHHMM) such as 20251110 or 202511101030, or leave it empty."
+  }
+}
+
 variable "logging_bucket_name" {
   type        = string
   description = "The name of the logging bucket. If empty, no logging bucket will be added and bucket logs will be disabled."

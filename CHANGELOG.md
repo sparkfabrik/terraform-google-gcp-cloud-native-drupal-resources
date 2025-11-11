@@ -8,6 +8,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.26.0] - 2025-11-11
+
+- Upgrade module `terraform-google-gcp-mysql-db-and-user-creation-helper` to `0.5.1` and expose the `permissions_refresh_id` input to force reapplying database grants without recreating users.
+
 ## [0.25.0] - 2025-10-24
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.24.1...0.25.0)
