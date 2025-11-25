@@ -188,7 +188,7 @@ variable "cloudsql_dumps_environment" {
 
   validation {
     condition     = var.cloudsql_dumps_environment == "" || (length(var.cloudsql_dumps_environment) >= 1 && length(var.cloudsql_dumps_environment) <= 20)
-    error_message = "The cloudsql_dumps_environment must be between 1 and 30 characters to ensure the final bucket name (with project_id, prefix, and random suffix) stays within the 63-character limit."
+    error_message = "The cloudsql_dumps_environment must be between 1 and 20 characters to ensure the final bucket name (with project_id, prefix, and random suffix) stays within the 63-character limit."
   }
 }
 
