@@ -164,10 +164,22 @@ variable "bucket_disaster_recovery_location" {
   default     = ""
 }
 
-variable "create_clousql_dumps_bucket" {
+variable "create_cloudsql_dumps_bucket" {
   type        = bool
   description = "If true, the module will create a Google Storage bucket that can be used as a destination for CloudSQL dumps. The bucket will also be tagged with the global tags."
   default     = false
+}
+
+variable "cloudsql_dumps_bucket_name" {
+  type        = string
+  description = "The custom name for the CloudSQL dumps bucket. If specified, the bucket name will be '<cloudsql_dumps_bucket_name>-<random_suffix>'. If not specified, the default naming will be used."
+  default     = ""
+}
+
+variable "cloudsql_dumps_environment" {
+  type        = string
+  description = "The environment identifier for the CloudSQL dumps bucket. If specified, the bucket name will be '<project_id>-cloudsql-dumps-<environment>-<random_suffix>'."
+  default     = ""
 }
 
 variable "redis_host" {

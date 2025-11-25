@@ -8,6 +8,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.0.0] - 2025-11-25
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/0.26.0...1.0.0)
+
+- ⚠️ **BREAKING CHANGES**:
+  - Fix typo in variable name `create_clousql_dumps_bucket` change in `create_cloudsql_dumps_bucket`
+- Add support for custom CloudSQL dumps bucket naming via `cloudsql_dumps_bucket_name` and `cloudsql_dumps_environment` variables. 
+
 ## [0.26.0] - 2025-11-11
 
 - Upgrade module `terraform-google-gcp-mysql-db-and-user-creation-helper` to `0.5.1` and expose the `permissions_refresh_id` input to force reapplying database grants without recreating users.
