@@ -164,10 +164,32 @@ variable "bucket_disaster_recovery_location" {
   default     = ""
 }
 
-variable "create_clousql_dumps_bucket" {
+variable "create_cloudsql_dumps_bucket" {
   type        = bool
   description = "If true, the module will create a Google Storage bucket that can be used as a destination for CloudSQL dumps. The bucket will also be tagged with the global tags."
   default     = false
+}
+
+variable "cloudsql_dumps_bucket_name" {
+  type        = string
+  description = "The custom name for the CloudSQL dumps bucket. If specified, the bucket name will be '<cloudsql_dumps_bucket_name>-<random_suffix>'. If not specified, the default naming will be used."
+  default     = ""
+
+  validation {
+    condition     = var.cloudsql_dumps_bucket_name == "" || (length(var.cloudsql_dumps_bucket_name) >= 3 && length(var.cloudsql_dumps_bucket_name) <= 50)
+    error_message = "The cloudsql_dumps_bucket_name must be between 3 and 50 characters to allow for the 9-character random suffix (max 63 chars total for GCS bucket names)."
+  }
+}
+
+variable "cloudsql_dumps_environment" {
+  type        = string
+  description = "The environment identifier for the CloudSQL dumps bucket. If specified, the bucket name will be '<project_id>-cloudsql-dumps-<environment>-<random_suffix>'."
+  default     = ""
+
+  validation {
+    condition     = var.cloudsql_dumps_environment == "" || (length(var.cloudsql_dumps_environment) >= 1 && length(var.cloudsql_dumps_environment) <= 20)
+    error_message = "The cloudsql_dumps_environment must be between 1 and 20 characters to ensure the final bucket name (with project_id, prefix, and random suffix) stays within the 63-character limit."
+  }
 }
 
 variable "redis_host" {
