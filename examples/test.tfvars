@@ -15,7 +15,7 @@ my_drupal_projects_list = [
     bucket_name                     = "test-project-bucket-name"
     bucket_append_random_suffix     = false
     bucket_enable_disaster_recovery = false
-    bucket_labels                   = {
+    bucket_labels = {
       "project" = "test-project"
       "env"     = "stage"
     }
