@@ -8,14 +8,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-## [1.2.0] - 2026-01-19
-
-[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/1.1.0...1.2.0)
-
-- Upgrade module `github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper` from `0.10.0` to `0.11.0`.
-- Add `bucket_additional_transfer_job_excluded_prefixes`.
-
-## [1.1.0] - 2025-12-10
+## [1.1.0] - 2026-01-19
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/1.0.0...1.1.0)
 

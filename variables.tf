@@ -169,6 +169,7 @@ variable "bucket_additional_transfer_job_excluded_prefixes" {
   description = "A list of additional object prefixes to exclude from the transfer job for all buckets created by this module."
   default     = []
 }
+
 variable "create_cloudsql_dumps_bucket" {
   type        = bool
   description = "If true, the module will create a Google Storage bucket that can be used as a destination for CloudSQL dumps. The bucket will also be tagged with the global tags."
