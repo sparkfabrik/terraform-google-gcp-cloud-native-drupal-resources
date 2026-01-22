@@ -8,6 +8,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-01-22
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/1.1.0...1.2.0)
+
+- Upgrade module `terraform-google-gcp-application-bucket-creation-helper` to `0.12.0`, fixing "Invalid for_each argument" error when using `bucket_obj_adm` or `bucket_obj_vwr` with `append_random_suffix = true`.
+
+- ⚠️ **Note for existing users of `bucket_obj_adm`/`bucket_obj_vwr`**: The `for_each` key for IAM member resources has changed. Terraform will plan to destroy and recreate the IAM bindings. This is safe - the IAM permissions will be briefly removed and immediately recreated. No data loss occurs.
+
 ## [1.1.0] - 2026-01-19
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/1.0.0...1.1.0)
