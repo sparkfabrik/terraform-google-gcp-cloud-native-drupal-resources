@@ -77,7 +77,7 @@ locals {
 # Add new databases and users to the CloudSQL master instance.
 module "drupal_databases_and_users" {
   count                             = trimspace(var.cloudsql_instance_name) != "" && trimspace(var.cloudsql_privileged_user_name) != "" && trimspace(var.cloudsql_privileged_user_password) != "" && var.create_databases_and_users == true ? 1 : 0
-  source                            = "github.com/sparkfabrik/terraform-google-gcp-mysql-db-and-user-creation-helper?ref=0.5.1"
+  source                            = "github.com/sparkfabrik/terraform-google-gcp-mysql-db-and-user-creation-helper?ref=72a3c376c7961e4d77db1a1645d707fc4b73e91e"
   project_id                        = var.project_id
   region                            = var.region
   cloudsql_instance_name            = var.cloudsql_instance_name
