@@ -8,11 +8,18 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+
+## [1.2.2] - 2026-04-20
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/1.2.1...1.2.2)
+
+- refs platform/board#4307: Upgrade module `terraform-google-gcp-mysql-db-and-user-creation-helper` to `0.5.3`, fixing issue with `REVOKE cloudsqlsuperuser`.
+
 ## [1.2.1] - 2026-03-18
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/1.2.0...1.2.1)
 
-- Upgrade module `terraform-google-gcp-mysql-db-and-user-creation-helper` to `0.51.2`, fixing "REVOKE cloudsqlsuperuser".
+- Upgrade module `terraform-google-gcp-mysql-db-and-user-creation-helper` to `0.5.2`, fixing `REVOKE cloudsqlsuperuser`.
 
 ## [1.2.0] - 2026-01-22
 
