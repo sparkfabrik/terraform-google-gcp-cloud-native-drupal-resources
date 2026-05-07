@@ -27,6 +27,12 @@ variable "cloudsql_privileged_user_password" {
   default     = ""
 }
 
+variable "cloudsql_proxy_port" {
+  type        = string
+  description = "The port on which the Cloud SQL Auth Proxy listens locally. Use different ports when running multiple instances of this module targeting different Cloud SQL instances."
+  default     = "1234"
+}
+
 variable "permissions_refresh_id" {
   type        = string
   default     = ""

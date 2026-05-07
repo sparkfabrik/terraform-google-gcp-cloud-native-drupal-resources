@@ -131,6 +131,7 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | <a name="input_cloudsql_instance_name"></a> [cloudsql\_instance\_name](#input\_cloudsql\_instance\_name) | The name of the existing Google CloudSQL Instance name. Actually only a MySQL 5.7 or 8 instance is supported. | `string` | `""` | no |
 | <a name="input_cloudsql_privileged_user_name"></a> [cloudsql\_privileged\_user\_name](#input\_cloudsql\_privileged\_user\_name) | The name of the privileged user of the Cloud SQL instance | `string` | `""` | no |
 | <a name="input_cloudsql_privileged_user_password"></a> [cloudsql\_privileged\_user\_password](#input\_cloudsql\_privileged\_user\_password) | The password of the privileged user of the Cloud SQL instance | `string` | `""` | no |
+| <a name="input_cloudsql_proxy_port"></a> [cloudsql\_proxy\_port](#input\_cloudsql\_proxy\_port) | The port on which the Cloud SQL Auth Proxy listens locally. Use different ports when running multiple instances of this module targeting different Cloud SQL instances. | `string` | `"1234"` | no |
 | <a name="input_create_buckets"></a> [create\_buckets](#input\_create\_buckets) | If true, the module will create a bucket for each project. | `bool` | `true` | no |
 | <a name="input_create_cloudsql_dumps_bucket"></a> [create\_cloudsql\_dumps\_bucket](#input\_create\_cloudsql\_dumps\_bucket) | If true, the module will create a Google Storage bucket that can be used as a destination for CloudSQL dumps. The bucket will also be tagged with the global tags. | `bool` | `false` | no |
 | <a name="input_create_databases_and_users"></a> [create\_databases\_and\_users](#input\_create\_databases\_and\_users) | If true, the module will create a user and a database for each project. | `bool` | `true` | no |
@@ -184,5 +185,5 @@ the random suffix `bucket_append_random_suffix` for the bucket name.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_drupal_buckets"></a> [drupal\_buckets](#module\_drupal\_buckets) | github.com/sparkfabrik/terraform-google-gcp-application-bucket-creation-helper | 0.12.0 |
-| <a name="module_drupal_databases_and_users"></a> [drupal\_databases\_and\_users](#module\_drupal\_databases\_and\_users) | github.com/sparkfabrik/terraform-google-gcp-mysql-db-and-user-creation-helper | 0.5.1 |
+| <a name="module_drupal_databases_and_users"></a> [drupal\_databases\_and\_users](#module\_drupal\_databases\_and\_users) | github.com/sparkfabrik/terraform-google-gcp-mysql-db-and-user-creation-helper | 863e9250389ac71b98073e0765a73222574fa21c |
 <!-- END_TF_DOCS -->
