@@ -22,6 +22,7 @@ variable "cloudsql_privileged_user_name" {
 
 variable "cloudsql_privileged_user_password" {
   type        = string
+  sensitive   = true
   description = "The password of the privileged user of the Cloud SQL instance"
   default     = ""
 }
