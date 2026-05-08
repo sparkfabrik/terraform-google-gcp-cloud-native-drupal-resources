@@ -22,8 +22,15 @@ variable "cloudsql_privileged_user_name" {
 
 variable "cloudsql_privileged_user_password" {
   type        = string
+  sensitive   = true
   description = "The password of the privileged user of the Cloud SQL instance"
   default     = ""
+}
+
+variable "cloudsql_proxy_port" {
+  type        = string
+  description = "The port on which the Cloud SQL Auth Proxy listens locally. Use different ports when running multiple instances of this module targeting different Cloud SQL instances."
+  default     = "1234"
 }
 
 variable "permissions_refresh_id" {
