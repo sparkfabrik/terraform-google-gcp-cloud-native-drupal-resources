@@ -13,6 +13,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 [Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/1.2.2...1.3.0)
 
 - Upgrade module `terraform-google-gcp-mysql-db-and-user-creation-helper` to `0.6.0`: replace `netcat` readiness check with MySQL `SELECT 1` query, fix race condition in Cloud SQL Proxy start/kill, add proxy crash detection, and mark `cloudsql_privileged_user_password` as sensitive.
+- Add variable `cloudsql_proxy_port` to configure the local port used by the Cloud SQL Auth Proxy. Use different ports when running multiple instances of this module targeting different Cloud SQL instances (default: `1234`).
 - ⚠️ **Upgrade note**: The inner module changes `execute_cloud_sql_proxy` and `kill_cloud_sql_proxy` from `for_each` to `count`. On the first `terraform apply`, Terraform will destroy the old `for_each`-keyed resources and recreate them as `count`-indexed. This is safe — these are `null_resource` provisioners that only start and stop the Cloud SQL Auth Proxy. No database, user, or grant is affected.
 
 ## [1.2.2] - 2026-04-20
