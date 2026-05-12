@@ -104,7 +104,7 @@ module "drupal_buckets" {
   additional_transfer_job_excluded_prefixes = var.bucket_additional_transfer_job_excluded_prefixes
 }
 
-resource "kubernetes_namespace" "namespace" {
+resource "kubernetes_namespace_v1" "namespace" {
   for_each = var.use_existing_kubernetes_namespaces ? {} : local.distinct_namespaces
 
   metadata {
@@ -113,7 +113,7 @@ resource "kubernetes_namespace" "namespace" {
   }
 }
 
-data "kubernetes_namespace" "namespace" {
+data "kubernetes_namespace_v1" "namespace" {
   for_each = var.use_existing_kubernetes_namespaces ? local.distinct_namespaces : {}
   metadata {
     name = each.value.namespace
@@ -127,7 +127,7 @@ resource "kubernetes_network_policy_v1" "this" {
 
   metadata {
     name      = "network-policy-${each.value.network_policy}"
-    namespace = var.use_existing_kubernetes_namespaces ? data.kubernetes_namespace.namespace[each.key].metadata[0].name : resource.kubernetes_namespace.namespace[each.key].metadata[0].name
+    namespace = var.use_existing_kubernetes_namespaces ? data.kubernetes_namespace_v1.namespace[each.key].metadata[0].name : resource.kubernetes_namespace_v1.namespace[each.key].metadata[0].name
   }
 
   spec {
@@ -157,7 +157,7 @@ resource "kubernetes_network_policy_v1" "acme" {
 
   metadata {
     name      = "network-policy-allow-acme"
-    namespace = var.use_existing_kubernetes_namespaces ? data.kubernetes_namespace.namespace[each.key].metadata[0].name : resource.kubernetes_namespace.namespace[each.key].metadata[0].name
+    namespace = var.use_existing_kubernetes_namespaces ? data.kubernetes_namespace_v1.namespace[each.key].metadata[0].name : resource.kubernetes_namespace_v1.namespace[each.key].metadata[0].name
   }
 
   spec {

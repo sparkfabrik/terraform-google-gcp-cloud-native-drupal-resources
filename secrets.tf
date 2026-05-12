@@ -22,7 +22,7 @@ locals {
   }
 }
 
-resource "kubernetes_secret" "bucket_secret_name" {
+resource "kubernetes_secret_v1" "bucket_secret_name" {
   for_each = {
     for o in local.map_of_drupal_buckets : o.name => o
     if var.create_buckets == true
@@ -33,7 +33,7 @@ resource "kubernetes_secret" "bucket_secret_name" {
     # the following convention (the default of sparkfabrik/pkg_drupal):
     # PKG_DRUPAL_HELM_RELEASE_NAME: drupal-${CI_COMMIT_REF_SLUG}-${CI_PROJECT_ID}
     name        = each.value.helm_release_name == null ? "drupal-${each.value.release_branch_name}-${each.value.project_id}-bucket" : "${each.value.helm_release_name}-bucket"
-    namespace   = var.use_existing_kubernetes_namespaces ? each.value.namespace : kubernetes_namespace.namespace[each.value.namespace].metadata[0].name
+    namespace   = var.use_existing_kubernetes_namespaces ? each.value.namespace : kubernetes_namespace_v1.namespace[each.value.namespace].metadata[0].name
     annotations = {}
     labels      = var.default_k8s_labels
   }
@@ -46,7 +46,7 @@ resource "kubernetes_secret" "bucket_secret_name" {
   }
 }
 
-resource "kubernetes_secret" "database_secret_name" {
+resource "kubernetes_secret_v1" "database_secret_name" {
   for_each = {
     for o in local.map_of_drupal_databases : o.database => o
     if trimspace(o.namespace) != "" && var.create_databases_and_users == true
@@ -56,7 +56,7 @@ resource "kubernetes_secret" "database_secret_name" {
     # the following convention (the default of sparkfabrik/pkg_drupal):
     # PKG_DRUPAL_HELM_RELEASE_NAME: drupal-${CI_COMMIT_REF_SLUG}-${CI_PROJECT_ID}
     name        = each.value.helm_release_name == null ? "drupal-${each.value.release_branch_name}-${each.value.project_id}-db-user" : "${each.value.helm_release_name}-db-user"
-    namespace   = var.use_existing_kubernetes_namespaces ? each.value.namespace : kubernetes_namespace.namespace[each.value.namespace].metadata[0].name
+    namespace   = var.use_existing_kubernetes_namespaces ? each.value.namespace : kubernetes_namespace_v1.namespace[each.value.namespace].metadata[0].name
     annotations = {}
     labels      = var.default_k8s_labels
   }
@@ -73,7 +73,7 @@ resource "kubernetes_secret_v1" "redis" {
   for_each = local.map_of_drupal_redis
   metadata {
     name        = each.value.secret_name
-    namespace   = var.use_existing_kubernetes_namespaces ? each.value.namespace : kubernetes_namespace.namespace[each.value.namespace].metadata[0].name
+    namespace   = var.use_existing_kubernetes_namespaces ? each.value.namespace : kubernetes_namespace_v1.namespace[each.value.namespace].metadata[0].name
     annotations = {}
     labels      = var.default_k8s_labels
   }
