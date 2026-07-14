@@ -2,7 +2,12 @@ locals {
   map_of_drupal_buckets = var.create_buckets == true ? {
     for o in local.drupal_buckets_list : o.name => o
   } : {}
-  map_of_drupal_databases = trimspace(var.cloudsql_instance_name) != "" && trimspace(var.cloudsql_privileged_user_name) != "" && trimspace(var.cloudsql_privileged_user_password) != "" && var.create_databases_and_users == true ? {
+  # nonsensitive() wraps only the password-presence test: it is a boolean that
+  # reveals nothing secret, but without unwrapping it would mark the whole map
+  # sensitive and for_each rejects sensitive values. The map values themselves
+  # keep their own marks, so a genuinely sensitive field added later re-triggers
+  # the for_each error instead of leaking silently.
+  map_of_drupal_databases = trimspace(var.cloudsql_instance_name) != "" && trimspace(var.cloudsql_privileged_user_name) != "" && nonsensitive(trimspace(var.cloudsql_privileged_user_password) != "") && var.create_databases_and_users == true ? {
     for o in local.drupal_database_and_user_list : o.database => o
   } : {}
   map_of_output_drupal_databases = trimspace(var.cloudsql_instance_name) != "" && trimspace(var.cloudsql_privileged_user_name) != "" && trimspace(var.cloudsql_privileged_user_password) != "" && var.create_databases_and_users == true ? {
@@ -23,10 +28,7 @@ locals {
 }
 
 resource "kubernetes_secret" "bucket_secret_name" {
-  for_each = {
-    for o in local.map_of_drupal_buckets : o.name => o
-    if var.create_buckets == true
-  }
+  for_each = local.map_of_drupal_buckets
 
   metadata {
     # If not specified, we suppose that the Helm release name is defined with
@@ -49,7 +51,7 @@ resource "kubernetes_secret" "bucket_secret_name" {
 resource "kubernetes_secret" "database_secret_name" {
   for_each = {
     for o in local.map_of_drupal_databases : o.database => o
-    if trimspace(o.namespace) != "" && var.create_databases_and_users == true
+    if trimspace(o.namespace) != ""
   }
   metadata {
     # If not specified, we suppose that the Helm release name is defined with
