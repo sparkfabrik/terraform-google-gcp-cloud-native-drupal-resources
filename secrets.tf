@@ -2,11 +2,11 @@ locals {
   map_of_drupal_buckets = var.create_buckets == true ? {
     for o in local.drupal_buckets_list : o.name => o
   } : {}
-  # nonsensitive() wraps only the password-presence test: it is a boolean that
-  # reveals nothing secret, but without unwrapping it would mark the whole map
-  # sensitive and for_each rejects sensitive values. The map values themselves
-  # keep their own marks, so a genuinely sensitive field added later re-triggers
-  # the for_each error instead of leaking silently.
+  # nonsensitive() wraps only the password-presence test, a boolean that reveals
+  # nothing secret. Testing the sensitive cloudsql_privileged_user_password in the
+  # predicate otherwise marks the whole map sensitive, and for_each rejects
+  # sensitive collections. Unwrapping just this boolean is enough: the map values
+  # are built from the non-sensitive drupal_projects_list and carry no secret.
   map_of_drupal_databases = trimspace(var.cloudsql_instance_name) != "" && trimspace(var.cloudsql_privileged_user_name) != "" && nonsensitive(trimspace(var.cloudsql_privileged_user_password) != "") && var.create_databases_and_users == true ? {
     for o in local.drupal_database_and_user_list : o.database => o
   } : {}
