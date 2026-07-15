@@ -8,6 +8,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-07-15
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-google-gcp-cloud-native-drupal-resources/compare/1.3.0...1.3.1)
+
 ### Fixed
 
 - Fix `kubernetes_secret.database_secret_name` failing to plan when `cloudsql_privileged_user_password` is set, because `map_of_drupal_databases` was marked sensitive and rejected as a `for_each` argument.
